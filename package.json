@@ -1,0 +1,21 @@
+{
+  "name": "assetverse",
+  "version": "1.0.0",
+  "description": "AssetVerse app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node/backend/server.js",
+    "server": "nodemon backend/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.12.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
