@@ -21,6 +21,7 @@ app.use(express.urlencoded({extended: false}));
 app.listen(port, () => console.log(`server is running on port: ${port}`));
 app.use(errorHandler);
 app.use('/api/assets', require('./routes/assetsRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
 
 
 //usar npm run server para correr el servidor
