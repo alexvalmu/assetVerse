@@ -12,33 +12,31 @@ function Header() {
     const onLogout = ()=>{
         dispatch(logout());
         dispatch(reset());
-        navigate('/');
+        navigate('/login');
     }
   return (
     <header className='header'>
     <div className='logo'>
-        <Link to='/'>Assets</Link>
+        <Link to='/'>AssetVerse</Link>
     </div>
     <ul>
-        {user ? (
-             <li>
-             <button className='btn' onClick={(onLogout)}>  
-                 <FaSignOutAlt /> Logout
-             </button>
-         </li>
-        ):(<>
-        <li>
-            <Link to='/login'>
-                <FaSignInAlt /> Login
-            </Link>
-        </li>
-        <li>
-            <Link to='/register'>
-                <FaUser /> Register
-            </Link>
-        </li>
-        </>)}
-    </ul>
+        <li><Link to='/'>Home</Link></li>
+        <li><Link to='/categories'>Categories</Link></li>
+       
+
+        {user?(
+            <>
+            <li><button className='btn' onClick={onLogout}>Logout</button></li>
+            <li><Link to='/profile'><FaUser /></Link></li>
+            </>
+        ) : (
+          <>
+            <li><Link to='/login'> Login/Register</Link></li>
+            <li><Link to='/login'><FaUser /></Link></li>
+          </>
+        )}
+        
+      </ul>
 </header>
   )
 }

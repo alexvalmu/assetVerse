@@ -53,23 +53,26 @@ function Login() {
   return (
     <>
         <section className="heading">
-            <h1><FaSignInAlt /> Login</h1>
-            <p>Inicia sesión</p>
+            <h1> Sign in to AssertVerse</h1>
         </section>
 
         <section className="form">
             <form onSubmit={onSubmit} >
                 <div className="form-group">
+                    <p>Email</p>
                     <input type="email" className="form-control" id="email"
-                    name="email" value={email} placeholder="Introduce tu email" onChange={onChange} />
+                    name="email" value={email} placeholder="johndoe@gmail.com" onChange={onChange} />
                 </div>
                 <div className="form-group">
+                    <p>Password</p>
                     <input type="password" className="form-control" id="password"
-                    name="password" value={password} placeholder="Introduce tu contraseña" onChange={onChange} />
+                    name="password" value={password} placeholder="************" onChange={onChange} />
                 </div>
                 <div className="form-group">
-                    <button type="submit" className="btn btn-block">Registrar</button>
+                    <button type="submit" className="btn btn-block">Sign in</button>
                 </div>
+                <p  className="form-group"><a href="/reset-password">Forgot your password?</a></p>
+                <p className="form-group"><a href="/register">New to AssertVerse? Register</a></p>
             </form>
         </section>
     </>

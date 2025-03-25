@@ -60,31 +60,35 @@ function Register() {
     return (
     <>
         <section className="heading">
-            <h1><FaUser /> Register</h1>
-            <p>Crea tu cuenta</p>
+            <h1>Register on AssertVerse</h1>
         </section>
 
         <section className="form">
             <form onSubmit={onSubmit} >
                 <div className="form-group">
-                    <input type="text" className="form-control" id="name"
-                    name="name" value={name} placeholder="Introduce tu nombre" onChange={onChange} />
-                </div>
-                <div className="form-group">
+                    <p>Email</p>
                     <input type="email" className="form-control" id="email"
-                    name="email" value={email} placeholder="Introduce tu email" onChange={onChange} />
+                    name="email" value={email} placeholder="johndoe@gmail.com" onChange={onChange} />
                 </div>
                 <div className="form-group">
+                    <p>Username</p>
+                    <input type="text" className="form-control" id="name"
+                    name="name" value={name} placeholder="John Doe" onChange={onChange} />
+                </div>
+                <div className="form-group">
+                    <p>Password</p>
                     <input type="password" className="form-control" id="password"
-                    name="password" value={password} placeholder="Introduce tu contraseña" onChange={onChange} />
+                    name="password" value={password} placeholder="************" onChange={onChange} />
                 </div>
                 <div className="form-group">
+                    <p>Repeat Password</p>
                     <input type="password" className="form-control" id="password2"
-                    name="password2" value={password2} placeholder="Confirma tu contraseña" onChange={onChange} />
+                    name="password2" value={password2} placeholder="************" onChange={onChange} />
                 </div>
                 <div className="form-group">
-                    <button type="submit" className="btn btn-block">Registrar</button>
+                    <button type="submit" className="btn btn-block">Register</button>
                 </div>
+                <p className="form-group"><a href="/login">Do you have an account? Sign in</a></p>
             </form>
         </section>
     </>
