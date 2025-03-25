@@ -1,9 +1,11 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
     "cra-template-redux": "2.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -11,6 +13,7 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.4.0",
     "react-scripts": "5.0.1",
+    "react-toastify": "^11.0.5",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
