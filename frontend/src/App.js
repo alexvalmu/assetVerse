@@ -19,6 +19,7 @@ function App() {
           <Route path='/register' element={<Register />} />
         </Routes>        
       </div>
+      <Footer />
     </Router>
     <ToastContainer />
     </>

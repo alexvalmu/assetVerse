@@ -202,14 +202,35 @@ form{
 footer {
   background-color: #730000;
   color: white;
-  padding: 20px 0;
-  text-align: center;
-  margin-top: 40px;
-  >a {
-    color: white;
-    margin: 0 10px;
-    &:hover {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    a{
+      color: white;
       text-decoration: underline;
+      font-size: 12px;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .footer-icons{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    a,p{
+      color: white;
+      &:hover {
+        color: #FEFFF5;
+      }
     }
   }
 }
