@@ -86,7 +86,7 @@ function Register() {
                     name="password2" value={password2} placeholder="************" onChange={onChange} />
                 </div>
                 <div className="form-group">
-                    <button type="submit" className="btn btn-block">Register</button>
+                    <button type="submit" className="btn btn-block">REGISTER</button>
                 </div>
                 <p className="form-group"><a href="/login">Do you have an account? Sign in</a></p>
             </form>
