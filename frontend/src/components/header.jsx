@@ -37,7 +37,7 @@ function Header() {
         {user ? (
           <>
             <li><button className='btn' onClick={onLogout}>Logout</button></li>
-            <div className="search-bar"><input type="text" name="query" placeholder='search-icon' aria-label="Search"/></div>
+            <div className="search-bar"><input type="text" name="query" aria-label="Search"/><FaSearch className="search-icon" /></div>
             <li><Link to='/profile'><FaUser /></Link></li>
           </>
         ) : (
