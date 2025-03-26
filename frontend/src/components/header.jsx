@@ -30,7 +30,7 @@ function Header() {
         {isMenuOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-      <ul>
+      <ul className="menu-list">
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/categories'>Categories</Link></li>
 
