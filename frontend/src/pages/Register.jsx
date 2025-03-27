@@ -60,7 +60,7 @@ function Register() {
     return (
     <>
         <section className="heading">
-            <h1>Register on AssertVerse</h1>
+            <h1>Register on AssetVerse</h1>
         </section>
 
         <section className="form">

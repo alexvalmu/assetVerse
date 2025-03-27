@@ -6,8 +6,12 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    document.title = "AssetVerse";
+  }, []);
   return (
     <>
       <Router>
