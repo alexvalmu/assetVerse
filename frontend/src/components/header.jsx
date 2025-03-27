@@ -26,10 +26,11 @@ function Header() {
         <Link to='/'>AssetVerse</Link>
       </div>
       
-      <button className="menu-toggle" onClick={toggleMenu}>
+    
+    <div>
+    <button className="menu-toggle" onClick={toggleMenu}>
         {isMenuOpen ? <FaTimes /> : <FaBars />}
       </button>
-
       <ul className="menu-list">
         <li><Link to='/'>Home</Link></li>
         <li><Link to='/categories'>Categories</Link></li>
@@ -38,16 +39,21 @@ function Header() {
           <>
             <li><button className='btn' onClick={onLogout}>Logout</button></li>
             <div className="search-bar"><input type="text" name="query" aria-label="Search"/><FaSearch className="search-icon" /></div>
-            <li><Link to='/profile'><FaUser /></Link></li>
+           
           </>
         ) : (
           <>
-            <li><Link to='/login'>Login/Register</Link></li>
+            <li><Link to='/login'>Login</Link></li>
+            <li><Link to='/register'>Register</Link></li>
             <div className="search-bar"><input type="text" name="query" aria-label="Search"/><FaSearch className="search-icon" /></div>
-            <li><Link to='/login'><FaUser /></Link></li>
+           
           </>
-        )}
+          
+        )
+        }
       </ul>
+      <span className='profile-icon'><Link to='/login'><FaUser /></Link></span>
+      </div>
     </header>
   );
 }

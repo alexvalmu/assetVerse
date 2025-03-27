@@ -1,6 +1,11 @@
 /* General Styles */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+:root{
+  --primario: #730000;
+  --fondo:#FEFFF5;
+  
+}
 * {
   margin: 0;
   padding: 0;
@@ -13,7 +18,7 @@ html,body{
   margin: 0;
   display: flex;
   flex-direction: column;
-  background-color: #FEFFF5;
+  background-color:var(--fondo);
 }
 
 .container {
@@ -36,13 +41,23 @@ h1, h2, h3{
   margin-bottom: 10px;
 }
 
+.dashboard{
+  margin-top: 2em;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  >h1{
+    color:var(--primario);
+  }
+}
 header{
-  background-color: #FEFFF5;
+  background-color: var(--fondo);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-
+  padding-right:.7em;
   .menu-toggle {
     display: none;
     background: none;
@@ -66,10 +81,19 @@ header{
           color: #730000;
           text-decoration: underline;
         }
+        &:focus{
+          color: #730000;
+          text-decoration: underline;
+        }
       }
     }
   }
-
+  >div{
+    display: flex;
+    align-items: right;
+    justify-content: right;
+    align-content: center;
+  }
   .search-bar{
     margin-left: 20px; 
     position: relative;
@@ -99,24 +123,15 @@ header{
 
   .logo{
     a{
-      font-size: 24px;
-      font-weight: 700;
+      font-size: 30px;
+      font-weight: 500;
+      font-family: 'Audiowide', sans-serif;
+      font-style: normal;
       color: #730000;
     }
   }
 
-  .profile-icon{
-    width: 32px;
-    height: 32px;
-    background-color: #730000;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-  }
-
+  
   .search-bar{
     input{
       padding: 8px;
@@ -157,6 +172,24 @@ header{
         }
       }
     }
+    
+  }
+  .profile-icon{
+    background-color: var(--primario);
+    
+    border-radius: 50%;
+    margin-left:.5em;
+    height: 2.2em;
+    width:2.2em;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    size:large;
+    font-size: 1.2em;
+    >a{
+      color: var(--fondo);
+    }
   }
 }
 
@@ -185,6 +218,9 @@ form{
       padding: 12px;
       border-radius: 8px;
       border: 1px solid #ccc;
+    }
+    >a{
+      color:#000;
     }
   }
 
@@ -257,41 +293,59 @@ footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
+ 
     .menu-toggle {
       display: block;
+      margin-right:0;
     }
 
     .menu-list {
       display: none;
       flex-direction: column;
-      width: 100%;
-      background-color: #FEFFF5;
+      
+      background-color: #dadada;
       position: absolute;
       top: 80px;
-      left: 0;
+      right: 0;
       padding: 10px;
       z-index: 1;
-      li{
-        margin: 15px 0;
-        text-align: center;
-      }
+      opacity: 0.9;
+      text-align: right;
+      align-items: end;
+      border-radius: .3em;
+      
     }
 
     .menu-open .menu-list{
       display: flex;
+      
     }
 
     ul {
       display: none;
       flex-direction: column;
+     opacity: 1;
       li {
-        margin: 10px 0;
+        margin: 10px 5px;
+        >a{
+          opacity:1;
+          font-weight:600;
+          
+        }
       }
     }
 
     &.menu-open ul {
       display: flex;
     }
+    >div{
+      display: flex;
+      align-items: right;
+    }
+  }
+  .profile-icon {
+    font-size: 1.5em;
+    order: -1;
+    margin-right:.5em;
   }
 }
