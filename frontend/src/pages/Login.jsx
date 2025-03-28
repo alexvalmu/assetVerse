@@ -53,7 +53,7 @@ function Login() {
   return (
     <>
         <section className="heading">
-            <h1> Sign in to AssertVerse</h1>
+            <h1> Sign in to AssetVerse</h1>
         </section>
 
         <section className="form">
