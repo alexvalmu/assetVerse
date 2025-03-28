@@ -72,7 +72,7 @@ function Login() {
                     <button type="submit" className="btn btn-block">SIGN IN</button>
                 </div>
                 <p  className="form-group"><a href="/reset-password">Forgot your password?</a></p>
-                <p className="form-group"><a href="/register">New to AssertVerse? Register</a></p>
+                <p className="form-group"><a href="/register">New to AssetVerse? Register</a></p>
             </form>
         </section>
     </>
