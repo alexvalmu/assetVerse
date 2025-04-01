@@ -29,14 +29,14 @@ const putAsset = asyncHandler (async(req, res) =>{
     if(!asset){
         throw new Error('Asset no encontrado');
     }
-    const user = await User.findById(req.user.id);
     
-    if(!user){
+    
+    if(!req.user){
         res.status(404);
         throw new Error('Usuario no encontrado');
     }
 
-    if(asset.user.toString() !== user.id){
+    if(asset.user.toString() !== req.user.id){
         res.status(401);
         throw new Error('No autorizado');
     }
@@ -46,14 +46,13 @@ const putAsset = asyncHandler (async(req, res) =>{
 });
 
 const deleteAsset = asyncHandler (async(req, res) =>{
-    const user = await User.findById(req.user.id);
     
-    if(!user){
+    if(!req.user){
         res.status(404);
         throw new Error('Usuario no encontrado');
     }
 
-    if(asset.user.toString() !== user.id){
+    if(asset.user.toString() !== req.user.id){
         res.status(401);
         throw new Error('No autorizado');
     }

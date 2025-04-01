@@ -1,9 +1,23 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux"
+import AssetForm from "../components/AssetForm"
 function Dashboard() {
+  const navigate = useNavigate()
+  const { user } = useSelector((state) => state.auth)
+  useEffect(() => {
+    if (!user) {
+      navigate("/login")
+    }
+  }, [user, navigate])
   return (
-    <div className="dashboard">
-      <h1>Welcome to AssetVerse</h1>
-      <h3>Uploaded Assets will be displayed here</h3>
-    </div>
+    <>
+      <section className="heading">
+        <h1>Welcome {user&&user.name}</h1>
+        <p>Assets dashboard</p>
+      </section>
+      <AssetForm></AssetForm>
+    </>
   )
 }
 

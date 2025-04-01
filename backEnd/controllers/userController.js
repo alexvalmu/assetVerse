@@ -40,7 +40,9 @@ const registerUser = asyncHandler( async (req,res)=>{
 	});
 	
 });
-
+const getMe= asyncHandler( async (req,res)=>{
+	res.status(200).json(req.user);
+});
 const loginUser =asyncHandler( async (req,res)=>{
 	const {email, password} = req.body;
 	
@@ -90,4 +92,5 @@ module.exports = {
 	registerUser
 	,loginUser
 	,getUser
+	,getMe
 }
