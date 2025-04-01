@@ -46,7 +46,10 @@ const putAsset = asyncHandler (async(req, res) =>{
 });
 
 const deleteAsset = asyncHandler (async(req, res) =>{
-    
+    const asset = await Asset.findById(req.params.id);
+    if(!asset){
+        throw new Error('Asset no encontrado');
+    }
     if(!req.user){
         res.status(404);
         throw new Error('Usuario no encontrado');
@@ -57,8 +60,8 @@ const deleteAsset = asyncHandler (async(req, res) =>{
         throw new Error('No autorizado');
     }
     
-    const asset = await Asset.deleteOne({ _id: req.params.id })
-    res.status(200).json(asset);
+     await asset.deleteOne()
+    res.status(200).json({id:req.params.id});
 });
 
 

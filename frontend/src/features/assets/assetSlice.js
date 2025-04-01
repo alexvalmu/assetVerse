@@ -41,6 +41,20 @@ export const createAsset= createAsyncThunk('assets/create', async(assetData,thun
              return thunkAPI.rejectWithValue(message);
     }
  })
+
+ export const deleteAsset= createAsyncThunk('assets/delete', async(id,thunkAPI)=>{
+    try{
+        const token = thunkAPI.getState().auth.user.token;
+        return await assetService.deleteAsset(id,token);
+    }catch(error){
+        const message=(error.response
+                &&error.response.data
+                &&error.response.data.message) 
+                || error.message 
+                || error.toString();
+            return thunkAPI.rejectWithValue(message);
+    }
+})
 export const assetSlice = createSlice({
     name:'asset',
     initialState,
@@ -71,6 +85,19 @@ export const assetSlice = createSlice({
                 state.assets = action.payload;
             })
             .addCase(getAssets.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(deleteAsset.pending,(state)=>{
+                state.isLoading = true;
+            })
+            .addCase(deleteAsset.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.assets = state.assets.filter((asset)=>asset._id !== action.payload.id);
+            })
+            .addCase(deleteAsset.rejected,(state,action)=>{
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
