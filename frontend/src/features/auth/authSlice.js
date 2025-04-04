@@ -39,21 +39,23 @@ export const logout = createAsyncThunk('auth/logout',async()=>{
     await authService.logout();
 });
 
-export const getUserProfile= createAsyncThunk('auth/me', async(_,thunkAPI)=>{
-    try{
-        const token = thunkAPI.getState().auth.user.token;
-        console.log("token slice",token);
-        return await authService.getUserProfile(token);
-    }catch(error){
-        const message=(error.response
-                &&error.response.data
-                &&error.response.data.message) 
-                || error.message 
-                || error.toString();
-            return thunkAPI.rejectWithValue(message);
-   }
-})
-
+export const getUserProfile = createAsyncThunk('auth/me', async (_, thunkAPI) => {
+    try {
+      const user = thunkAPI.getState().auth.user;
+      const token = user?.token;
+  
+      if (!token) {
+        throw new Error("No token available");
+      }
+  
+      return await authService.getUserProfile(token);
+    } catch (error) {
+      const message =
+        (error.response?.data?.message) || error.message || error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  });
+  
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

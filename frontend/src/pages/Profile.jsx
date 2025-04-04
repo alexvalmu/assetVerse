@@ -16,22 +16,24 @@ function Profile(){
     const { user } = useSelector((state) => state.auth)
     const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
 
+    const [profileFetched, setProfileFetched] = useState(false);
+
     useEffect(() => {
-      if (isError) {
-        console.log(message);
-      }
-    
       if (!user) {
-        navigate("/login");
+        navigate('/login');
         return;
       }
     
-      dispatch(getUserProfile());
-          return () => {
-            dispatch(reset());
-          };
-
-    }, [user, isError, message, dispatch, navigate]); 
+      if (!profileFetched) {
+        dispatch(getUserProfile());
+        setProfileFetched(true);
+      }
+    
+      return () => {
+        dispatch(reset());
+      };
+    }, [user, dispatch, navigate, profileFetched]);
+    
     if (isLoading) {
         return <Spinner />;
     }
@@ -39,8 +41,7 @@ function Profile(){
 
     return (
         <>
-            <Header />
-            <section className="profile-container">
+            <section className="content">
                 <h1>Profile</h1>
                 {user ? (
                     <div className="profile-info">
@@ -52,7 +53,6 @@ function Profile(){
                     <p>No user data found.</p>
                 )}
             </section>
-            <Footer />
         </>
     );
 }
