@@ -41,6 +41,7 @@ const registerUser = asyncHandler( async (req,res)=>{
 	
 });
 const getMe= asyncHandler( async (req,res)=>{
+	console.log("entrando al getme");
 	res.status(200).json(req.user);
 });
 const loginUser =asyncHandler( async (req,res)=>{
