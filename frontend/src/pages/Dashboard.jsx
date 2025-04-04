@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 import { useSelector ,useDispatch} from "react-redux"
-import AssetForm from "../components/AssetForm"
 import AssetItem from "../components/AssetItem"
 import Spinner from '../components/Spinner'
 import { getAssets, reset } from "../features/assets/assetSlice"
@@ -9,24 +8,19 @@ import { getAssets, reset } from "../features/assets/assetSlice"
 function Dashboard() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { user } = useSelector((state) => state.auth)
   const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
   useEffect(() => {
     if (isError) {
       console.log(message);
     }
   
-    if (!user) {
-      navigate("/login");
-      return; // Detener la ejecución aquí
-    }
   
     dispatch(getAssets());
   
     return () => {
       dispatch(reset());
     };
-  }, [user, isError, message, dispatch, navigate]); 
+  }, [ isError, message, dispatch, navigate]); 
 
   if (isLoading) {
     return <Spinner />
@@ -35,10 +29,8 @@ function Dashboard() {
   return (
     <>
       <section className="heading">
-        <h1>Welcome {user&&user.name}</h1>
-        <p>Assets dashboard</p>
+        <h2>Recently Added</h2>
       </section>
-      <AssetForm></AssetForm>
       <section className="content">
         {assets.length > 0 ? (
           <div className="assets">

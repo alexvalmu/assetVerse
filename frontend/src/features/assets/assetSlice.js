@@ -27,11 +27,8 @@ export const createAsset= createAsyncThunk('assets/create', async(assetData,thun
 //Get user assets
  export const getAssets= createAsyncThunk('assets/getAll', async(_,thunkAPI)=>{
      try{
-         const token = thunkAPI.getState().auth.user.token;
-         if(!token){
-             return thunkAPI.rejectWithValue('Not authorized');
-         }
-         return await assetService.getAssets(token);
+        
+         return await assetService.getAssets();
      }catch(error){
          const message=(error.response
                  &&error.response.data

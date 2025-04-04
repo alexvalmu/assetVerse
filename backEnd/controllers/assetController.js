@@ -6,9 +6,9 @@ const Asset = require("../model/AssetModel");
 const User = require("../model/userModel");
 
 const getAsset = asyncHandler( async(req, res) =>{
-    const asset = await Asset.find({ user: req.user.id });
+    const asset = await Asset.find();
     res.status(200).json(asset);
-});
+});//coge todos los assets sin token de usuario
 
 const postAsset = asyncHandler (async (req, res, next) => {
     if (!req.body.text) {

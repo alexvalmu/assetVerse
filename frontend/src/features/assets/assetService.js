@@ -14,14 +14,10 @@ const createAsset =async(assetData, token) => {
 
 }
 
-const getAssets =async(token) => {
-     const config={
-         headers:{
-             Authorization: `Bearer ${token}`
-         }
-     }
+const getAssets =async() => {
+     
 
-     const response= await axios.get(API_URL, config);
+     const response= await axios.get(API_URL);
      return response.data;
 
 }
