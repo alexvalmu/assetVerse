@@ -42,6 +42,17 @@ function AssetForm() {
                         onChange={(e) => setText(e.target.value)}
                     />
                 </div>
+                
+                <div className="form-group">
+                    <label htmlFor="desc">Asset Desc:</label>
+                    <input 
+                        type="desc" 
+                        name="desc" 
+                        id="desc" 
+                        value={desc} 
+                        onChange={(e) => setText(e.target.value)}
+                    />
+                </div>
 
                 <div className="form-group">
                     <label htmlFor="files">Archivos</label>

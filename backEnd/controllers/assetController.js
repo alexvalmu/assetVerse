@@ -26,7 +26,8 @@ const postAsset = asyncHandler(async (req, res, next) => {
     const asset = await Asset.create({
         text: req.body.text,
         user: req.user.id,
-        files: files
+        files: files,
+        desc: req.body.desc
     });
 
     res.status(200).json(asset);

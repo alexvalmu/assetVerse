@@ -10,6 +10,7 @@ function AssetItem({ asset }) {
             {new Date(asset.createdAt).toLocaleString('es-ES')}
         </div>
         <h2>{asset.text}</h2>
+        <h2>{asset.desc}</h2>
         
         {/* Mostrar archivos adjuntos */}
         {asset.files && asset.files.length > 0 && (

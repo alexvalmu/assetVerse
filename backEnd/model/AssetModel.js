@@ -31,7 +31,11 @@ const AssetSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         }
-    }]
+    }],
+    desc:{
+        type: String,
+        required: [true, 'La descripcion es requerida']
+    }
 }, {
     timestamps: true
 });
