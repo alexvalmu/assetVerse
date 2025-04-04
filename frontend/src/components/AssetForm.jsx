@@ -4,6 +4,7 @@ import { createAsset } from '../features/assets/assetSlice'
 
 function AssetForm() {
     const [text, setText] = useState('');
+    const [desc, setDesc] = useState('');
     const [files, setFiles] = useState([]);
     const dispatch = useDispatch();
 
@@ -24,6 +25,7 @@ function AssetForm() {
 
         dispatch(createAsset(formData));
         setText('');
+        setDesc('');
         setFiles([]);
         // Limpiar el input de archivos
         document.getElementById('fileInput').value = '';
