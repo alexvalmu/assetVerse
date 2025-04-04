@@ -14,6 +14,9 @@ const port = process.env.PORT || 5000;
 connectDB();
 const app = express();
 
+// para poder subir archivos
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
