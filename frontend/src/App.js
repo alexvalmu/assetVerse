@@ -8,6 +8,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import Upload from './pages/Upload';
+import SingleAsset from './pages/SingleAsset';
 import { useEffect } from "react";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/upload" element={<Upload />} />
+              <Route path="/assets/:id" element={<SingleAsset />} />
             </Routes>
           </div>
           <Footer />
