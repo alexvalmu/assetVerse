@@ -64,7 +64,7 @@ function Dashboard() {
       <section className="content">
         {sortedAssets.length > 0 ? (
           <div className="assets">
-            {sortedAssets.map((asset) => (
+            {Array.isArray(sortedAssets) && sortedAssets.map((asset) => (
               <AssetItem key={asset._id} asset={asset} />
             ))}
           </div>

@@ -6,7 +6,14 @@ const getAsset = asyncHandler( async(req, res) =>{
     const asset = await Asset.find();
     res.status(200).json(asset);
 });//coge todos los assets sin token de usuario
-
+const getAssetById = asyncHandler(async (req, res) => {
+    const asset = await Asset.findById(req.params.id);
+    if (!asset) {
+        res.status(404);
+        throw new Error('Asset no encontrado');
+    }
+    res.status(200).json(asset);
+});
 const postAsset = asyncHandler(async (req, res, next) => {
     if (!req.body.text) {
         return res.status(400).json({ message: "El campo de texto del asset es requerido" });
@@ -114,5 +121,6 @@ module.exports = {
     postAsset,
     putAsset,
     deleteAsset,
-    deleteFileFromAsset
+    deleteFileFromAsset,
+    getAssetById
 };

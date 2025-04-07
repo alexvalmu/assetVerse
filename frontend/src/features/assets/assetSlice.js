@@ -6,7 +6,8 @@ const initialState={
     isError:false,
     isLoading:false,
     isSuccess:false,
-    message:''
+    message:'',
+    asset:{}
 }
 
 //Create new asset
@@ -38,6 +39,21 @@ export const createAsset= createAsyncThunk('assets/create', async(assetData,thun
              return thunkAPI.rejectWithValue(message);
     }
  })
+
+//Get asset by id
+export const getAsset= createAsyncThunk('assets/get', async(assetId,thunkAPI)=>{
+    try{
+        return await assetService.getAsset(assetId);
+    }catch(error){
+        const message=(error.response
+                &&error.response.data
+                &&error.response.data.message) 
+                || error.message 
+                || error.toString();
+            return thunkAPI.rejectWithValue(message);
+    }
+})
+//Delete asset
 
  export const deleteAsset= createAsyncThunk('assets/delete', async(id,thunkAPI)=>{
     try{
@@ -95,6 +111,19 @@ export const assetSlice = createSlice({
                 state.assets = state.assets.filter((asset)=>asset._id !== action.payload.id);
             })
             .addCase(deleteAsset.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getAsset.pending,(state)=>{
+                state.isLoading = true;
+            })
+            .addCase(getAsset.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.asset = action.payload;
+            })
+            .addCase(getAsset.rejected,(state,action)=>{
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
