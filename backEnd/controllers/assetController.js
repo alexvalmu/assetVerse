@@ -61,7 +61,7 @@ const putAsset = asyncHandler(async (req, res) => {
     let newFiles = [];
     if (req.files && req.files.length > 0) {
         newFiles = req.files.map(file => ({
-            filename: file.originalname,
+            filename: file.filename,
             path: path.relative(process.cwd(), file.path),
             size: file.size,
             mimetype: file.mimetype
