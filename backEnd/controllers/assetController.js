@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Asset = require("../model/AssetModel");
 const User = require("../model/userModel");
+const path = require("path");
 
 const getAsset = asyncHandler( async(req, res) =>{
     const asset = await Asset.find();
@@ -23,8 +24,8 @@ const postAsset = asyncHandler(async (req, res, next) => {
     let files = [];
     if (req.files && req.files.length > 0) {
         files = req.files.map(file => ({
-            filename: file.originalname,
-            path: file.path,
+            filename: file.filename,
+            path: path.relative(process.cwd(), file.path),
             size: file.size,
             mimetype: file.mimetype
         }));
@@ -61,7 +62,7 @@ const putAsset = asyncHandler(async (req, res) => {
     if (req.files && req.files.length > 0) {
         newFiles = req.files.map(file => ({
             filename: file.originalname,
-            path: file.path,
+            path: path.relative(process.cwd(), file.path),
             size: file.size,
             mimetype: file.mimetype
         }));

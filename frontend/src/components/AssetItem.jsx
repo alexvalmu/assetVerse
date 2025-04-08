@@ -1,13 +1,12 @@
-import { useDispatch } from "react-redux"
-import { deleteAsset } from "../features/assets/assetSlice"
+import { useDispatch } from "react-redux";
+import { deleteAsset } from "../features/assets/assetSlice";
 import { Link } from "react-router-dom";
 
 function AssetItem({ asset }) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <div className="asset-item">
-      {/* Botón eliminar */}
       <button 
         onClick={() => dispatch(deleteAsset(asset._id))} 
         className="close"
@@ -15,7 +14,6 @@ function AssetItem({ asset }) {
         X
       </button>
 
-      {/* Enlace al detalle del asset */}
       <Link to={`/assets/${asset._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div>
           {new Date(asset.createdAt).toLocaleString('es-ES')}
@@ -30,8 +28,19 @@ function AssetItem({ asset }) {
             <ul>
               {asset.files.map((file, index) => (
                 <li key={index}>
-                  {file.filename}
-                  <span> ({Math.round(file.size / 1024)} KB)</span>
+                  {/* Si es una imagen, la mostramos */}
+                  {file.mimetype.startsWith('image/') ? (
+                    <img 
+                      src={`http://localhost:5000/uploads/${file.filename}`} 
+                      alt={file.filename}
+                      style={{ maxWidth: '200px', maxHeight: '200px' }}
+                    />
+                  ) : (
+                    /* Si no es una imagen, mostramos solo el nombre */
+                    <span>
+                      {file.filename} ({Math.round(file.size / 1024)} KB)
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -39,7 +48,7 @@ function AssetItem({ asset }) {
         )}
       </Link>
     </div>
-  )
+  );
 }
 
-export default AssetItem
+export default AssetItem;

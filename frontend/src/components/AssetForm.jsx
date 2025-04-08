@@ -17,6 +17,7 @@ function AssetForm() {
         
         const formData = new FormData();
         formData.append('text', text);
+        formData.append('desc', desc);
         
         // Agregar cada archivo al FormData
         files.forEach(file => {
@@ -52,7 +53,7 @@ function AssetForm() {
                         name="desc" 
                         id="desc" 
                         value={desc} 
-                        onChange={(e) => setText(e.target.value)}
+                        onChange={(e) =>setDesc(e.target.value)}
                     />
                 </div>
 
