@@ -41,11 +41,23 @@ const getUserProfile = async (token) => {
     return response.data;
 };
 
+//update user profile
+// const updateUserProfile = async (userData, token) => {
+//     const config = {
+//         headers: {
+//             Authorization: `Bearer ${token}`
+//         }
+//     };
+//     const response = await axios.put(API_URL + 'me', userData, config);
+//     return response.data;
+// };
+
 const authService = {
     register,
     logout,
     login,
-    getUserProfile
+    getUserProfile,
+    //updateUserProfile
 }
 
 export default authService;

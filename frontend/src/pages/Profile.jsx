@@ -41,17 +41,18 @@ function Profile(){
 
     return (
         <>
-            <section className="content">
-                <h1>Profile</h1>
-                {user ? (
-                    <div className="profile-info">
-                        <p><strong>Name:</strong> {user.name}</p>
-                        <p><strong>Email:</strong> {user.email}</p>
-                        <p><strong>Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</p>
-                    </div>
-                ) : (
-                    <p>No user data found.</p>
-                )}
+            <section className="profile-container">
+              {user && (
+                <div className="user-card">
+                  <button className="edit-button" onClick={() => navigate('/edit-profile')}>Edit ✎</button>
+                  <div className="user-card-content">
+                    <div className="user-icon">👤</div>
+                    <h2 className="user-name">{user.name}</h2>
+                    <p className="user-email"><strong>Email:</strong> {user.email}</p>
+                    <p className="user-member">Member since {new Date(user.createdAt).toLocaleDateString()}</p>
+                  </div>
+                </div>
+              )}
             </section>
         </>
     );
