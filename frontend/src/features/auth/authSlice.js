@@ -58,11 +58,10 @@ export const getUserProfile = createAsyncThunk('auth/me', async (_, thunkAPI) =>
 
   export const updateUserProfile = createAsyncThunk('auth/update', async (userData, thunkAPI) => {
     try {
-        const user = thunkAPI.getState().auth.user;
-        const token = user?.token;
-    
+        const token = thunkAPI.getState().auth.user.token;
+        
         if (!token) {
-            throw new Error("No token available");
+            throw new Error("No token available on updating");
         }
     
         return await authService.updateUserProfile(userData, token);
@@ -124,13 +123,15 @@ export const authSlice = createSlice({
             .addCase(getUserProfile.fulfilled,(state,action)=>{
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.user = action.payload;
+                state.user = {
+                    ...action.payload,                   // datos nuevos del perfil
+                    token: state.user?.token || null     // conservar token anterior
+                  };
             })
             .addCase(getUserProfile.rejected,(state,action)=>{
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-                state.user = null
             })
             .addCase(updateUserProfile.pending,(state)=>{
                 state.isLoading = true;
@@ -139,13 +140,12 @@ export const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.user = action.payload;
-                localStorage.setItem('user', JSON.stringify(action.payload));
             })            
             .addCase(updateUserProfile.rejected,(state,action)=>{
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-                state.user = null
+               
             })
     }
 });
