@@ -43,34 +43,34 @@ const registerUser = asyncHandler( async (req,res)=>{
 const getMe= asyncHandler( async (req,res)=>{
 	res.status(200).json(req.user);
 });
-// const updateUserProfile= asyncHandler( async (req,res)=>{
-// 	const user = await User.findById(req.user._id);
-// 	if(!user){
-// 		res.status(404);
-// 		throw new Error('User not found');
-// 	};
+ const updateUserProfile= asyncHandler( async (req,res)=>{
+ 	const user = await User.findById(req.user._id);
+ 	if(!user){
+ 		res.status(404);
+ 		throw new Error('User not found');
+ 	};
 
-// 	const {name, email, password} = req.body;
+ 	const {name, email, password} = req.body;
 
-// 	if(name){
-// 		user.name = name;
-// 	};
-// 	if(email){
-// 		user.email = email;
-// 	};
-// 	if(password){
-// 		const salt = await bcrypt.genSalt(10);
-// 		user.password = await bcrypt.hash(password, salt);
-// 	};
+ 	if(name){
+ 		user.name = name;
+ 	};
+ 	if(email){
+ 		user.email = email;
+ 	};
+ 	if(password){
+ 		const salt = await bcrypt.genSalt(10);
+ 		user.password = await bcrypt.hash(password, salt);
+ 	};
 
-// 	const updatedUser = await user.save();
-
-// 	res.status(200).json({
-// 		_id: updatedUser._id,
-// 		name: updatedUser.name,
-// 		email: updatedUser.email
-// 	});
-// });
+ 	const updatedUser = await user.save();
+ 	res.status(200).json({
+ 		_id: updatedUser._id,
+ 		name: updatedUser.name,
+ 		email: updatedUser.email,
+		token: generateToken(updatedUser._id)
+ 	});
+ });
 
 
 const loginUser =asyncHandler( async (req,res)=>{
@@ -122,5 +122,6 @@ module.exports = {
 	registerUser
 	,loginUser
 	,getUser
-	,getMe
+	,getMe,
+	updateUserProfile
 }

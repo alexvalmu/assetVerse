@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { updateUserProfile, getUserProfile } from '../features/auth/authSlice';
 import Spinner from '../components/Spinner';
 
@@ -33,7 +34,15 @@ function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //dispatch(updateUserProfile(formData));
+    dispatch(updateUserProfile(formData))
+    .unwrap()
+    .then(() => {
+      toast.success('Perfil actualizado');
+      navigate('/profile');
+    })
+    .catch((error) => {
+      toast.error('Error al actualizar: ' + error);
+    });
     navigate('/profile');
   };
 
@@ -50,10 +59,6 @@ function EditProfile() {
         <div className="form-group">
           <label>Email</label>
           <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Phone</label>
-          <input type="text" name="phone" value={formData.phone} onChange={handleChange} />
         </div>
         <button type="submit">Save Changes</button>
       </form>
