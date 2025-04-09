@@ -35,6 +35,11 @@ const AssetSchema = new mongoose.Schema({
     desc:{
         type: String,
         required: [true, 'La descripcion es requerida']
+    },
+    category:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'Category',
+        required: [true, 'la categoria es requerida']
     }
 }, {
     timestamps: true

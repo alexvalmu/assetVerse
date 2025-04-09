@@ -35,7 +35,8 @@ const postAsset = asyncHandler(async (req, res, next) => {
         text: req.body.text,
         user: req.user.id,
         files: files,
-        desc: req.body.desc
+        desc: req.body.desc,
+        category: req.body.category
     });
 
     res.status(200).json(asset);

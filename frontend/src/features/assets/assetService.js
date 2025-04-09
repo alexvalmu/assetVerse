@@ -5,7 +5,8 @@ const API_URL = '/api/assets/';
 const createAsset =async(assetData, token) => {
     const config={
         headers:{
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
         }
     }
 
@@ -35,11 +36,15 @@ const getAsset = async(assetId) => {
     const response= await axios.get(API_URL+assetId);
     return response.data;
 }
-
+const getCategories = async() => {
+    const response= await axios.get('/api/categories');
+    return response.data;
+}
 const assetService={
     createAsset,
     getAssets,
     deleteAsset,
+    getCategories,
     getAsset
 }
 
