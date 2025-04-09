@@ -3,7 +3,6 @@ import assetService from './assetService';
 
 const initialState = {
     assets: [],
-    categories: [],
     isError: false,
     isLoading: false,
     isSuccess: false,
@@ -61,20 +60,6 @@ export const deleteAsset = createAsyncThunk('assets/delete', async (id, thunkAPI
     }
 });
 
-// Fetch categories
-export const fetchCategories = createAsyncThunk(
-    'assets/fetchCategories',
-    async (_, thunkAPI) => {
-        try {
-            return await assetService.getCategories();
-        } catch (error) {
-            const message = (error.response && error.response.data && error.response.data.message) || 
-                           error.message || 
-                           error.toString();
-            return thunkAPI.rejectWithValue(message);
-        }
-    }
-);
 
 export const assetSlice = createSlice({
     name: 'asset',
@@ -136,20 +121,8 @@ export const assetSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            })
-            .addCase(fetchCategories.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(fetchCategories.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-                state.categories = action.payload;
-            })
-            .addCase(fetchCategories.rejected, (state, action) => {
-                state.isLoading = false;
-                state.isError = true;
-                state.message = action.payload;
             });
+            
     }
 });
 

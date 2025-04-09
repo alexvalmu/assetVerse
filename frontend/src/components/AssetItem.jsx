@@ -28,7 +28,6 @@ function AssetItem({ asset }) {
             <ul>
               {asset.files.map((file, index) => (
                 <li key={index}>
-                  {/* Si es una imagen, la mostramos */}
                   {file.mimetype.startsWith('image/') ? (
                     <img 
                       src={`http://localhost:5000/uploads/${file.filename}`} 
@@ -36,7 +35,6 @@ function AssetItem({ asset }) {
                       style={{ maxWidth: '200px', maxHeight: '200px' }}
                     />
                   ) : (
-                    /* Si no es una imagen, mostramos solo el nombre */
                     <span>
                       {file.filename} ({Math.round(file.size / 1024)} KB)
                     </span>

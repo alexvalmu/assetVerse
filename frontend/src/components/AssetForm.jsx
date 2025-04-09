@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { createAsset, setCategory } from '../features/assets/assetSlice'
-import { fetchCategories } from '../features/assets/assetSlice';
+import { createAsset, reset } from '../features/assets/assetSlice'
+import { fetchCategories } from '../features/categories/categorySlice';
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import { reset } from 'colors';
 
 
 function AssetForm() {
@@ -16,13 +15,11 @@ function AssetForm() {
 
     const handleFileChange = (e) => {
         setFiles([...e.target.files]);
-        setCategory([...e.target.selectedCategory]);
     };
 
     const { categories } = useSelector((state) => state.categories);
     useEffect(() => {
         dispatch(fetchCategories());
-
     }, [dispatch]);
 
     const onSubmit = e => {

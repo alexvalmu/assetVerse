@@ -36,15 +36,11 @@ const getAsset = async(assetId) => {
     const response= await axios.get(API_URL+assetId);
     return response.data;
 }
-const getCategories = async() => {
-    const response= await axios.get('/api/categories');
-    return response.data;
-}
+
 const assetService={
     createAsset,
     getAssets,
     deleteAsset,
-    getCategories,
     getAsset
 }
 
