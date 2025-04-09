@@ -26,6 +26,7 @@ app.listen(port, () => console.log(`server is running on port: ${port}`));
 app.use(errorHandler);
 app.use('/api/assets', require('./routes/assetsRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/categories', require('./routes/categoryRoutes'));
 
 //preparando para deployment
 if(process.env.NODE_ENV === 'production'){
@@ -36,4 +37,4 @@ if(process.env.NODE_ENV === 'production'){
 }
 
 
-//usar npm run server para correr el servidor
+//usar npm run server para correr el servidorapp.use('/api/users', require('./routes/userRoutes'));
