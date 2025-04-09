@@ -38,6 +38,7 @@ function Header() {
         {user ? (
           <>
             <li><button className='btn' onClick={onLogout}>Logout</button></li>
+            <li><Link to='/upload'>Upload</Link></li>
             <div className="search-bar"><input type="text" name="query" aria-label="Search"/><FaSearch className="search-icon" /></div>
             <span className='profile-icon'><Link to='/profile'><FaUser /></Link></span>
 

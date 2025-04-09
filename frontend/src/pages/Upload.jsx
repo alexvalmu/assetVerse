@@ -35,9 +35,7 @@ if (isLoading) {
 return (
     <>
       <section className="heading">
-        <h1>Welcome {user&&user.name}</h1>
-        <p>Assets dashboard</p>
-        <h2>Recently Added</h2>
+     
       </section>
       <AssetForm></AssetForm>
       <section className="content">

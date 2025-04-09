@@ -1,5 +1,4 @@
 import {useState, useEffect} from 'react';
-import { FaSignInAlt} from 'react-icons/fa';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import AssetForm from "../components/AssetForm"
@@ -7,8 +6,7 @@ import AssetItem from "../components/AssetItem"
 import {toast} from 'react-toastify';
 import {getUserProfile, login,reset} from '../features/auth/authSlice';
 import Spinner from '../components/Spinner';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+
 
 function Profile(){
     const navigate=useNavigate();

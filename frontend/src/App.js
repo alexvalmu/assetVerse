@@ -10,6 +10,7 @@ import Profile from './pages/Profile';
 import Upload from './pages/Upload';
 import SingleAsset from './pages/SingleAsset';
 import EditProfile from './pages/EditProfile';
+import Categories from './pages/Categories';
 
 import { useEffect } from "react";
 
@@ -31,6 +32,7 @@ function App() {
               <Route path="/edit-profile" element={<EditProfile />} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/assets/:id" element={<SingleAsset />} />
+              <Route path="/categories" element={<Categories />} />
             </Routes>
           </div>
           <Footer />
