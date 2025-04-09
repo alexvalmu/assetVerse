@@ -12,7 +12,8 @@ router.route('/')
 router.route('/:id')
   .put(protect, upload.array('files'), assetController.putAsset)
   .delete(protect, assetController.deleteAsset)
-  .get(assetController.getAssetById);
+  .get(assetController.getAssetById)
+  .get(protect, assetController.getUserAssets);
 // Para reducir el tamaño de codigo al usar definir las rutas
 
 // Ruta para eliminar archivos individuales

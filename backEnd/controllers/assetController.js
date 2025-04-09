@@ -118,11 +118,25 @@ const deleteFileFromAsset = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'Archivo eliminado correctamente', asset });
 });
 
+const getUserAssets = asyncHandler(async (req, res) => {
+    const { id } = req.params; // Obtiene el ID de la URL
+    try {
+        const asset = await Asset.findById(id); // O el método que uses para obtener el asset
+        if (!asset) {
+            return res.status(404).json({ message: "Asset no encontrado" });
+        }
+        res.json(asset);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
 module.exports = {
     getAsset,
     postAsset,
     putAsset,
     deleteAsset,
     deleteFileFromAsset,
-    getAssetById
+    getAssetById,
+    getUserAssets
 };

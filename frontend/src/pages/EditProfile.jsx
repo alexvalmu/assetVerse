@@ -49,7 +49,7 @@ function EditProfile() {
   if (isLoading) return <Spinner />;
 
   return (
-    <section className="edit-profile-section">
+    <section className="edit-profile">
       <h1>Edit Profile</h1>
       <form className="edit-profile-form" onSubmit={handleSubmit}>
         <div className="form-group">

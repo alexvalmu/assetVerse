@@ -4,8 +4,10 @@ import {useNavigate} from 'react-router-dom';
 import AssetForm from "../components/AssetForm"
 import AssetItem from "../components/AssetItem"
 import {toast} from 'react-toastify';
-import {getUserProfile, login,reset} from '../features/auth/authSlice';
+import { getUserProfile, reset as resetAuth } from '../features/auth/authSlice';
+import { getAssets, reset as resetAssets } from '../features/assets/assetSlice';
 import Spinner from '../components/Spinner';
+import { getUserAssets } from '../features/assets/assetSlice';
 
 
 function Profile(){
@@ -24,26 +26,29 @@ function Profile(){
     
       if (!profileFetched) {
         dispatch(getUserProfile());
+        dispatch(getUserAssets(user._id));
         setProfileFetched(true);
       }
-    
-      return () => {
-        dispatch(reset());
-      };
     }, [user, dispatch, navigate, profileFetched]);
+
+    useEffect(() => {
+      return () => {
+        dispatch(resetAuth());
+      };
+    }, [dispatch]);
     
     if (isLoading) {
         return <Spinner />;
     }
 
-
     return (
         <>
-            <section className="profile-container">
+        <div className="container-perfil">
+            <section className="profile">
               {user && (
                 <div className="user-card">
-                  <button className="edit-button" onClick={() => navigate('/edit-profile')}>Edit ✎</button>
-                  <div className="user-card-content">
+                  <button onClick={() => navigate('/edit-profile')}>Edit ✎</button>
+                  <div>
                     <div className="user-icon">👤</div>
                     <h2 className="user-name">{user.name}</h2>
                     <p className="user-email"><strong>Email:</strong> {user.email}</p>
@@ -52,6 +57,20 @@ function Profile(){
                 </div>
               )}
             </section>
+
+            <section className="assets-section">
+              <h2 className="assets-title">Mis Assets</h2>
+              {assets.length > 0 ? (
+                <div className="assets-grid">
+                  {assets.map((asset) => (
+                    <AssetItem key={asset._id} asset={asset} />
+                  ))}
+                </div>
+              ) : (
+                <p className="no-assets">Aún no has creado ningún asset.</p>
+              )}
+            </section>
+            </div>
         </>
     );
 }

@@ -12,13 +12,11 @@ const createAsset =async(assetData, token) => {
 
     const response= await axios.post(API_URL, assetData, config);
     return response.data;
-
 }
 
 const getAssets =async() => {
      const response= await axios.get(API_URL);
      return response.data;
-
 }
 
 const deleteAsset =async(assetId, token) => {
@@ -37,11 +35,23 @@ const getAsset = async(assetId) => {
     return response.data;
 }
 
+const getUserAssets = async (id, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const response = await axios.get(`${API_URL}${id}`, config); // Usamos el id para filtrar los assets
+    return response.data;
+};
+
 const assetService={
     createAsset,
     getAssets,
     deleteAsset,
-    getAsset
+    getAsset,
+    getUserAssets
 }
 
 
