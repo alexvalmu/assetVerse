@@ -60,7 +60,7 @@ export const deleteAsset = createAsyncThunk('assets/delete', async (id, thunkAPI
     }
 });
 
-export const getUserAssets = createAsyncThunk('assets/getUserAssets', async (id, thunkAPI) => {
+export const getUserAssets = createAsyncThunk('assets/getByUser', async (id, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token;
         return await assetService.getUserAssets(id, token);

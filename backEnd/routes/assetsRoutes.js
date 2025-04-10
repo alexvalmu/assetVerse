@@ -13,9 +13,11 @@ router.route('/:id')
   .put(protect, upload.array('files'), assetController.putAsset)
   .delete(protect, assetController.deleteAsset)
   .get(assetController.getAssetById)
-  .get(protect, assetController.getUserAssets);
-// Para reducir el tamaño de codigo al usar definir las rutas
 
+router.route('/user/:id')
+  .get(protect, assetController.getUserAssets);
+
+  
 // Ruta para eliminar archivos individuales
 router.route('/:assetId/files/:fileId')
   .delete(protect, assetController.deleteFileFromAsset);

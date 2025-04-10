@@ -42,7 +42,7 @@ const getUserAssets = async (id, token) => {
         },
     };
 
-    const response = await axios.get(`${API_URL}${id}`, config); // Usamos el id para filtrar los assets
+    const response = await axios.get(API_URL+'user/'+id, config); 
     return response.data;
 };
 

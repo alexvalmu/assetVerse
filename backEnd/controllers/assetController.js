@@ -6,7 +6,7 @@ const path = require("path");
 const getAsset = asyncHandler( async(req, res) =>{
     const asset = await Asset.find();
     res.status(200).json(asset);
-});//coge todos los assets sin token de usuario
+});
 const getAssetById = asyncHandler(async (req, res) => {
     const asset = await Asset.findById(req.params.id);
     if (!asset) {
@@ -119,13 +119,16 @@ const deleteFileFromAsset = asyncHandler(async (req, res) => {
 });
 
 const getUserAssets = asyncHandler(async (req, res) => {
-    const { id } = req.params; // Obtiene el ID de la URL
+    const { id } = req.params; // ID del usuario
+
     try {
-        const asset = await Asset.findById(id); // O el método que uses para obtener el asset
-        if (!asset) {
-            return res.status(404).json({ message: "Asset no encontrado" });
+        const assets = await Asset.find({ user: id }); // Puedes hacer populate si quieres traer info de la categoría también
+        console.log(id);
+        if (!assets || assets.length === 0) {
+            return res.status(404).json({ message: "No se encontraron assets para este usuario" });
         }
-        res.json(asset);
+
+        res.json(assets);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
