@@ -372,7 +372,7 @@ form{
         padding-bottom: 100%;
         position: relative;
         border-radius: 15px; 
-        background-color: var(--primario);
+
         color: var(--primario);
 
         img{
@@ -406,7 +406,7 @@ form{
       }
     }
     >p{
-      color: white;
+      color: var(--primario);
       font-size: 0.95rem;
     }
   }

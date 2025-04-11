@@ -64,7 +64,7 @@ function Profile(){
                 <div className="assets-grid">
                   {assets.map((asset) => (
                    <div key={asset._id} className="asset-item">
-                      <button className="close-btn" onClick={() => deleteAsset(asset._id)}>X</button>
+                      <button className="close-btn" onClick={() => dispatch(deleteAsset(asset._id))}>X</button>
                       <AssetItem asset={asset} />
                     </div>
                   ))}
