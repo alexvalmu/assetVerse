@@ -7,7 +7,7 @@ import {toast} from 'react-toastify';
 import { getUserProfile, reset as resetAuth } from '../features/auth/authSlice';
 import { getAssets, reset as resetAssets } from '../features/assets/assetSlice';
 import Spinner from '../components/Spinner';
-import { getUserAssets } from '../features/assets/assetSlice';
+import { getUserAssets, deleteAsset } from '../features/assets/assetSlice';
 
 
 function Profile(){
@@ -59,11 +59,14 @@ function Profile(){
             </section>
 
             <section className="assets-section">
-              <h2 className="assets-title">Mis Assets</h2>
+              <h2 className="assets-title">Uploads</h2>
               {assets.length > 0 ? (
                 <div className="assets-grid">
                   {assets.map((asset) => (
-                    <AssetItem key={asset._id} asset={asset} />
+                   <div key={asset._id} className="asset-item">
+                      <button className="close-btn" onClick={() => deleteAsset(asset._id)}>X</button>
+                      <AssetItem asset={asset} />
+                    </div>
                   ))}
                 </div>
               ) : (
