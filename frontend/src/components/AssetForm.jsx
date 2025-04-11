@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 
 
 function AssetForm() {
-    const [text, setText] = useState('');
+    const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [files, setFiles] = useState([]);
     const [selectedCategory, setCategory] = useState('');
@@ -26,7 +26,7 @@ function AssetForm() {
         e.preventDefault();
         
         const formData = new FormData();
-        formData.append('text', text);
+        formData.append('title', title);
         formData.append('desc', desc);
         formData.append('category', selectedCategory);
         
@@ -36,7 +36,7 @@ function AssetForm() {
         });
 
         dispatch(createAsset(formData));
-        setText('');
+        setTitle('');
         setDesc('');
         setFiles([]);
         setCategory([]);
@@ -48,13 +48,13 @@ function AssetForm() {
         <section className="form"> 
             <form onSubmit={onSubmit} encType="multipart/form-data">
                 <div className="form-group">
-                    <label htmlFor="text">Asset</label>
+                    <label htmlFor="title">Asset</label>
                     <input 
-                        type="text" 
-                        name="text" 
-                        id="text" 
-                        value={text} 
-                        onChange={(e) => setText(e.target.value)}
+                        type="title" 
+                        name="title" 
+                        id="title" 
+                        value={title} 
+                        onChange={(e) => setTitle(e.target.value)}
                     />
                 </div>
                 

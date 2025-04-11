@@ -16,8 +16,8 @@ const getAssetById = asyncHandler(async (req, res) => {
     res.status(200).json(asset);
 });
 const postAsset = asyncHandler(async (req, res, next) => {
-    if (!req.body.text) {
-        return res.status(400).json({ message: "El campo de texto del asset es requerido" });
+    if (!req.body.title) {
+        return res.status(400).json({ message: "El campo de título del asset es requerido" });
     }
 
     // Procesar archivos si existen
@@ -32,7 +32,7 @@ const postAsset = asyncHandler(async (req, res, next) => {
     }
 
     const asset = await Asset.create({
-        text: req.body.text,
+        title: req.body.title,
         user: req.user.id,
         files: files,
         desc: req.body.desc,

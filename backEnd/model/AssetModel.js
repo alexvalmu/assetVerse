@@ -6,9 +6,9 @@ const AssetSchema = new mongoose.Schema({
         ref: 'User',
         required: [true, 'El campo de usuario del asset es requerido']
     },
-    text: {
+    title: {
         type: String,
-        required: [true, 'El campo de texto del asset es requerido']
+        required: [true, 'El campo de título del asset es requerido']
     },
     files: [{
         filename: {
