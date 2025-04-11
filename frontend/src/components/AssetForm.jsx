@@ -4,6 +4,7 @@ import { createAsset, reset } from '../features/assets/assetSlice'
 import { fetchCategories } from '../features/categories/categorySlice';
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { set } from 'mongoose';
 
 
 function AssetForm() {
@@ -11,6 +12,7 @@ function AssetForm() {
     const [desc, setDesc] = useState('');
     const [files, setFiles] = useState([]);
     const [selectedCategory, setCategory] = useState('');
+    const [mainImage, setMainImage] = useState('');
     const dispatch = useDispatch();
 
     const handleFileChange = (e) => {
@@ -29,7 +31,7 @@ function AssetForm() {
         formData.append('title', title);
         formData.append('desc', desc);
         formData.append('category', selectedCategory);
-        
+        formData.append('mainImage', mainImage);
         // Agregar cada archivo al FormData
         files.forEach(file => {
             formData.append('files', file);
@@ -40,6 +42,7 @@ function AssetForm() {
         setDesc('');
         setFiles([]);
         setCategory([]);
+        setMainImage('');
         // Limpiar el input de archivos
         document.getElementById('fileInput').value = '';
     }
@@ -68,7 +71,18 @@ function AssetForm() {
                         onChange={(e) =>setDesc(e.target.value)}
                     />
                 </div>
-
+                <div className="form-group">
+                    <label htmlFor="mainImage">Imagen Principal</label>
+                    <input
+                        type="file" 
+                        name="mainImage" 
+                        id="mainImage" 
+                        accept="image/*" 
+                        onChange={(e) => setMainImage(e.target.files[0].fileName)}
+                    />
+                    <small>Selecciona una imagen principal</small>
+                </div>
+                
                 <div className="form-group">
                     <label htmlFor="files">Archivos</label>
                     <input 

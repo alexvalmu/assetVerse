@@ -35,7 +35,7 @@ function SingleAsset() {
     <h2>{asset?.text}</h2>
     <p><strong>Descripción:</strong> {asset?.desc}</p>
     <p><strong>Fecha de creación:</strong> {new Date(asset?.createdAt).toLocaleString()}</p>
-
+    
     {asset?.files?.length > 0 && (
       <div className="files">
         <h4>Archivos subidos:</h4>

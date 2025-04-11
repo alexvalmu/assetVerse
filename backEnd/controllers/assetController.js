@@ -30,10 +30,17 @@ const postAsset = asyncHandler(async (req, res, next) => {
             mimetype: file.mimetype
         }));
     }
+    let mainImagePath = null;
+    if (req.body.mainImage) {
+        mainImagePath= req.body.mainImage;
+    } else {
+        return res.status(400).json({ message: "error main image en assetcontroller" });
+    }
 
     const asset = await Asset.create({
         title: req.body.title,
         user: req.user.id,
+        mainImage: mainImagePath,
         files: files,
         desc: req.body.desc,
         category: req.body.category
