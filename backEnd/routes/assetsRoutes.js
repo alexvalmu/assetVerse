@@ -7,7 +7,14 @@ const { protect } = require('../middlewares/authMiddleware');
 // Rutas protegidas con JWT y manejo de archivos
 router.route('/')
   .get(assetController.getAsset)
-  .post(protect, upload.array('files'), assetController.postAsset);
+  .post(
+    protect,
+    upload.fields([
+      { name: 'mainImage', maxCount: 1 },
+      { name: 'files', maxCount: 5 }
+    ]),
+    assetController.postAsset
+  );
 
 router.route('/:id')
   .put(protect, upload.array('files'), assetController.putAsset)

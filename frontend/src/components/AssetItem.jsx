@@ -7,8 +7,8 @@ function AssetItem({ asset }) {
 
   return (
     <div className="asset-item">
-      <button 
-        onClick={() => dispatch(deleteAsset(asset._id))} 
+      <button
+        onClick={() => dispatch(deleteAsset(asset._id))}
         className="close"
       >
         X
@@ -20,6 +20,7 @@ function AssetItem({ asset }) {
         </div>
         <h2>{asset.text}</h2>
         <h2>{asset.desc}</h2>
+        
 
         {/* Mostrar archivos adjuntos */}
         {asset.files && asset.files.length > 0 && (
@@ -29,8 +30,8 @@ function AssetItem({ asset }) {
               {asset.files.map((file, index) => (
                 <li key={index}>
                   {file.mimetype.startsWith('image/') ? (
-                    <img 
-                      src={`http://localhost:5000/uploads/${file.filename}`} 
+                    <img
+                      src={`http://localhost:5000/uploads/${file.filename}`}
                       alt={file.filename}
                       style={{ maxWidth: '200px', maxHeight: '200px' }}
                     />

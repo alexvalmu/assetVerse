@@ -78,7 +78,7 @@ function AssetForm() {
                         name="mainImage" 
                         id="mainImage" 
                         accept="image/*" 
-                        onChange={(e) => setMainImage(e.target.files[0].fileName)}
+                        onChange={(e) => setMainImage(e.target.files[0])}
                     />
                     <small>Selecciona una imagen principal</small>
                 </div>

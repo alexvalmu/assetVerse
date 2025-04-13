@@ -10,10 +10,28 @@ const AssetSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El campo de título del asset es requerido']
     },
-    mainImage: {
-        type: String,
-        required: [true, 'El campo de imagen principal del asset es requerido']
-    },
+    mainImage: [{
+        filename: {
+            type: String,
+            required: true
+        },
+        path: {
+            type: String,
+            required: true
+        },
+        size: {
+            type: Number,
+            required: true
+        },
+        mimetype: {
+            type: String,
+            required: true
+        },
+        uploadedAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
     files: [{
         filename: {
             type: String,

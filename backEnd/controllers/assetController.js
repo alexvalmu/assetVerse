@@ -19,7 +19,6 @@ const postAsset = asyncHandler(async (req, res, next) => {
     if (!req.body.title) {
         return res.status(400).json({ message: "El campo de título del asset es requerido" });
     }
-
     // Procesar archivos si existen
     let files = [];
     if (req.files && req.files.length > 0) {
@@ -30,17 +29,21 @@ const postAsset = asyncHandler(async (req, res, next) => {
             mimetype: file.mimetype
         }));
     }
-    let mainImagePath = null;
-    if (req.body.mainImage) {
-        mainImagePath= req.body.mainImage;
-    } else {
-        return res.status(400).json({ message: "error main image en assetcontroller" });
+    if(req.files.mainImage && req.files.mainImage.length > 0){
+        mainImagen= req.files.mainImage.map(file => ({
+            filename: file.filename,
+            path: path.relative(process.cwd(), file.path),
+            size: file.size,
+            mimetype: file.mimetype
+        }));
+    }else{
+        return res.status(400).json({ message: "El campo de imagen principal es requerido" });
     }
 
     const asset = await Asset.create({
         title: req.body.title,
         user: req.user.id,
-        mainImage: mainImagePath,
+        mainImage: mainImagen,
         files: files,
         desc: req.body.desc,
         category: req.body.category
