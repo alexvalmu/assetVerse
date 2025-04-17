@@ -43,7 +43,9 @@ const registerUser = asyncHandler( async (req,res)=>{
 const getMe= asyncHandler( async (req,res)=>{
 	res.status(200).json(req.user);
 });
- const updateUserProfile= asyncHandler( async (req,res)=>{
+
+
+const updateUserProfile= asyncHandler( async (req,res)=>{
  	const user = await User.findById(req.user._id);
  	if(!user){
  		res.status(404);
@@ -98,7 +100,7 @@ const loginUser =asyncHandler( async (req,res)=>{
 });
 
 const getUser = asyncHandler( async(req,res)=>{
-	const user = await User.findById(req.user._id);
+	const user = await User.findById(req.params.id);
 
 	if(!user){
 		res.status(404);
@@ -106,7 +108,7 @@ const getUser = asyncHandler( async(req,res)=>{
 	};
 
 	res.json({
-		_id: user._id,
+		id: user.id,
 		name: user.name,
 		email: user.email
 	});

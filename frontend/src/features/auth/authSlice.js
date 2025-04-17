@@ -56,7 +56,7 @@ export const getUserProfile = createAsyncThunk('auth/me', async (_, thunkAPI) =>
     }
   });
 
-  export const updateUserProfile = createAsyncThunk('auth/update', async (userData, thunkAPI) => {
+export const updateUserProfile = createAsyncThunk('auth/update', async (userData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token;
         
@@ -72,7 +72,18 @@ export const getUserProfile = createAsyncThunk('auth/me', async (_, thunkAPI) =>
         return thunkAPI.rejectWithValue(message);
     }
 });
-  
+
+export const getUserById = createAsyncThunk('auth/getUserById', async (userId, thunkAPI) => {
+    try {
+    
+        return await authService.getUserById(userId);
+    } catch (error) {
+        const message =
+            (error.response?.data?.message) || error.message || error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

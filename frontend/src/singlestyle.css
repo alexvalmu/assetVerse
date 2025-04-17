@@ -1,0 +1,37 @@
+@import url('./index.css');
+
+.single-asset{
+    display: flex;
+    gap: 2rem; 
+}
+.mostrando {
+     flex: '2';
+}
+
+.mainImage{
+    width: 100%;
+    max-width: 600px; 
+    height: auto;
+    border-radius: 8px;
+    object-fit: contain;
+    margin-left:2em;
+    margin-right: 2em;
+}
+
+.miniaturas{
+    flex: 1;
+    display:flex;
+    flex-direction: column;
+    gap: 1rem ;
+    .miniatura{
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        cursor: pointer; 
+        border-radius: 6px;
+    }
+}
+
+.asset-details{
+    width: 100%;
+}

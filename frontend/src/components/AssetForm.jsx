@@ -41,7 +41,7 @@ function AssetForm() {
         setTitle('');
         setDesc('');
         setFiles([]);
-        setCategory([]);
+        setCategory('');
         setMainImage('');
         // Limpiar el input de archivos
         document.getElementById('fileInput').value = '';

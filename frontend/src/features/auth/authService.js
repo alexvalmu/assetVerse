@@ -42,7 +42,7 @@ const getUserProfile = async (token) => {
 };
 
 //update user profile
-    const updateUserProfile = async (userData, token) => {
+const updateUserProfile = async (userData, token) => {
      const config = {
          headers: {
              Authorization: `Bearer ${token}`
@@ -55,12 +55,22 @@ const getUserProfile = async (token) => {
      return response.data;
  };
 
+const getUserById = async (userId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    };
+    const response = await axios.get(`${API_URL}${userId}`, config);
+    return response.data;
+}; 
 const authService = {
     register,
     logout,
     login,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    getUserById
 }
 
 export default authService;
