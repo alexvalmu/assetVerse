@@ -131,7 +131,9 @@ const deleteFileFromAsset = asyncHandler(async (req, res) => {
 
 const getUserAssets = asyncHandler(async (req, res) => {
     const { id } = req.params; // ID del usuario
-
+    if (!id) {
+        return res.status(400).json({ message: "ID de usuario no proporcionado" });
+    }
     try {
         const assets = await Asset.find({ user: id }); // Puedes hacer populate si quieres traer info de la categoría también
         console.log(id);

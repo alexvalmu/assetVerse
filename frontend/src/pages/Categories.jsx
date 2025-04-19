@@ -1,7 +1,7 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate,useParams  } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAssets, reset } from "../features/assets/assetSlice"
+import { getAssets, getUserAssets, reset } from "../features/assets/assetSlice"
 import { useEffect, useState } from 'react';
 import Spinner from '../components/Spinner';
 import AssetItem from '../components/AssetItem';
@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 function Categories() {
   const navigate = useNavigate()  
   const dispatch = useDispatch()
-
+  const { userId } = useParams(); 
   const [sortBy, setSortBy] = useState("recent");
   const [searchQuery, setSearchQuery] = useState("");
   const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
@@ -23,12 +23,16 @@ function Categories() {
       }
     
     
-      dispatch(getAssets());
+      if (userId) {
+        dispatch(getUserAssets( userId )); // <-- pasamos el userId
+      } else {
+        dispatch(getAssets());
+      }
     
       return () => {
         dispatch(reset());
       };
-    }, [ isError, message, dispatch, navigate]); 
+    }, [userId, isError, message, dispatch, navigate]); 
 
     if (isLoading) {
       return <Spinner />

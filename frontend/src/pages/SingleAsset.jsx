@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Spinner from '../components/Spinner';
 import { getAsset, reset } from "../features/assets/assetSlice";
 import { getUserById } from "../features/users/userSlice";
+import { Link } from "react-router-dom";
 
 function SingleAsset() {
     const { id: assetId } = useParams();
@@ -14,7 +15,6 @@ function SingleAsset() {
     const { viewedUser, isLoading: userLoading } = useSelector((state) => state.users);
 
     const [mainPreview, setMainPreview] = useState('');
-    const [userName, setUserName] = useState('');
 
     useEffect(() => {
         if (isError) {
@@ -90,8 +90,8 @@ function SingleAsset() {
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
-                <p><strong>Publicado por:</strong> {viewedUser?.name}</p>
-
+                <Link to={`/categories/${asset.user}`} >{viewedUser?.name}</Link>
+                <p>{asset.user}</p>
             </div>
         </div>
     );
