@@ -527,3 +527,35 @@ footer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
+
+.stars-rating {
+  display: inline-block;
+  font-size: 2rem;
+  color: #ccc; /* Estrella vacía color gris */
+}
+
+.star {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+  position: relative;
+}
+
+.star.filled {
+  color: rgb(0, 0, 0); /* Estrella llena (amarilla dorada) */
+}
+
+.star.empty {
+  color: #ccc; /* Estrella vacía (gris) */
+}
+
+.star.half-filled {
+  position: relative;
+  color: rgb(0, 0, 0);
+  background: linear-gradient(to right, rgb(0, 0, 0) 50%, #ccc 50%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent; /* Para que el fondo sea visible como relleno */
+}

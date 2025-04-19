@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { FaHeart, FaDownload } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from '../components/Spinner';
 import { getAsset, reset } from "../features/assets/assetSlice";
 import { getUserById } from "../features/users/userSlice";
 import { Link } from "react-router-dom";
-
+import StarsRating from "../components/StarsRating";
+import { getAssetComments } from "../features/comments/commentSlice";
+import CommentItem from "../components/CommentItem";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
@@ -13,7 +16,7 @@ function SingleAsset() {
 
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
     const { viewedUser, isLoading: userLoading } = useSelector((state) => state.users);
-
+    const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments); 
     const [mainPreview, setMainPreview] = useState('');
 
     useEffect(() => {
@@ -23,6 +26,7 @@ function SingleAsset() {
 
         if (assetId) {
             dispatch(getAsset(assetId));
+            dispatch(getAssetComments(assetId)); // Fetch comments for the asset
         }
 
         return () => {
@@ -91,7 +95,28 @@ function SingleAsset() {
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
                 <Link to={`/categories?user=${asset.user}`} >{viewedUser?.name}</Link>
+                {asset?.ratingAverage !== undefined && (
+                    <div className="asset-rating">
+                        <p>{comments.length}</p>
+                        <StarsRating rating={asset.ratingAverage} />
+                    </div>
+                )}
+                 {/* Comentarios */}
+            <div className="comments-section">
+                <h3>Comentarios</h3>
+                {/* Aquí puedes mapear y mostrar los comentarios del asset */}
+                {comments.map(comment => (
+                    <CommentItem key={comment._id} comment={comment} />
+                ))}
             </div>
+            </div>
+            <div className="botones-guardado">
+                <button className="btn btn-primary"><FaHeart></FaHeart></button>
+                <button className="btn btn-secondary"><FaDownload></FaDownload></button>
+            </div>
+
+           
+
         </div>
     );
 }

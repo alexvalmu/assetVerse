@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { deleteAsset } from "../features/assets/assetSlice";
 import { Link } from "react-router-dom";
+import StarsRating from "./StarsRating";
 
 function AssetItem({ asset }) {
   const dispatch = useDispatch();
@@ -46,6 +47,11 @@ function AssetItem({ asset }) {
           </div>
         )}
       </Link>
+      {asset?.ratingAverage !== undefined && (
+    <div className="asset-rating">
+        <p>{asset.ratingAverage.toFixed(1)} &#9733;</p>
+    </div>
+)}
     </div>
   );
 }
