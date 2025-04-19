@@ -1,5 +1,5 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
-import { Link, useNavigate,useParams  } from 'react-router-dom';
+import { Link, useNavigate,useParams ,useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAssets, getUserAssets, reset } from "../features/assets/assetSlice"
 import { useEffect, useState } from 'react';
@@ -9,7 +9,10 @@ import { toast } from 'react-toastify';
 function Categories() {
   const navigate = useNavigate()  
   const dispatch = useDispatch()
-  const { userId } = useParams(); 
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const userId = searchParams.get('user');
   const [sortBy, setSortBy] = useState("recent");
   const [searchQuery, setSearchQuery] = useState("");
   const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
@@ -22,7 +25,8 @@ function Categories() {
         console.log(message);
       }
     
-    
+      console.log(userId);
+      
       if (userId) {
         dispatch(getUserAssets( userId )); // <-- pasamos el userId
       } else {

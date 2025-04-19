@@ -90,8 +90,7 @@ function SingleAsset() {
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
-                <Link to={`/categories/${asset.user}`} >{viewedUser?.name}</Link>
-                <p>{asset.user}</p>
+                <Link to={`/categories?user=${asset.user}`} >{viewedUser?.name}</Link>
             </div>
         </div>
     );

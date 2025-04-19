@@ -33,7 +33,7 @@ function App() {
               <Route path="/upload" element={<Upload />} />
               <Route path="/assets/:id" element={<SingleAsset />} />
               <Route path="/categories" element={<Categories />} />
-              <Route path="/categories/:userId" element={<Categories />} />
+              <Route path="/categories?user=userId" element={<Categories />} />
             </Routes>
           </div>
           <Footer />

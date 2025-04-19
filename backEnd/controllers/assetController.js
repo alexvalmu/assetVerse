@@ -87,6 +87,7 @@ const putAsset = asyncHandler(async (req, res) => {
     };
 
     const updatedAsset = await Asset.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    console.log("asset updated", updatedAsset);
     res.status(200).json(updatedAsset);
 });
 

@@ -62,6 +62,10 @@ const AssetSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: [true, 'la categoria es requerida']
+    },
+    ratingAverage: {
+        type: Number,
+        default: 0
     }
 }, {
     timestamps: true
