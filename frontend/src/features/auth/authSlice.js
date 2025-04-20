@@ -84,6 +84,22 @@ export const getUserById = createAsyncThunk('auth/getUserById', async (userId, t
     }
 });
 
+export const addFavorite = createAsyncThunk(
+    'auth/addFavorite',
+    async (assetId, thunkAPI) => {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.addFavorite(assetId, token);
+    }
+  );
+  
+  export const removeFavorite = createAsyncThunk(
+    'auth/removeFavorite',
+    async (assetId, thunkAPI) => {
+      const token = thunkAPI.getState().auth.user.token;
+      return await authService.removeFavorite(assetId, token);
+    }
+  );
+
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -158,6 +174,20 @@ export const authSlice = createSlice({
                 state.message = action.payload;
                
             })
+            .addCase(addFavorite.fulfilled, (state, action) => {
+                if (!state.user.favorites) {
+                  state.user.favorites = []; // Asegura que favorites existe
+                }
+                state.user.favorites.push(action.payload.assetId);
+            })
+            .addCase(removeFavorite.fulfilled, (state, action) => {
+                if (!state.user.favorites) {
+                  state.user.favorites = [];
+                }
+                state.user.favorites = state.user.favorites.filter(
+                  id => id !== action.payload.assetId
+                );
+              })
     }
 });
 

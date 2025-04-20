@@ -64,13 +64,34 @@ const getUserById = async (userId, token) => {
     const response = await axios.get(`${API_URL}${userId}`, config);
     return response.data;
 }; 
+
+const addFavorite = async (assetId, token) => {
+    const res = await axios.post(`${API_URL}favorites/${assetId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+};
+  
+const removeFavorite = async (assetId, token) => {
+    const res = await axios.delete(`${API_URL}favorites/${assetId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+};
+
 const authService = {
     register,
     logout,
     login,
     getUserProfile,
     updateUserProfile,
-    getUserById
+    getUserById,
+    addFavorite,
+    removeFavorite
 }
 
 export default authService;

@@ -34,6 +34,7 @@ function App() {
               <Route path="/assets/:id" element={<SingleAsset />} />
               <Route path="/categories" element={<Categories />} />
               <Route path="/categories?user=userId" element={<Categories />} />
+              <Route path="/favorites/:assetId" element={<Profile />} />
             </Routes>
           </div>
           <Footer />

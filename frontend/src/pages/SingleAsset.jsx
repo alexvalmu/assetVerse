@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import StarsRating from "../components/StarsRating";
 import { getAssetComments } from "../features/comments/commentSlice";
 import CommentItem from "../components/CommentItem";
+import { addFavorite, removeFavorite } from "../features/auth/authSlice";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
@@ -17,7 +18,17 @@ function SingleAsset() {
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
     const { viewedUser, isLoading: userLoading } = useSelector((state) => state.users);
     const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments); 
+    const { user } = useSelector((state) => state.auth);
     const [mainPreview, setMainPreview] = useState('');
+    const isFavorite = user?.favorites?.includes(assetId);
+
+    const handleFavorite = () => {
+        if (isFavorite) {
+          dispatch(removeFavorite(assetId));
+        } else {
+          dispatch(addFavorite(assetId));
+        }
+      };
 
     useEffect(() => {
         if (isError) {
@@ -111,7 +122,12 @@ function SingleAsset() {
             </div>
             </div>
             <div className="botones-guardado">
-                <button className="btn btn-primary"><FaHeart></FaHeart></button>
+                <button
+                    className={`btn ${isFavorite ? 'btn-danger' : 'btn-primary'}`}
+                    onClick={handleFavorite}
+                    >
+                    <FaHeart />
+                </button>
                 <button className="btn btn-secondary"><FaDownload></FaDownload></button>
             </div>
 

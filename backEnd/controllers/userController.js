@@ -114,6 +114,35 @@ const getUser = asyncHandler( async(req,res)=>{
 	});
 });
 
+const addFavorite = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user.id); // <-- ¿Esto devuelve algo?
+  
+	if (!user) {
+	  res.status(404);
+	  throw new Error('Usuario no encontrado');
+	}
+  
+	const assetId = req.params.assetId;
+  
+	if (!user.favorites.includes(assetId)) {
+	  user.favorites.push(assetId);
+	  await user.save();
+	}
+  
+	res.json({ assetId });
+});
+  
+  const removeFavorite = asyncHandler(async (req, res) => {
+	const user = await User.findById(req.user.id);
+	const assetId = req.params.assetId;
+  
+	user.favorites = user.favorites.filter(id => id.toString() !== assetId);
+	await user.save();
+  
+	res.json({ assetId });
+  });
+  
+
 const generateToken = (id)=>{
 	return jwt.sign({id}, process.env.JWT_SECRET, {
 		expiresIn: '30d'
@@ -125,5 +154,7 @@ module.exports = {
 	,loginUser
 	,getUser
 	,getMe,
-	updateUserProfile
+	updateUserProfile,
+	addFavorite,
+	removeFavorite
 }

@@ -73,7 +73,23 @@ function Profile(){
                 <p className="no-assets">Aún no has creado ningún asset.</p>
               )}
             </section>
+
+            
             </div>
+            <section className="favorites-section">
+  <h2>Favoritos</h2>
+  {user.favorites?.length > 0 ? (
+    <div className="assets-grid">
+      {assets
+        .filter(asset => user.favorites.includes(asset._id))
+        .map((asset) => (
+          <AssetItem key={asset._id} asset={asset} />
+        ))}
+    </div>
+  ) : (
+    <p>No tienes assets favoritos aún.</p>
+  )}
+</section>
         </>
     );
 }
