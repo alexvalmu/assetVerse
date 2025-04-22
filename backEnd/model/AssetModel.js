@@ -66,7 +66,11 @@ const AssetSchema = new mongoose.Schema({
     ratingAverage: {
         type: Number,
         default: 0
-    }
+    },
+    tags: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Tag'
+    }]
 }, {
     timestamps: true
 });

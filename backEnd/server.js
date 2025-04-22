@@ -28,6 +28,8 @@ app.use('/api/assets', require('./routes/assetsRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/categories', require('./routes/categoryRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));
+app.use('/api/tags', require('./routes/tagRoutes'));
+
 
 //preparando para deployment
 if(process.env.NODE_ENV === 'production'){
