@@ -10,6 +10,7 @@ import StarsRating from "../components/StarsRating";
 import { getAssetComments } from "../features/comments/commentSlice";
 import CommentItem from "../components/CommentItem";
 import { addFavorite, removeFavorite } from "../features/auth/authSlice";
+import TagList from "../components/TagList";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
@@ -100,7 +101,7 @@ function SingleAsset() {
                     )
                 ))}
             </div>
-
+                
             {/* Detalles del asset */}
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
@@ -112,6 +113,9 @@ function SingleAsset() {
                         <StarsRating rating={asset.ratingAverage} />
                     </div>
                 )}
+
+                {/*Tags*/}
+                <TagList tags={asset?.tags} />
                  {/* Comentarios */}
             <div className="comments-section">
                 <h3>Comentarios</h3>

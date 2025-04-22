@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { deleteAsset } from "../features/assets/assetSlice";
 import { Link } from "react-router-dom";
 import StarsRating from "./StarsRating";
+import TagList from "./TagList";
 
 function AssetItem({ asset }) {
   const dispatch = useDispatch();
@@ -23,18 +24,7 @@ function AssetItem({ asset }) {
         <h2>{asset.desc}</h2>
         
         {/* Mostrar tags */}
-          {asset.tags && asset.tags.length > 0 && (
-          <div className="asset-tags">
-            <h4>Tags:</h4>
-            <ul style={{ listStyle: 'none', paddingLeft: 0, display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {asset.tags.map((tag, index) => (
-                <li key={index} style={{ background: '#E5A0A0', padding: '0.3rem 0.6rem', borderRadius: '12px' }}>
-                  #{tag.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <TagList tags={asset?.tags} />
 
         {/* Mostrar archivos adjuntos */}
         {asset.files && asset.files.length > 0 && (
