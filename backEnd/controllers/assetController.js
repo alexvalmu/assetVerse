@@ -2,9 +2,10 @@ const asyncHandler = require("express-async-handler");
 const Asset = require("../model/AssetModel");
 const User = require("../model/userModel");
 const path = require("path");
+const Tag = require("../model/tagModel");
 
 const getAsset = asyncHandler( async(req, res) =>{
-    const asset = await Asset.find();
+    const asset = await Asset.find().populate('tags');
     res.status(200).json(asset);
 });
 const getAssetById = asyncHandler(async (req, res) => {
@@ -38,8 +39,24 @@ const postAsset = asyncHandler(async (req, res, next) => {
         mimetype: file.mimetype
     }));
 }
+    //manejo de los tags 
+    const tagNames = req.body.tagNames || []; // ["3D", "Blender"]
+    console.log("Tags recibidos:", req.body.tagNames);
 
-   
+    const existingTags = await Tag.find({ name: { $in: tagNames } });
+
+    const existingTagNames = existingTags.map(tag => tag.name);
+    const newTagNames = tagNames.filter(name => !existingTagNames.includes(name));
+
+    const newTags = await Tag.insertMany(
+        newTagNames.map(name => ({ name })),
+        { ordered: false }
+    );
+
+    const allTags = [...existingTags, ...newTags];
+    const tagIds = allTags.map(tag => tag._id);
+    console.log("IDs de tags:", tagIds);
+
 
     const asset = await Asset.create({
         title: req.body.title,
@@ -48,7 +65,7 @@ const postAsset = asyncHandler(async (req, res, next) => {
         files: files,
         desc: req.body.desc,
         category: req.body.category,
-        tags: req.body.tags
+        tags: tagIds
     });
 
     res.status(200).json(asset);

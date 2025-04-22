@@ -13,6 +13,7 @@ function AssetForm() {
     const [files, setFiles] = useState([]);
     const [selectedCategory, setCategory] = useState('');
     const [mainImage, setMainImage] = useState('');
+    const [tags, setTags] = useState('');
     const dispatch = useDispatch();
 
     const handleFileChange = (e) => {
@@ -32,6 +33,11 @@ function AssetForm() {
         formData.append('desc', desc);
         formData.append('category', selectedCategory);
         formData.append('mainImage', mainImage);
+        tags.split(',').map(tag => tag.trim()).forEach(tag => {
+            formData.append('tagNames', tag);
+          });
+          
+
         // Agregar cada archivo al FormData
         files.forEach(file => {
             formData.append('files', file);
@@ -43,6 +49,7 @@ function AssetForm() {
         setFiles([]);
         setCategory('');
         setMainImage('');
+        setTags('');
         // Limpiar el input de archivos
         document.getElementById('fileInput').value = '';
     }
@@ -113,7 +120,17 @@ function AssetForm() {
                     </select>
                 </div>
 
-
+                <div className="form-group">
+                    <label htmlFor="tags">Tags (separados por comas)</label>
+                    <input
+                        type="text"
+                        name="tags"
+                        id="tags"
+                        value={tags}
+                        onChange={(e) => setTags(e.target.value)}
+                        placeholder="Ej: render, blender, lowpoly"
+                    />
+                </div>    
 
                 <div className="form-group">
                     <button className="btn btn-block" type="submit"> 
