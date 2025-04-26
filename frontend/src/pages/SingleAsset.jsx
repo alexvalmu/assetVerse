@@ -110,16 +110,17 @@ function SingleAsset() {
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
-                <Link to={`/categories?user=${asset.user}`} >{viewedUser?.name}</Link>
+               
                 {asset?.ratingAverage !== undefined && (
                     <div className="asset-rating">
                         <p>{comments.length}</p>
-                        <StarsRating rating={asset.ratingAverage} />
+                        <StarsRating rating={asset.ratingAverage}  />
                     </div>
                 )}
 
                 {/* Mostrar tags */}
                 <TagList tags={asset?.tags} />
+                <Link to={`/categories?user=${asset.user}`} >{viewedUser?.name}</Link>
                 {/* Comentarios */}
                 <div className="comments-section">
                     {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (

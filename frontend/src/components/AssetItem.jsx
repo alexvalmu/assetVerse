@@ -44,9 +44,9 @@ function AssetItem({ asset }) {
         
         <div className="asset-user">
           {user  && (
-            <p >{/* Link to user profile */}
+            <Link to={`/categories?user=${user.id}`} >
               Uploaded by {user.name}
-            </p>
+              </Link>
           )}       
        </div>
        

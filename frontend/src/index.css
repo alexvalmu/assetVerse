@@ -557,7 +557,28 @@ footer {
   background: linear-gradient(to right, rgb(0, 0, 0) 50%, #ccc 50%);
   -webkit-background-clip: text;
   background-clip: text;
-  color: transparent; /* Para que el fondo sea visible como relleno */
+  color: transparent; 
+}
+.star.small{
+  width:.8em;
+}
+
+.stars-rating.small{
+  font-size: 1.2rem; /* Tamaño de la estrella pequeña */
+}
+
+@media (max-width: 600px) {
+  .form {
+    width: 90%;
+  }
+
+  .heading h1 {
+    font-size: 2rem;
+  }
+
+  .heading p {
+    font-size: 1.5rem;
+  }
 }
 
 .loadingSpinnerContainer {
@@ -572,7 +593,6 @@ footer {
   justify-content: center;
   align-items: center;
 }
-
 .loadingSpinner {
   width: 64px;
   height: 64px;
@@ -581,26 +601,11 @@ footer {
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
-
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
-  }
-}
-
-@media (max-width: 600px) {
-  .form {
-    width: 90%;
-  }
-
-  .heading h1 {
-    font-size: 2rem;
-  }
-
-  .heading p {
-    font-size: 1.5rem;
   }
 }

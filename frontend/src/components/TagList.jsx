@@ -7,7 +7,6 @@ const TagList = ({ tags }) => {
 
   return (
     <div className="asset-tags">
-      <h4>Etiquetas:</h4>
       <ul style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', paddingLeft: 0 }}>
         {tags.map((tag) => (
           <li
