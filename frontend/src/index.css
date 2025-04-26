@@ -567,6 +567,7 @@ footer {
   font-size: 1.2rem; /* Tamaño de la estrella pequeña */
 }
 
+
 @media (max-width: 600px) {
   .form {
     width: 90%;
