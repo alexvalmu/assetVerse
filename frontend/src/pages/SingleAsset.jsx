@@ -11,6 +11,7 @@ import { getAssetComments } from "../features/comments/commentSlice";
 import CommentItem from "../components/CommentItem";
 import { addFavorite, removeFavorite } from "../features/auth/authSlice";
 import TagList from "../components/TagList";
+import CommentForm from "../components/CommentForm";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
@@ -18,18 +19,21 @@ function SingleAsset() {
 
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
     const { viewedUser, isLoading: userLoading } = useSelector((state) => state.users);
-    const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments); 
+    const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments);
     const { user } = useSelector((state) => state.auth);
     const [mainPreview, setMainPreview] = useState('');
     const isFavorite = user?.favorites?.includes(assetId);
-
+    const [showAllComments, setShowAllComments] = useState(false);
+    const toggleComments = () => {
+        setShowAllComments(prev => !prev);
+    };
     const handleFavorite = () => {
         if (isFavorite) {
-          dispatch(removeFavorite(assetId));
+            dispatch(removeFavorite(assetId));
         } else {
-          dispatch(addFavorite(assetId));
+            dispatch(addFavorite(assetId));
         }
-      };
+    };
 
     useEffect(() => {
         if (isError) {
@@ -56,7 +60,7 @@ function SingleAsset() {
         }
     }, [asset, dispatch]);
 
-   
+
 
     if (isLoading) {
         return <Spinner />;
@@ -101,7 +105,7 @@ function SingleAsset() {
                     )
                 ))}
             </div>
-                
+
             {/* Detalles del asset */}
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
@@ -114,28 +118,32 @@ function SingleAsset() {
                     </div>
                 )}
 
-                {/*Tags*/}
+                {/* Mostrar tags */}
                 <TagList tags={asset?.tags} />
-                 {/* Comentarios */}
-            <div className="comments-section">
-                <h3>Comentarios</h3>
-                {/* Aquí puedes mapear y mostrar los comentarios del asset */}
-                {comments.map(comment => (
-                    <CommentItem key={comment._id} comment={comment} />
-                ))}
-            </div>
+                {/* Comentarios */}
+                <div className="comments-section">
+                    {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
+                        <CommentItem key={comment._id} comment={comment} />
+                    ))}
+                    {comments.length > 0 && (
+                        <button onClick={toggleComments} className="btn btn-link">
+                            {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
+                        </button>
+                    )}
+                    <CommentForm />
+                </div>
             </div>
             <div className="botones-guardado">
                 <button
                     className={`btn ${isFavorite ? 'btn-danger' : 'btn-primary'}`}
                     onClick={handleFavorite}
-                    >
+                >
                     <FaHeart />
                 </button>
                 <button className="btn btn-secondary"><FaDownload></FaDownload></button>
             </div>
 
-           
+
 
         </div>
     );

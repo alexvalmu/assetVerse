@@ -9,7 +9,7 @@ const getAsset = asyncHandler( async(req, res) =>{
     res.status(200).json(asset);
 });
 const getAssetById = asyncHandler(async (req, res) => {
-    const asset = await Asset.findById(req.params.id);
+    const asset = await Asset.findById(req.params.id).populate('tags');
     if (!asset) {
         res.status(404);
         throw new Error('Asset no encontrado');

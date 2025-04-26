@@ -32,6 +32,7 @@ const deleteComment =async(commentId, token) => {
 const commentService={
    getComments,
     getAssetComments,
+    createComment,
 }
 
 

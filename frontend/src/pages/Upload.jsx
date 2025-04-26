@@ -10,7 +10,7 @@ function Upload() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
-  const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
+  const {isLoading,isError, message} = useSelector((state) => state.assets)
   useEffect(() => {
     if (isError) {
       console.log(message);
@@ -21,7 +21,7 @@ function Upload() {
       return; // Detener la ejecución aquí
     }
 
-    dispatch(getAssets());
+ 
 
     return () => {
       dispatch(reset());
@@ -38,16 +38,7 @@ return (
      
       </section>
       <AssetForm></AssetForm>
-      <section className="content">
-        {assets.length > 0 ? (
-          <div className="assets">
-            {assets.map((asset) => (
-              <AssetItem key={asset._id} asset={asset} />
-            ))}
-          </div>
-        ):(<h3>No assets found</h3>)
-        }
-      </section>
+      
     </>
   )
 }

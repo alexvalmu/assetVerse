@@ -3,52 +3,53 @@ import { deleteAsset } from "../features/assets/assetSlice";
 import { Link } from "react-router-dom";
 import StarsRating from "./StarsRating";
 import TagList from "./TagList";
-
+import { use } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { getUserById } from "../features/users/userSlice";
 function AssetItem({ asset }) {
   const dispatch = useDispatch();
-
+  
+  useEffect(() => {
+    if(asset.user){
+      dispatch(getUserById(asset.user));
+    }
+  }
+  , [asset.user, dispatch]);
+  const user = useSelector((state) => state.users.viewedUser);
   return (
     <div className="asset-item">
-      <button
+      {/* <button
         onClick={() => dispatch(deleteAsset(asset._id))}
         className="close"
       >
         X
-      </button>
+      </button> */}
 
       <Link to={`/assets/${asset._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-        <div>
-          {new Date(asset.createdAt).toLocaleString('es-ES')}
+        <div className="main-image">
+          {asset.mainImage && asset.mainImage.length > 0 && (
+            <img
+              src={`http://localhost:5000/uploads/${asset.mainImage[0].filename}`}
+              alt="Asset"
+              className="asset-image"
+            />
+          )}
         </div>
-        <h2>{asset.text}</h2>
-        <h2>{asset.desc}</h2>
-        
-        {/* Mostrar tags */}
-        <TagList tags={asset?.tags} />
 
-        {/* Mostrar archivos adjuntos */}
-        {asset.files && asset.files.length > 0 && (
-          <div className="files-container">
-            <h4>Archivos adjuntos:</h4>
-            <ul>
-              {asset.files.map((file, index) => (
-                <li key={index}>
-                  {file.mimetype.startsWith('image/') ? (
-                    <img
-                      src={`http://localhost:5000/uploads/${file.filename}`}
-                      alt={file.filename}
-                      style={{ maxWidth: '200px', maxHeight: '200px' }}
-                    />
-                  ) : (
-                    <span>
-                      {file.filename} ({Math.round(file.size / 1024)} KB)
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {/* <div>
+          {new Date(asset.createdAt).toLocaleString('es-ES')}
+        </div> */}
+        <h2>{asset.title}</h2>
+        
+        <div className="asset-user">
+          {user  && (
+            <p >{/* Link to user profile */}
+              Uploaded by {user.name}
+            </p>
+          )}       
+       </div>
+       
       </Link>
       {asset?.ratingAverage !== undefined && (
     <div className="asset-rating">
