@@ -32,7 +32,6 @@ function CommentForm() {
             <h2>Deja un comentario</h2>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
-                    <label htmlFor="stars">Puntuación:</label>
                     <div className="stars">
                     {[1, 2, 3, 4, 5].map((star) => (
                         <span

@@ -95,7 +95,7 @@ function SingleAsset() {
                         alt={`Miniatura ${index}`}
                         className="miniatura"
                         style={{
-                            border: mainPreview.includes(img.filename) ? '2px solid #007bff' : '1px solid #ccc',
+                            opacity: mainPreview.includes(img.filename) ? '0.5' : '1',
                             cursor: 'pointer'
                         }}
                         onClick={() => setMainPreview(`http://localhost:5000/uploads/${img.filename}`)}
@@ -108,15 +108,9 @@ function SingleAsset() {
                     return (
                         <div
                             key={`file-${index}`}
-                            className="miniatura"
+                           
                             style={{
-                                border: mainPreview.includes(file.filename) ? '2px solid #007bff' : '1px solid #ccc',
-                                display: 'inline-block',
-                                cursor: 'pointer',
-                                textAlign: 'center',
-                                padding: '5px',
-                                objectFit: 'cover',
-                            }}
+                                opacity: mainPreview.includes(file.filename) ? '0.5' : '1'}}
                             onClick={() => {
                                 if (isImage) {
                                     setMainPreview(`http://localhost:5000/uploads/${file.filename}`);
@@ -129,17 +123,13 @@ function SingleAsset() {
                                 <img
                                     src={`http://localhost:5000/uploads/${file.filename}`}
                                     alt={file.filename}
-                                    style={{ width: '100%', height: '90px' , objectFit: 'cover',
-                                        display: 'inline-block',
-                                        cursor: 'pointer',
-                                        textAlign: 'center',
-                                        objectFit: 'cover',}}
+                                    className="miniatura"
                                 />
                             ) : (
-                                <>
-                                    <div style={{ fontSize: '30px', marginBottom: '5px' }}>📄</div>
-                                    <div style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</div>
-                                </>
+                                <div className="miniatura no-image">
+                                    <p style={{ fontSize: '30px', marginBottom: '5px' }}>📄</p>
+                                    <p style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</p>
+                                </div>
                             )}
                         </div>
                     );
@@ -150,27 +140,28 @@ function SingleAsset() {
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
-
+                <TagList className="tags" tags={asset?.tags} />
+                <Link to={`/categories?user=${asset.user}`}>by {viewedUser?.name}</Link>
                 {asset?.ratingAverage !== undefined && (
                     <div className="asset-rating">
                         <p>{comments.length}</p>
                         <StarsRating rating={asset.ratingAverage} />
+                        {comments.length > 0 && (
+                        <button onClick={toggleComments} className="btn btn-link">
+                            {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
+                        </button>
+                    )}
                     </div>
                 )}
 
-                <TagList tags={asset?.tags} />
-                <Link to={`/categories?user=${asset.user}`}>{viewedUser?.name}</Link>
+                
 
                 {/* Comentarios */}
                 <div className="comments-section">
                     {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
                         <CommentItem key={comment._id} comment={comment} />
                     ))}
-                    {comments.length > 0 && (
-                        <button onClick={toggleComments} className="btn btn-link">
-                            {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
-                        </button>
-                    )}
+                    
                     <CommentForm />
                 </div>
             </div>

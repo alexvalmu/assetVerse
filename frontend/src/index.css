@@ -31,6 +31,7 @@ html,body{
   flex: 1;
 }
 
+
 a{
   text-decoration: none;
   color: #000;
@@ -411,7 +412,10 @@ form{
     }
   }
 }
-
+.asset-image {
+  object-fit: cover; /* Muy importante para que la imagen no se deforme */
+  max-width: 200px;
+}
 
 footer {
   background-color: #730000;
@@ -564,10 +568,20 @@ footer {
 }
 
 .stars-rating.small{
-  font-size: 1.2rem; /* Tamaño de la estrella pequeña */
+  font-size: 1.2rem; 
 }
 
 
+.asset-tags{
+  >ul>li{
+    cursor: pointer;
+    &:hover{
+      a{
+        font-weight: 600;
+      }
+    }
+  }
+}
 @media (max-width: 600px) {
   .form {
     width: 90%;
