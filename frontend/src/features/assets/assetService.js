@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 const API_URL = '/api/assets/';
 
 const createAsset =async(assetData, token) => {
@@ -46,12 +47,24 @@ const getUserAssets = async (id, token) => {
     return response.data;
 };
 
+const getAssetByTag = async (name, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const response = await axios.get(API_URL+'tags/'+name, config); 
+    return response.data;
+};
+
 const assetService={
     createAsset,
     getAssets,
     deleteAsset,
     getAsset,
-    getUserAssets
+    getUserAssets,
+    getAssetByTag
 }
 
 
