@@ -1,21 +1,22 @@
 @import url('./index.css');
 
 .main-image-upload {
-    width: 150px;
-    height: 150px;
-    border: 2px dashed #ccc;
+    width: 200px;
+    height: 200px;
+    border: 2px solid var(--primario);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
     margin-bottom: 10px;
     position: relative;
-    overflow: hidden;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: var(--primario);
 }
 
 .upload-icon {
+    width: 150px;
+    height:150px;
     font-size: 48px;
     color: #999;
 }
@@ -35,6 +36,13 @@
         display: flex;
         flex-direction: row;
         gap: 1rem;
+        width:100%;
+        justify-content: space-evenly;
+        >section{
+            width:100%;
+            margin:1em;
+            
+        }
     }
 }
 
@@ -78,10 +86,10 @@
 }
 
 .upload-more {
-    width: 80px;
-    height: 80px;
-    background-color: #f0f0f0;
-    border: 2px dashed #aaa;
+    width: 100px;
+    height: 100px;
+    background-color: var(--primario);
+    border: 2px solid #aaa;
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -89,4 +97,9 @@
     font-size: 30px;
     color: #aaa;
     cursor: pointer;
+    >img{
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+    }
 }

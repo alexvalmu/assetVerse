@@ -35,8 +35,6 @@ function AssetForm() {
     };
 
     const handleFileChange = (e) => {
-        const newFiles = [...e.target.files];
-        const newPreviews = [];
         const selectedFiles = Array.from(e.target.files);
         const totalFiles = [...files, ...selectedFiles];
     
@@ -45,18 +43,17 @@ function AssetForm() {
             return;
         }
     
-        setFiles(totalFiles);
-        newFiles.forEach(file => {
+        selectedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onloadend = () => {
-                setFilePreviews(prev => [...prev, { file, preview: reader.result ,name: file.name}]);
+                setFilePreviews(prev => [...prev, { file, preview: reader.result, name: file.name }]);
             };
             reader.readAsDataURL(file);
         });
-
-        setFiles(prev => [...prev, ...newFiles]);
+    
+        setFiles(totalFiles); // SOLO AQUÍ
     };
-
+    
     const handleRemoveFile = (index) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
         setFilePreviews(prev => prev.filter((_, i) => i !== index));
@@ -102,7 +99,7 @@ function AssetForm() {
                             {mainImagePreview ? (
                                 <img src={mainImagePreview} alt="Preview" className="main-image-preview" />
                             ) : (
-                                <div className="upload-icon"><FaFile></FaFile></div>
+                                <img src="/upload.png" alt="upload-icon" className='upload-icon'></img>
                             )}
                         </div>
                         <input
@@ -187,7 +184,7 @@ function AssetForm() {
                             </div>
                         ))}
                         <div className="upload-more" onClick={() => document.getElementById('fileInput').click()}>
-                            <FaFileArchive></FaFileArchive>
+                            <img src="/upload.png" alt="upload-icon" className='upload-icon'></img>
                         </div>
                     </div>
 
