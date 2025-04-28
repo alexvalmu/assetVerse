@@ -25,6 +25,12 @@ router.route('/user/:id')
   .get(protect, assetController.getUserAssets);
 
   
+router.route('/tags/:tagId')
+  .get(assetController.getAssetByTag);
+
+router.route('/categories/:value')
+.get(assetController.getAssetByCategory);
+
 // Ruta para eliminar archivos individuales
 router.route('/:assetId/files/:fileId')
   .delete(protect, assetController.deleteFileFromAsset);
