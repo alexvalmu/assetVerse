@@ -19,13 +19,14 @@ function SingleAsset() {
     const navigate = useNavigate();
 
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
-    const { viewedUser, isLoading: userLoading } = useSelector((state) => state.users);
     const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments);
     const { user } = useSelector((state) => state.auth);
     const [mainPreview, setMainPreview] = useState('');
     const isFavorite = user?.favorites?.includes(assetId);
     const [showAllComments, setShowAllComments] = useState(false);
 
+    const [assetOwner, setAssetOwner] = useState(null);
+    const [loadingUser, setLoadingUser] = useState(true);
     const toggleComments = () => {
         setShowAllComments(prev => !prev);
     };
@@ -57,12 +58,27 @@ function SingleAsset() {
         if (asset && asset.mainImage?.[0]?.filename) {
             setMainPreview(`http://localhost:5000/uploads/${asset.mainImage[0].filename}`);
         }
-
-        if (asset?.user) {
-            dispatch(getUserById(asset.user));
-        }
+        
+            const fetchUser = async () => {
+                setLoadingUser(true);
+                try {
+                    const action = await dispatch(getUserById(asset.user));
+                    const userData = action.payload;
+                    setAssetOwner(userData);
+                } catch (err) {
+                    console.error("Error al cargar el usuario", err);
+                } finally {
+                    setLoadingUser(false);
+                }
+            };
+        
+            if (asset?.user) {
+                fetchUser();
+            }
+        
+        
     }, [asset, dispatch]);
-
+    
     if (isLoading) {
         return <Spinner />;
     }
@@ -141,7 +157,13 @@ function SingleAsset() {
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
                 <TagList className="tags" tags={asset?.tags} />
-                <Link to={`/categories?user=${asset.user}`}>by {viewedUser?.name}</Link>
+                <p>
+                {loadingUser ? 'Loading user...' : (
+                    <Link to={`/categories?user=${asset.user}`}>
+                    by {assetOwner?.name}
+                    </Link>
+                )}
+                </p>
                 {asset?.ratingAverage !== undefined && (
                     <div className="asset-rating">
                         <p>{comments.length}</p>

@@ -37,12 +37,12 @@ function AssetForm() {
     const handleFileChange = (e) => {
         const selectedFiles = Array.from(e.target.files);
         const totalFiles = [...files, ...selectedFiles];
-    
+
         if (totalFiles.length > 5) {
             alert('You can only upload up to 5 files.');
             return;
         }
-    
+
         selectedFiles.forEach(file => {
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -50,10 +50,10 @@ function AssetForm() {
             };
             reader.readAsDataURL(file);
         });
-    
+
         setFiles(totalFiles); // SOLO AQUÍ
     };
-    
+
     const handleRemoveFile = (index) => {
         setFiles(prev => prev.filter((_, i) => i !== index));
         setFilePreviews(prev => prev.filter((_, i) => i !== index));
@@ -93,7 +93,7 @@ function AssetForm() {
             <form className="upload-form" onSubmit={onSubmit} encType="multipart/form-data">
                 <section className="form-section">
                     {/* Main Image Upload */}
-                    <div className="form-group">
+                    <div className="form-group main-image-group">
                         <label htmlFor="mainImage">Main Image</label>
                         <div className="main-image-upload" onClick={() => document.getElementById('mainImageInput').click()}>
                             {mainImagePreview ? (
@@ -109,6 +109,7 @@ function AssetForm() {
                             accept="image/*"
                             onChange={handleMainImageChange}
                             style={{ display: 'none' }}
+                            required
                         />
                         <small>Choose a main image for your asset</small>
                     </div>
@@ -160,12 +161,12 @@ function AssetForm() {
 
                         <div className="form-group">
                             <label htmlFor="desc">Description</label>
-                            <input
-                                type="text"
+                            <textarea
                                 name="desc"
                                 id="desc"
                                 value={desc}
                                 onChange={(e) => setDesc(e.target.value)}
+                                rows="4"
                             />
                         </div>
                     </section>
@@ -179,7 +180,14 @@ function AssetForm() {
                     <div className="file-preview-container">
                         {filePreviews.map((file, index) => (
                             <div key={index} className="file-preview">
-                                <img src={file.preview} alt={file.name} className="file-thumbnail" />
+                                {file.preview.startsWith("data:image") ? (
+                                    <img src={file.preview} alt={file.name} className="file-thumbnail" />
+                                ) : (
+                                    <div className="file-fallback">
+                                        <FaFile size={20} />
+                                        <span className="file-name">{file.name}</span>
+                                    </div>
+                                )}
                                 <button type="button" className="remove-btn" onClick={() => handleRemoveFile(index)}>×</button>
                             </div>
                         ))}
@@ -202,7 +210,7 @@ function AssetForm() {
 
                 <div className="form-group">
                     <button className="btn btn-block" type="submit">
-                        Add Asset
+                        Upload Asset
                     </button>
                 </div>
             </form>

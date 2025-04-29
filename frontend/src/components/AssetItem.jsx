@@ -4,28 +4,34 @@ import { Link } from "react-router-dom";
 import StarsRating from "./StarsRating";
 import TagList from "./TagList";
 import { use } from "react";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useSelector } from "react-redux";
 import { getUserById } from "../features/users/userSlice";
+import userService from "../features/users/userService";
+
 function AssetItem({ asset }) {
-  const dispatch = useDispatch();
-  
+  const [user, setUser] = useState(null);
+  const [isLoadingUser, setIsLoadingUser] = useState(false);
+
   useEffect(() => {
-    if(asset.user){
-      dispatch(getUserById(asset.user));
-    }
-  }
-  , [asset.user, dispatch]);
-  const user = useSelector((state) => state.users.viewedUser);
+    const fetchUser = async () => {
+      if (asset.user) {
+        setIsLoadingUser(true);
+        try {
+          const fetchedUser = await userService.getUserById(asset.user);
+          setUser(fetchedUser);
+        } catch (err) {
+          console.error("Error fetching user:", err);
+        } finally {
+          setIsLoadingUser(false);
+        }
+      }
+    };
+    fetchUser();
+  }, [asset.user]);
+
   return (
     <div className="asset-item">
-      {/* <button
-        onClick={() => dispatch(deleteAsset(asset._id))}
-        className="close"
-      >
-        X
-      </button> */}
-
       <Link to={`/assets/${asset._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div className="main-image">
           {asset.mainImage && asset.mainImage.length > 0 && (
@@ -37,25 +43,25 @@ function AssetItem({ asset }) {
           )}
         </div>
 
-        {/* <div>
-          {new Date(asset.createdAt).toLocaleString('es-ES')}
-        </div> */}
         <h2>{asset.title}</h2>
-        
+
         <div className="asset-user">
-          {user  && (
-              <p>Uploaded by {user.name}</p>
-          )}       
-       </div>
-       
+          {isLoadingUser ? (
+            <p>Loading user...</p>
+          ) : (
+            user && <p>Uploaded by {user.name}</p>
+          )}
+        </div>
       </Link>
+
       {asset?.ratingAverage !== undefined && (
-    <div className="asset-rating">
-        <p>{asset.ratingAverage.toFixed(1)} &#9733;</p>
-    </div>
-)}
+        <div className="asset-rating">
+          <p>{asset.ratingAverage.toFixed(1)} &#9733;</p>
+        </div>
+      )}
     </div>
   );
 }
+
 
 export default AssetItem;
