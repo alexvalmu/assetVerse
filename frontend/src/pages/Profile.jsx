@@ -8,13 +8,14 @@ import { getUserProfile, reset as resetAuth } from '../features/auth/authSlice';
 import { getAssets, reset as resetAssets } from '../features/assets/assetSlice';
 import Spinner from '../components/Spinner';
 import { getUserAssets, deleteAsset } from '../features/assets/assetSlice';
+import { getFavorites } from '../features/auth/authSlice';
 
 
 function Profile(){
     const navigate=useNavigate();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth)
-    const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
+    const {assets,userAssets,isLoading,isError, message} = useSelector((state) => state.assets)
 
     const [profileFetched, setProfileFetched] = useState(false);
 
@@ -27,6 +28,7 @@ function Profile(){
       if (!profileFetched) {
         dispatch(getUserProfile());
         dispatch(getUserAssets(user._id));
+        dispatch(getAssets());
         setProfileFetched(true);
       }
     }, [user, dispatch, navigate, profileFetched]);
@@ -60,36 +62,36 @@ function Profile(){
 
             <section className="assets-section">
               <h2 className="assets-title">Uploads</h2>
-              {assets.length > 0 ? (
-                <div className="assets-grid">
-                  {assets.map((asset) => (
-                   <div key={asset._id} className="asset-item">
-                      <button className="close-btn" onClick={() => dispatch(deleteAsset(asset._id))}>X</button>
-                      <AssetItem asset={asset} />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="no-assets">Aún no has creado ningún asset.</p>
-              )}
+              {userAssets.length > 0 ? (
+              <div className="assets-grid">
+                {userAssets.map((asset) => (
+                  <div key={asset._id} className="asset-item">
+                    <button className="close-btn" onClick={() => dispatch(deleteAsset(asset._id))}>X</button>
+                    <AssetItem asset={asset} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="no-assets">Aún no has creado ningún asset.</p>
+            )}
+
             </section>
 
-            
-            </div>
             <section className="favorites-section">
-  <h2>Favoritos</h2>
-  {user.favorites?.length > 0 ? (
-    <div className="assets-grid">
-      {assets
-        .filter(asset => user.favorites.includes(asset._id))
-        .map((asset) => (
-          <AssetItem key={asset._id} asset={asset} />
-        ))}
-    </div>
-  ) : (
-    <p>No tienes assets favoritos aún.</p>
-  )}
-</section>
+              <h2>Favoritos</h2>
+              {user.favorites?.length > 0 ? (
+                <div className="assets-grid">
+                  {assets
+                    .filter(asset => user.favorites.includes(asset._id))
+                    .map((asset) => (
+                      <AssetItem key={asset._id} asset={asset} />
+                    ))}
+                </div>
+              ) : (
+                <p>No tienes assets favoritos aún.</p>
+              )}
+            </section>
+          </div>
         </>
     );
 }

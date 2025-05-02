@@ -3,6 +3,7 @@ import assetService from './assetService';
 
 const initialState = {
     assets: [],
+    userAssets: [],
     isError: false,
     isLoading: false,
     isSuccess: false,
@@ -138,7 +139,7 @@ export const assetSlice = createSlice({
             .addCase(deleteAsset.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.assets = state.assets.filter(asset => asset._id !== action.payload.id);
+                state.userAssets = state.userAssets.filter(asset => asset._id !== action.payload.id);
             })
             .addCase(deleteAsset.rejected, (state, action) => {
                 state.isLoading = false;
@@ -151,7 +152,7 @@ export const assetSlice = createSlice({
             .addCase(getUserAssets.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.assets = action.payload; 
+                state.userAssets = action.payload; 
             })
             .addCase(getUserAssets.rejected, (state, action) => {
                 state.isLoading = false;
