@@ -74,7 +74,8 @@ const postAsset = asyncHandler(async (req, res, next) => {
         tags: tagIds
     });
 
-    res.status(200).json(asset);
+   res.status(200).json(asset);
+    //res.redirect(`/assets/${asset._id}`);
 });
 
 const putAsset = asyncHandler(async (req, res) => {

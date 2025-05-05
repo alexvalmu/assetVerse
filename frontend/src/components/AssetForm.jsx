@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAsset } from '../features/assets/assetSlice';
 import { fetchCategories } from '../features/categories/categorySlice';
+import { useNavigate } from 'react-router-dom';
 import '../assetForm.css';
 import { FaFile, FaFileArchive } from 'react-icons/fa';
 
@@ -17,6 +18,8 @@ function AssetForm() {
     const dispatch = useDispatch();
 
     const { categories } = useSelector((state) => state.categories);
+    const navigate = useNavigate();
+  
 
     useEffect(() => {
         dispatch(fetchCategories());
@@ -59,7 +62,7 @@ function AssetForm() {
         setFilePreviews(prev => prev.filter((_, i) => i !== index));
     };
 
-    const onSubmit = e => {
+    const onSubmit =async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -74,13 +77,24 @@ function AssetForm() {
             formData.append('files', file);
         });
 
-        dispatch(createAsset(formData));
+        //dispatch(createAsset(formData));
 
+        try {
+            const resultAction = await dispatch(createAsset(formData)); // Esperar a que se complete la acción
+            const createdAsset = resultAction.payload; // Obtener el payload del resultado
+
+            // Si el asset se ha creado correctamente, redirigir al detalle del asset
+            if (createdAsset && createdAsset._id) {
+            navigate(`/assets/${createdAsset._id}`); // Redirigir a la página del nuevo asset
+            }
+
+        } catch (error) {
+            console.log('Error al crear el asset:', error);
+        }
         setTitle('');
         setDesc('');
         setFiles([]);
         setFilePreviews([]);
-        setCategory('');
         setMainImage('');
         setMainImagePreview(null);
         setTags('');
