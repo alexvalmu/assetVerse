@@ -1,7 +1,7 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate,useParams ,useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAssets, getUserAssets,getAssetByTag, reset } from "../features/assets/assetSlice"
+import { getAssets, getUserAssets,getAssetByTag,getAssetByCategory, reset } from "../features/assets/assetSlice"
 import { useEffect, useState } from 'react';
 import Spinner from '../components/Spinner';
 import AssetItem from '../components/AssetItem';
@@ -18,6 +18,7 @@ function Categories() {
   const [searchQuery, setSearchQuery] = useState("");
   const {assets,isLoading,isError, message} = useSelector((state) => state.assets)
   const tag = searchParams.get('tag');
+  const cat = searchParams.get('cat');
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   }
@@ -31,12 +32,10 @@ function Categories() {
       
       if (userId) {
         dispatch(getUserAssets( userId )); // <-- pasamos el userId
-      } else {
-        dispatch(getAssets());
-      }
-
-      if (tag) {
+      } else if (tag) {
         dispatch(getAssetByTag( tag )); // <-- pasamos el userId
+      } else if (cat) {
+        dispatch(getAssetByCategory( cat )); // <-- pasamos el userId
       } else {
         dispatch(getAssets());
       }
