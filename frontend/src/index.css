@@ -411,11 +411,23 @@ form{
       font-size: 0.95rem;
     }
   }
+  .favorites-section{
+    flex: 1;
+    padding: 1rem;
+    >h2{
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--primario);
+    }
+  }
 }
+
 .asset-image {
   object-fit: cover; /* Muy importante para que la imagen no se deforme */
   max-width: 200px;
 }
+
 
 footer {
   background-color: #730000;

@@ -1,8 +1,8 @@
 @import url('./index.css');
 
 .main-image-upload {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     border: 2px solid var(--primario);
     display: flex;
     justify-content: center;
@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding:3em;
     >section{
         display: flex;
         flex-direction: row;
@@ -40,8 +41,7 @@
         justify-content: space-evenly;
         >section{
             width:100%;
-            margin:1em;
-            
+            margin-left:2em;            
         }
     }
 }
@@ -52,27 +52,50 @@
     gap: 10px;
     margin-bottom: 10px;
     align-items: center;
+    width:100%;
+    flex-direction: row;
 }
 
 .file-preview {
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .file-thumbnail {
-    width: 100%;
+    width: 100px;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 8px;
     border: 1px solid #ccc;
 }
+.file-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    justify-content: center;
+}
 
+.file-name {
+    font-size: 12px;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    text-align: center;
+    margin-top: 4px;
+}
 .remove-btn {
     position: absolute;
     top: -5px;
     right: -5px;
-    background-color: red;
+    background-color: var(--primario);
     color: white;
     border: none;
     border-radius: 50%;
@@ -94,7 +117,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
     color: #aaa;
     cursor: pointer;
     >img{
@@ -103,3 +125,16 @@
         object-fit: cover;
     }
 }
+
+textarea,select{
+    width: 100%;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    resize: none;
+    font-size: 14px;
+}
+label{
+    font-size: 1.3rem;
+}
+
