@@ -68,6 +68,19 @@ const getAssetByCategory = async (name, token) => {
     const response = await axios.get(`${API_URL}categories/${encodeURIComponent(name)}`, config);
     return response.data;
 };
+
+const getFilteredAssets = async (userId, tag, category,searchQuery) => {
+    const queryParams = new URLSearchParams();
+  
+    if (userId) queryParams.append("user", userId);
+    if (tag) queryParams.append("tag", tag);
+    if (category) queryParams.append("cat", category);
+    if (searchQuery) queryParams.append("searchQuery", searchQuery);
+  
+    const response = await axios.get(`/api/assets/search?${queryParams.toString()}`);
+    return response;
+  };
+
 const assetService={
     createAsset,
     getAssets,
@@ -75,7 +88,8 @@ const assetService={
     getAsset,
     getUserAssets,
     getAssetByTag,
-    getAssetByCategory
+    getAssetByCategory,
+    getFilteredAssets
 }
 
 

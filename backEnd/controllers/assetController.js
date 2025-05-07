@@ -220,6 +220,57 @@ const getAssetByCategory = asyncHandler(async (req, res) => {
     res.status(200).json(assets);
 });
 
+const searchAssets = asyncHandler(async (req, res) => {
+    const { user, tag, cat, searchQuery } = req.query;
+    const filter = {};
+  
+    // Filtrar por user si está presente
+    if (user) {
+      console.log("user", user);
+      filter.user = user;
+    }
+  
+    // Filtrar por tag si está presente
+    if (tag) {
+      console.log("tag", tag);
+      const foundTag = await Tag.findOne({ name: tag });
+      if (!foundTag) {
+        return res.status(404).json({ message: "Tag no encontrado" });
+      }
+      filter.tags = foundTag._id;
+    }
+  
+    // Filtrar por categoría si está presente
+    if (cat) {
+      console.log("category", cat);
+      const rawCategory = decodeURIComponent(cat).trim().toLowerCase();
+      const foundCategory = await Category.findOne({ name: new RegExp(`^${rawCategory}$`, 'i') });
+      if (!foundCategory) {
+        return res.status(404).json({ message: "Categoría no encontrada" });
+      }
+      filter.category = foundCategory._id;
+    }
+  
+    // Filtrar por título si searchQuery está presente
+    if (searchQuery) {
+      console.log("searchQuery", searchQuery);
+      filter.title = new RegExp(searchQuery, 'i');  // 'i' para no diferenciar entre mayúsculas y minúsculas
+    }
+  
+    // Buscar los assets con los filtros aplicados
+    const assets = await Asset.find(filter)
+      .populate('tags')
+      .populate('category');
+  
+    if (!assets.length) {
+      return res.status(404).json({ message: "No se encontraron assets con los filtros aplicados" });
+    }
+  
+    res.status(200).json(assets);
+  });
+  
+  
+
 module.exports = {
     getAsset,
     postAsset,
@@ -229,5 +280,6 @@ module.exports = {
     getAssetById,
     getUserAssets,
     getAssetByTag,
-    getAssetByCategory
+    getAssetByCategory,
+    searchAssets
 };

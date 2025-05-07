@@ -96,7 +96,18 @@ export const getAssetByCategory = createAsyncThunk('assets/getByCat', async (nam
         return thunkAPI.rejectWithValue(message);
     }
 });
-
+// assetSlice.js
+export const getAssetsFiltered = createAsyncThunk(
+    'assets/getFiltered',
+    async ({ userId, tag, category , searchQuery}, thunkAPI) => {
+      try {
+        const response = await assetService.getFilteredAssets(userId, tag, category,searchQuery);
+        return response.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      }
+    }
+  );
 export const assetSlice = createSlice({
     name: 'asset',
     initialState,
@@ -165,6 +176,7 @@ export const assetSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.userAssets = action.payload; 
+                state.assets = action.payload; 
             })
             .addCase(getUserAssets.rejected, (state, action) => {
                 state.isLoading = false;
@@ -193,6 +205,19 @@ export const assetSlice = createSlice({
                 state.assets = action.payload; 
             })
             .addCase(getAssetByCategory.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getAssetsFiltered.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAssetsFiltered.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.assets = action.payload; 
+            })
+            .addCase(getAssetsFiltered.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

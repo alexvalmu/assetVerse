@@ -35,7 +35,7 @@ export const tagSlice = createSlice({
             .addCase(getTags.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.tags.push(action.payload);
+                state.tags=action.payload;
             })
             .addCase(getTags.rejected, (state, action) => {
                 state.isLoading = false;

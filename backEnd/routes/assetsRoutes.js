@@ -15,6 +15,7 @@ router.route('/')
     ]),
     assetController.postAsset
   );
+  router.get('/search', assetController.searchAssets);
 
 router.route('/:id')
   .put(protect, upload.array('files'), assetController.putAsset)
@@ -30,7 +31,6 @@ router.route('/tags/:tagId')
 
 router.route('/categories/:value')
 .get(assetController.getAssetByCategory);
-
 // Ruta para eliminar archivos individuales
 router.route('/:assetId/files/:fileId')
   .delete(protect, assetController.deleteFileFromAsset);

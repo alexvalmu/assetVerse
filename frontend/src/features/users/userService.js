@@ -8,8 +8,13 @@ const getUserById = async (userId) => {
   return response.data;
 };
 
+const getAllUsers = async () => {
+  const response = await axios.get(API_URL);
+  return response.data;
+};
 const userService = {
   getUserById,
+  getAllUsers,
 };
 
 export default userService;
