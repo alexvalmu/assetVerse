@@ -4,6 +4,7 @@ import assetReducer from '../features/assets/assetSlice';
 import categoryReducer from '../features/categories/categorySlice';
 import userReducer from '../features/users/userSlice';
 import commentReducer from '../features/comments/commentSlice';
+import tagReducer from '../features/tags/tagSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     categories:categoryReducer,
     users: userReducer,
     comments: commentReducer,
+    tags: tagReducer,
   },
 });

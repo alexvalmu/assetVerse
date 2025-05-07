@@ -65,7 +65,7 @@ const getAssetByCategory = async (name, token) => {
         },
     };
 
-    const response = await axios.get(API_URL+'categories/'+name, config); 
+    const response = await axios.get(`${API_URL}categories/${encodeURIComponent(name)}`, config);
     return response.data;
 };
 const assetService={

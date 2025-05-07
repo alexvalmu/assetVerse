@@ -70,7 +70,7 @@ const postAsset = asyncHandler(async (req, res, next) => {
         mainImage: mainImagen,
         files: files,
         desc: req.body.desc,
-        category: req.body.category,
+        category: req.body.category.trim().toLowerCase(),
         tags: tagIds
     });
 
@@ -204,7 +204,9 @@ const getAssetByCategory = asyncHandler(async (req, res) => {
     }
 
     // Buscar la categoría por nombre
-    const category = await Category.findOne({ name: value });
+    const rawValue = decodeURIComponent(value).trim().toLowerCase();
+    const category = await Category.findOne({ name: new RegExp(`^${rawValue}$`, 'i') });
+    
     if (!category) {
         return res.status(404).json({ message: "Categoría no encontrada" });
     }
