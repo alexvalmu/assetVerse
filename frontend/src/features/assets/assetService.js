@@ -58,13 +58,24 @@ const getAssetByTag = async (name, token) => {
     return response.data;
 };
 
+const getAssetByCategory = async (name, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    const response = await axios.get(API_URL+'categories/'+name, config); 
+    return response.data;
+};
 const assetService={
     createAsset,
     getAssets,
     deleteAsset,
     getAsset,
     getUserAssets,
-    getAssetByTag
+    getAssetByTag,
+    getAssetByCategory
 }
 
 

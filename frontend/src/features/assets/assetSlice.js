@@ -3,6 +3,7 @@ import assetService from './assetService';
 
 const initialState = {
     assets: [],
+    userAssets: [],
     isError: false,
     isLoading: false,
     isSuccess: false,
@@ -84,6 +85,18 @@ export const getAssetByTag = createAsyncThunk('assets/getByTag', async (name, th
     }
 });
 
+export const getAssetByCategory = createAsyncThunk('assets/getByCat', async (name, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.user.token;
+        return await assetService.getAssetByCategory(name, token);
+    } catch (error) {
+        const message = (error.response && error.response.data && error.response.data.message) || 
+                       error.message || 
+                       error.toString();
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 export const assetSlice = createSlice({
     name: 'asset',
     initialState,
@@ -138,7 +151,7 @@ export const assetSlice = createSlice({
             .addCase(deleteAsset.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.assets = state.assets.filter(asset => asset._id !== action.payload.id);
+                state.userAssets = state.userAssets.filter(asset => asset._id !== action.payload.id);
             })
             .addCase(deleteAsset.rejected, (state, action) => {
                 state.isLoading = false;
@@ -151,7 +164,7 @@ export const assetSlice = createSlice({
             .addCase(getUserAssets.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isSuccess = true;
-                state.assets = action.payload; 
+                state.userAssets = action.payload; 
             })
             .addCase(getUserAssets.rejected, (state, action) => {
                 state.isLoading = false;
@@ -167,6 +180,19 @@ export const assetSlice = createSlice({
                 state.assets = action.payload; 
             })
             .addCase(getAssetByTag.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+            .addCase(getAssetByCategory.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getAssetByCategory.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.assets = action.payload; 
+            })
+            .addCase(getAssetByCategory.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;

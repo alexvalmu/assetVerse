@@ -44,7 +44,9 @@ const postAsset = asyncHandler(async (req, res, next) => {
         }));
     }
     //manejo de los tags 
-    const tagNames = req.body.tagNames || []; // ["3D", "Blender"]
+    // const tagNames = req.body.tagNames || []; // ["3D", "Blender"]
+    const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
+
     console.log("Tags recibidos:", req.body.tagNames);
 
     const existingTags = await Tag.find({ name: { $in: tagNames } });
@@ -72,7 +74,8 @@ const postAsset = asyncHandler(async (req, res, next) => {
         tags: tagIds
     });
 
-    res.status(200).json(asset);
+   res.status(200).json(asset);
+    //res.redirect(`/assets/${asset._id}`);
 });
 
 const putAsset = asyncHandler(async (req, res) => {
