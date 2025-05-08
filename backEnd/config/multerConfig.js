@@ -24,12 +24,8 @@ const storage = multer.diskStorage({
 
 // Filtros para tipos de archivo permitidos
 const fileFilter = (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-    if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(new Error('Tipo de archivo no permitido'), false);
-    }
+    // Siempre permitir cualquier tipo de archivo
+    cb(null, true);
 };
 
 // Configuración final de Multer
@@ -37,9 +33,9 @@ const upload = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
-        fileSize: 10 * 1024 * 1024, // 10MB límite por archivo
-        files: 6 // Máximo 5 archivos por petición
+        fileSize: 300 * 1024 * 1024, 
+        files: 6 
     }
 });
 
-module.exports = upload;
+module.exports = upload; 

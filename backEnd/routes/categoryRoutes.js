@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const { protect } = require('../middlewares/authMiddleware');
+
 const {
     getCategories,
     createCategory,
@@ -10,7 +12,7 @@ const {
 // Rutas públicas
 router.get("/", getCategories);
 
-router.post("/",createCategory);
-router.delete("/:id",deleteCategory);
+router.post("/",protect, createCategory);
+router.delete("/:id",protect,deleteCategory);
 
 module.exports = router;

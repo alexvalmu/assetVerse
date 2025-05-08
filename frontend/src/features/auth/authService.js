@@ -31,7 +31,6 @@ const logout = ()=>{
 
 //get user profile
 const getUserProfile = async (token) => {
-    console.log(token);
     const config= {
         headers: {
             Authorization: `Bearer ${token}`

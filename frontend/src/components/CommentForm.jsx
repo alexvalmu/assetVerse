@@ -29,7 +29,7 @@ function CommentForm() {
 
     return (
         <div className="comment-form">
-            <h2>Deja un comentario</h2>
+            <h2>Leave a comment</h2>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <div className="stars">

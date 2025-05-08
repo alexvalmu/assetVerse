@@ -5,7 +5,7 @@ const commentController = require('../controllers/commentController');
 
 router.route('/')
   .get(commentController.getComment)
-  .post( commentController.postComment);
+  .post(protect, commentController.postComment);
 
 router.route('/asset/:id')
   .get(commentController.getAssetComments);

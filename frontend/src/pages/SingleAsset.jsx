@@ -58,27 +58,27 @@ function SingleAsset() {
         if (asset && asset.mainImage?.[0]?.filename) {
             setMainPreview(`http://localhost:5000/uploads/${asset.mainImage[0].filename}`);
         }
-        
-            const fetchUser = async () => {
-                setLoadingUser(true);
-                try {
-                    const action = await dispatch(getUserById(asset.user));
-                    const userData = action.payload;
-                    setAssetOwner(userData);
-                } catch (err) {
-                    console.error("Error al cargar el usuario", err);
-                } finally {
-                    setLoadingUser(false);
-                }
-            };
-        
-            if (asset?.user) {
-                fetchUser();
+
+        const fetchUser = async () => {
+            setLoadingUser(true);
+            try {
+                const action = await dispatch(getUserById(asset.user));
+                const userData = action.payload;
+                setAssetOwner(userData);
+            } catch (err) {
+                console.error("Error al cargar el usuario", err);
+            } finally {
+                setLoadingUser(false);
             }
-        
-        
+        };
+
+        if (asset?.user) {
+            fetchUser();
+        }
+
+
     }, [asset, dispatch]);
-    
+
     if (isLoading) {
         return <Spinner />;
     }
@@ -124,9 +124,10 @@ function SingleAsset() {
                     return (
                         <div
                             key={`file-${index}`}
-                           
+
                             style={{
-                                opacity: mainPreview.includes(file.filename) ? '0.5' : '1'}}
+                                opacity: mainPreview.includes(file.filename) ? '0.5' : '1'
+                            }}
                             onClick={() => {
                                 if (isImage) {
                                     setMainPreview(`http://localhost:5000/uploads/${file.filename}`);
@@ -158,36 +159,42 @@ function SingleAsset() {
                 <p>{asset?.desc}</p>
                 <TagList className="tags" tags={asset?.tags} />
                 <p>
-                {loadingUser ? 'Loading user...' : (
-                    <Link to={`/categories?user=${asset.user}`}>
-                    by {assetOwner?.name}
-                    </Link>
-                )}
+                    {loadingUser ? 'Loading user...' : (
+                        <Link to={`/categories?user=${asset.user}`}>
+                            by {assetOwner?.name}
+                        </Link>
+                    )}
                 </p>
                 {asset?.ratingAverage !== undefined && (
                     <div className="asset-rating">
                         <p>{comments.length}</p>
                         <StarsRating rating={asset.ratingAverage} />
                         {comments.length > 0 && (
-                        <button onClick={toggleComments} className="btn btn-link">
-                            {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
-                        </button>
-                    )}
+                            <button onClick={toggleComments} className="btn btn-link">
+                                {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
+                            </button>
+                        )}
                     </div>
                 )}
 
-                
+
 
                 {/* Comentarios */}
-                {user && user._id !== asset?.user && (
-                    <div className="comments-section">
-                        {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
-                            <CommentItem key={comment._id} comment={comment} />
-                        ))}
-                        
-                        <CommentForm />
-                    </div>
-                )}
+                {user ? (
+                    user._id !== asset?.user ? (
+                        <div className="comments-section">
+                            {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
+                                <CommentItem key={comment._id} comment={comment} />
+                            ))}
+                            <CommentForm />
+                        </div>
+                    ) : (
+                        <p style={{ marginTop: '20px', fontStyle: 'italic', color: '#777' }}>
+                            You can't comment on your own asset.
+                        </p>
+                    )
+                ) : null}
+
             </div>
 
             <div className="botones-guardado">
