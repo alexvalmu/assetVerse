@@ -80,7 +80,7 @@ function Header() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleSearchKeyPress}
-                    placeholder="Search assets..."
+                    placeholder="Search assets"
                     aria-label="Search"
                   />
                   <FaSearch className="search-icon" />

@@ -179,13 +179,15 @@ function SingleAsset() {
                 
 
                 {/* Comentarios */}
-                <div className="comments-section">
-                    {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
-                        <CommentItem key={comment._id} comment={comment} />
-                    ))}
-                    
-                    <CommentForm />
-                </div>
+                {user && user._id !== asset?.user && (
+                    <div className="comments-section">
+                        {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
+                            <CommentItem key={comment._id} comment={comment} />
+                        ))}
+                        
+                        <CommentForm />
+                    </div>
+                )}
             </div>
 
             <div className="botones-guardado">

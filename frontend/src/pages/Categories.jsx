@@ -158,7 +158,7 @@ const [searchQuery, setSearchQuery] = useState(search || "");
         <div className="search-bar large"> <input
         type="text"
         value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)} // Actualiza el valor del input
+        onChange={(e) => setSearchQuery(e.target.value)}
         onKeyPress={handleSearchKeyPress} // Ejecuta la búsqueda al presionar Enter
         placeholder="Search assets"
       /><FaSearch className="search-icon" /></div>

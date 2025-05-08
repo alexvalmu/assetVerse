@@ -91,16 +91,17 @@ header {
 
         &:hover {
           color: #730000;
-          
+
         }
 
-       
+
       }
     }
+
     .active {
       font-weight: bold;
-      text-decoration: underline; 
-      color:var(--primario);
+      text-decoration: underline;
+      color: var(--primario);
     }
   }
 
@@ -400,76 +401,80 @@ form {
     }
   }
 
-  .assets-section {
-    flex: 1;
-    padding: 1rem;
+  .assets-perfil {
 
-    >h2 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
+    .assets-section {
+      flex: 1;
+      padding: 1rem;
 
-    >div {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
+      >h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
 
-      .asset-item {
-        overflow: hidden;
-        width: 100%;
-        height: 0;
-        padding-bottom: 100%;
-        position: relative;
-        border-radius: 15px;
+      >div {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
 
-        color: var(--primario);
-
-        img {
-          position: absolute;
-          top: -15px;
-          left: -15px;
-          right: 0;
-          bottom: 0;
+        .asset-item {
+          overflow: hidden;
           width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 10px;
-          z-index: 1;
-          padding: 10px;
-        }
+          height: 0;
+          padding-bottom: 100%;
+          position: relative;
+          border-radius: 15px;
+          color: var(--primario);
 
-        .close-btn {
-          position: absolute;
-          left: 10px;
-          background: none;
-          color: var(--fondo);
-          border: none;
-          font-size: 15px;
-          font-weight: bold;
-          cursor: pointer;
-          z-index: 2;
+          img {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            z-index: 1;
+            padding: 10px;
+          }
 
-          &:hover {
-            transform: scale(1.2);
+          .close-btn {
+            position: absolute;
+            left: 10px;
+            background: none;
+            color: var(--fondo);
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2;
+
+            &:hover {
+              transform: scale(1.2);
+            }
           }
         }
       }
+
+      >p {
+        color: var(--primario);
+        font-size: 0.95rem;
+      }
     }
 
-    >p {
-      color: var(--primario);
-      font-size: 0.95rem;
-    }
-  }
-  .favorites-section{
-    flex: 1;
-    padding: 1rem;
-    >h2{
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: var(--primario);
+    .favorites-section {
+      flex: 1;
+      padding: 1rem;
+
+      >h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--primario);
+      }
     }
   }
 }
@@ -556,18 +561,22 @@ footer {
 
   }
 }
-.categories-container{
+
+.categories-container {
   display: flex;
-  .content{
-    width:100%;
-    .assets{
+
+  .content {
+    width: 100%;
+
+    .assets {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     }
   }
-  .category-list{
-    width:250px;
-    padding:1em;
+
+  .category-list {
+    width: 250px;
+    padding: 1em;
     list-style-type: none;
   }
 }
@@ -672,6 +681,7 @@ footer {
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
+
   >input {
     width: 100%;
     padding: 8px 10px;
@@ -683,7 +693,7 @@ footer {
   .search-icon {
     color: #202020;
     cursor: pointer;
-    right:14px;
+    right: 14px;
     position: absolute;
     top: 25%;
 
@@ -769,16 +779,16 @@ footer {
 
 .category-list button {
   padding: 0.4rem 0.8rem;
-  border: 1px solid #ccc;
-  background-color: #f2f2f2;
+  border: 1px solid var(--primario);
+  background-color: white;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 18px;
 }
 
 .category-list button.active {
-  background-color: #007bff;
+  background-color: var(--primario);
   color: white;
-  border-color: #007bff;
+  border-color: var(--primario);
 }
 
 
