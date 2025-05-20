@@ -55,8 +55,10 @@ function SingleAsset() {
     }, [dispatch, assetId, isError, message]);
 
     useEffect(() => {
-        if (asset && asset.mainImage?.[0]?.filename) {
-            setMainPreview(`http://localhost:5000/uploads/${asset.mainImage[0].filename}`);
+         if (asset && asset.mainImage?.[0]?.url) {
+            setMainPreview(asset.mainImage[0].url);
+        } else {
+            setMainPreview('NO_PREVIEW');
         }
 
         const fetchUser = async () => {
@@ -104,17 +106,17 @@ function SingleAsset() {
 
             {/* Miniaturas */}
             <div className="miniaturas">
-                {asset.mainImage && asset.mainImage.map((img, index) => (
+                 {asset.mainImage && asset.mainImage.map((img, index) => (
                     <img
                         key={`main-${index}`}
-                        src={`http://localhost:5000/uploads/${img.filename}`}
+                        src={img.url || img.path}
                         alt={`Miniatura ${index}`}
                         className="miniatura"
                         style={{
-                            opacity: mainPreview.includes(img.filename) ? '0.5' : '1',
+                            opacity: mainPreview === (img.url || img.path) ? '0.5' : '1',
                             cursor: 'pointer'
                         }}
-                        onClick={() => setMainPreview(`http://localhost:5000/uploads/${img.filename}`)}
+                        onClick={() => setMainPreview(img.url || img.path)}
                     />
                 ))}
 
