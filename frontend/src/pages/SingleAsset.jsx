@@ -27,6 +27,7 @@ function SingleAsset() {
 
     const [assetOwner, setAssetOwner] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
+
     const toggleComments = () => {
         setShowAllComments(prev => !prev);
     };
@@ -55,8 +56,10 @@ function SingleAsset() {
     }, [dispatch, assetId, isError, message]);
 
     useEffect(() => {
-        if (asset && asset.mainImage?.[0]?.filename) {
-            setMainPreview(`http://localhost:5000/uploads/${asset.mainImage[0].filename}`);
+        if (asset && asset.mainImage?.[0]?.url) {
+            setMainPreview(asset.mainImage[0].url);
+        } else {
+            setMainPreview('NO_PREVIEW');
         }
 
         const fetchUser = async () => {
@@ -75,8 +78,6 @@ function SingleAsset() {
         if (asset?.user) {
             fetchUser();
         }
-
-
     }, [asset, dispatch]);
 
     if (isLoading) {
@@ -107,30 +108,29 @@ function SingleAsset() {
                 {asset.mainImage && asset.mainImage.map((img, index) => (
                     <img
                         key={`main-${index}`}
-                        src={`http://localhost:5000/uploads/${img.filename}`}
+                        src={img.url || img.path}
                         alt={`Miniatura ${index}`}
                         className="miniatura"
                         style={{
-                            opacity: mainPreview.includes(img.filename) ? '0.5' : '1',
+                            opacity: mainPreview === (img.url || img.path) ? '0.5' : '1',
                             cursor: 'pointer'
                         }}
-                        onClick={() => setMainPreview(`http://localhost:5000/uploads/${img.filename}`)}
+                        onClick={() => setMainPreview(img.url || img.path)}
                     />
                 ))}
 
                 {asset.files && asset.files.map((file, index) => {
                     const isImage = file.mimetype.startsWith('image/');
-
                     return (
                         <div
                             key={`file-${index}`}
-
                             style={{
-                                opacity: mainPreview.includes(file.filename) ? '0.5' : '1'
+                                opacity: mainPreview === (file.url || file.path) ? '0.5' : '1',
+                                cursor: 'pointer'
                             }}
                             onClick={() => {
                                 if (isImage) {
-                                    setMainPreview(`http://localhost:5000/uploads/${file.filename}`);
+                                    setMainPreview(file.url || file.path);
                                 } else {
                                     setMainPreview('NO_PREVIEW');
                                 }
@@ -138,7 +138,7 @@ function SingleAsset() {
                         >
                             {isImage ? (
                                 <img
-                                    src={`http://localhost:5000/uploads/${file.filename}`}
+                                    src={file.url || file.path}
                                     alt={file.filename}
                                     className="miniatura"
                                 />
@@ -177,8 +177,6 @@ function SingleAsset() {
                     </div>
                 )}
 
-
-
                 {/* Comentarios */}
                 {user ? (
                     user._id !== asset?.user ? (
@@ -194,7 +192,6 @@ function SingleAsset() {
                         </p>
                     )
                 ) : null}
-
             </div>
 
             <div className="botones-guardado">

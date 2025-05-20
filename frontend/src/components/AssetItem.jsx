@@ -35,11 +35,9 @@ function AssetItem({ asset }) {
       <Link to={`/assets/${asset._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div className="main-image">
           {asset.mainImage && asset.mainImage.length > 0 && (
-            <img
-              src={`http://localhost:5000/uploads/${asset.mainImage[0].filename}`}
-              alt="Asset"
-              className="asset-image"
-            />
+           <img src={asset.mainImage[0].url || asset.mainImage[0].path} alt="Asset" className="asset-image" />
+
+
           )}
         </div>
 

@@ -30,24 +30,25 @@ const postAsset = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "El campo de imagen principal es requerido" });
   }
 
-  const mainImagen = req.files.mainImage.map(file => ({
+ const mainImagen = req.files.mainImage.map(file => ({
   filename: file.originalname,
-  path: file.path, // URL en Cloudinary
-  public_id: file.filename.split('.')[0], // o file.filename si ya es un ID único
+  url: file.path,       // <-- cambia 'path' por 'url'
+  public_id: file.filename.split('.')[0],
   size: file.size,
   mimetype: file.mimetype,
 }));
 
-  let files = [];
-  if (req.files.files && req.files.files.length > 0) {
-   files = req.files.files.map(file => ({
-  filename: file.originalname,
-  path: file.path,
-  public_id: file.filename,
-  size: file.size,
-  mimetype: file.mimetype,
-}));
-  }
+// Igual para files
+let files = [];
+if (req.files.files && req.files.files.length > 0) {
+  files = req.files.files.map(file => ({
+    filename: file.originalname,
+    url: file.path,     // <-- aquí también
+    public_id: file.filename,
+    size: file.size,
+    mimetype: file.mimetype,
+  }));
+}
 
   const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
   const existingTags = await Tag.find({ name: { $in: tagNames } });
