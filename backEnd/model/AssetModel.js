@@ -15,6 +15,10 @@ const AssetSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        url: {
+            type: String,
+            required: true
+        },
         path: {
             type: String,
             required: true
@@ -38,6 +42,10 @@ const AssetSchema = new mongoose.Schema({
     }],
     files: [{
         filename: {
+            type: String,
+            required: true
+        },
+        url: {
             type: String,
             required: true
         },
