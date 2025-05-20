@@ -7,7 +7,8 @@
     "start": "node ./backEnd/server.js",
     "server": "node ./backEnd/server.js",
     "client": "npm start --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "render-build": "npm install && npm run server"
   },
   "author": "",
   "license": "ISC",
