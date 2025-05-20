@@ -45,18 +45,18 @@ function Dashboard() {
     <>
       <section className="heading">
         <div className="buttons">
-          <section className="filters">
-          <button onClick={() => navigate('/categories')}>Todos</button>
-          <button onClick={() => navigate('/categories?cat=3D')}>3Ds</button>
-          <button onClick={() => navigate('/categories?cat=2D')}>2Ds</button>
-          <button onClick={() => navigate('/categories?cat=Audio')}>Audio</button>
-          <button onClick={() => navigate('/categories?cat=Code')}>Code</button>
-          </section>
-          <section className="controls">
+          <div className="filters">
+            <button onClick={() => navigate('/categories')}>Todos</button>
+            <button onClick={() => navigate('/categories?cat=3D')}>3Ds</button>
+            <button onClick={() => navigate('/categories?cat=2D')}>2Ds</button>
+            <button onClick={() => navigate('/categories?cat=Audio')}>Audio</button>
+            <button onClick={() => navigate('/categories?cat=Code')}>Code</button>
+          </div>
+          <div className="controls">
             <button onClick={() => setSortBy("nameAsc")}>A-Z</button>
             <button onClick={() => setSortBy("nameDesc")}>Z-A</button>
             <button onClick={() => setSortBy("recent")}>Recent</button>
-          </section>
+          </div>
         </div>
         <h2>All Assets</h2>
       </section>

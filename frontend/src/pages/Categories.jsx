@@ -22,7 +22,7 @@ function Categories() {
   const search = searchParams.get('search');
 
   const [sortBy, setSortBy] = useState("recent");
-const [searchQuery, setSearchQuery] = useState(search || "");
+  const [searchQuery, setSearchQuery] = useState(search || "");
   const [selectedCategory, setSelectedCategory] = useState(cat || ""); // Manejar la categoría seleccionada
   const [selectedTag, setSelectedTag] = useState(tag || "");
   const [selectedUser, setSelectedUser] = useState(userId || "");
@@ -164,23 +164,7 @@ const [searchQuery, setSearchQuery] = useState(search || "");
       /><FaSearch className="search-icon" /></div>
         <div className="buttons">
           <section className="filters">
-            <div className="category-list">
-              <button
-                className={!selectedCategory ? "active" : ""}
-                onClick={() => handleCategoryChange({ target: { value: "" } })}
-              >
-                All Categories
-              </button>
-              {categories.map((category) => (
-                <button
-                  key={category._id}
-                  className={selectedCategory === category.name ? "active" : ""}
-                  onClick={() => handleCategoryChange({ target: { value: category.name } })}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div>
+            
             {/* Dropdown para seleccionar tag */}
             <select
               value={selectedTag}
@@ -208,28 +192,45 @@ const [searchQuery, setSearchQuery] = useState(search || "");
               ))}
             </select>
           </section>
-          <section className="controls">
+          <div className="controls">
             <button onClick={() => setSortBy("nameAsc")}>A-Z</button>
             <button onClick={() => setSortBy("nameDesc")}>Z-A</button>
             <button onClick={() => setSortBy("recent")}>Recent</button>
-          </section>
-
-
-        </div>
-
-      </section>
-
-      <section className="content">
-        {sortedAssets.length > 0 ? (
-          <div className="assets">
-            {sortedAssets.map((asset) => (
-              <AssetItem key={asset._id} asset={asset} />
-            ))}
           </div>
-        ) : (
-          <h3>No assets found</h3>
-        )}
+        </div>
       </section>
+
+      <div className="grid-categorias">
+          <div className="category-list">
+                  <button
+                    className={!selectedCategory ? "active" : ""}
+                    onClick={() => handleCategoryChange({ target: { value: "" } })}
+                  >
+                    All Categories
+                  </button>
+                  {categories.map((category) => (
+                    <button
+                      key={category._id}
+                      className={selectedCategory === category.name ? "active" : ""}
+                      onClick={() => handleCategoryChange({ target: { value: category.name } })}
+                    >
+                      {category.name}
+                    </button>
+                  ))}
+          </div>
+
+          <section className="content">
+            {sortedAssets.length > 0 ? (
+              <div className="assets">
+                {sortedAssets.map((asset) => (
+                  <AssetItem key={asset._id} asset={asset} />
+                ))}
+              </div>
+            ) : (
+              <h3>No assets found</h3>
+            )}
+          </section>
+      </div>
     </>
   );
 }
