@@ -105,7 +105,7 @@ function SingleAsset() {
 
             {/* Miniaturas */}
             <div className="miniaturas">
-                {asset.mainImage && asset.mainImage.map((img, index) => (
+                 {asset.mainImage && asset.mainImage.map((img, index) => (
                     <img
                         key={`main-${index}`}
                         src={img.url || img.path}
