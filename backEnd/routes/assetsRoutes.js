@@ -9,10 +9,7 @@ router.route('/')
   .get(assetController.getAsset)
   .post(
     protect,
-    upload.fields([
-      { name: 'mainImage', maxCount: 1 },
-      { name: 'files', maxCount: 5 }
-    ]),
+    upload.fields([{ name: 'mainImage' }, { name: 'files' }]),
     assetController.postAsset
   );
   router.get('/search', assetController.searchAssets);

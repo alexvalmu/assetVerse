@@ -1,7 +1,7 @@
 import { FaSignInAlt, FaSignOutAlt, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAssets, getUserAssets, getAssetByTag, getAssetByCategory,getAssetsFiltered, reset } from "../features/assets/assetSlice";
+import { getAssets, getUserAssets, getAssetByTag, getAssetByCategory, getAssetsFiltered, reset } from "../features/assets/assetSlice";
 import { getAllUsers } from '../features/users/userSlice';
 import { useEffect, useState } from 'react';
 import Spinner from '../components/Spinner';
@@ -89,7 +89,7 @@ function Categories() {
 
   useEffect(() => {
     if (!categoriesLoaded) return;
-  
+
     // Enviar searchQuery al backend junto con los demás filtros
     dispatch(getAssetsFiltered({
       userId: selectedUser || null,
@@ -97,12 +97,12 @@ function Categories() {
       category: selectedCategory || null,
       searchQuery: searchQuery || ""  // Incluir searchQuery en la solicitud
     }));
-  
+
     return () => {
       dispatch(reset());
     };
   }, [selectedUser, selectedTag, selectedCategory, categoriesLoaded, dispatch]);
-  
+
 
 
 
@@ -113,7 +113,7 @@ function Categories() {
     if (selectedCategory) {
       queryParams.set('cat', selectedCategory);
     }
-    if( selectedUser) {
+    if (selectedUser) {
       queryParams.set('user', selectedUser);
     }
 
@@ -122,12 +122,12 @@ function Categories() {
       queryParams.set('tag', selectedTag);
     }
 
-    if (selectedCategory || selectedTag|| selectedUser) {
+    if (selectedCategory || selectedTag || selectedUser) {
       navigate(`/categories?${queryParams.toString()}`);
     } else {
       navigate('/categories');
     }
-  }, [selectedCategory,selectedUser, selectedTag, navigate]);
+  }, [selectedCategory, selectedUser, selectedTag, navigate]);
 
 
   if (isLoading || isLoadingCategories) {
@@ -156,15 +156,16 @@ function Categories() {
     <>
       <section className="heading">
         <div className="search-bar large"> <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onKeyPress={handleSearchKeyPress} // Ejecuta la búsqueda al presionar Enter
-        placeholder="Search assets"
-      /><FaSearch className="search-icon" /></div>
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyPress={handleSearchKeyPress} // Ejecuta la búsqueda al presionar Enter
+          placeholder="Search assets"
+          /><FaSearch className="search-icon" />
+        </div>
         <div className="buttons">
           <section className="filters">
-            
+
             {/* Dropdown para seleccionar tag */}
             <select
               value={selectedTag}
@@ -178,7 +179,7 @@ function Categories() {
                 </option>
               ))}
             </select>
-               {/* Dropdown para seleccionar user */}
+            {/* Dropdown para seleccionar user */}
             <select
               value={selectedUser}
               onChange={handleUserChange}
@@ -186,7 +187,7 @@ function Categories() {
             >
               <option value="">All Users</option>
               {users.map((user) => (
-                <option key={user._id}  value={user._id}>
+                <option key={user._id} value={user._id}>
                   {user.name}
                 </option>
               ))}
@@ -201,35 +202,35 @@ function Categories() {
       </section>
 
       <div className="grid-categorias">
-          <div className="category-list">
-                  <button
-                    className={!selectedCategory ? "active" : ""}
-                    onClick={() => handleCategoryChange({ target: { value: "" } })}
-                  >
-                    All Categories
-                  </button>
-                  {categories.map((category) => (
-                    <button
-                      key={category._id}
-                      className={selectedCategory === category.name ? "active" : ""}
-                      onClick={() => handleCategoryChange({ target: { value: category.name } })}
-                    >
-                      {category.name}
-                    </button>
-                  ))}
-          </div>
+        <div className="category-list">
+          <button
+            className={!selectedCategory ? "active" : ""}
+            onClick={() => handleCategoryChange({ target: { value: "" } })}
+          >
+            All Categories
+          </button>
+          {categories.map((category) => (
+            <button
+              key={category._id}
+              className={selectedCategory === category.name ? "active" : ""}
+              onClick={() => handleCategoryChange({ target: { value: category.name } })}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
 
-          <section className="content">
-            {sortedAssets.length > 0 ? (
-              <div className="assets">
-                {sortedAssets.map((asset) => (
-                  <AssetItem key={asset._id} asset={asset} />
-                ))}
-              </div>
-            ) : (
-              <h3>No assets found</h3>
-            )}
-          </section>
+        <section className="content">
+          {sortedAssets.length > 0 ? (
+            <div className="assets">
+              {sortedAssets.map((asset) => (
+                <AssetItem key={asset._id} asset={asset} />
+              ))}
+            </div>
+          ) : (
+            <h3>No assets found</h3>
+          )}
+        </section>
       </div>
     </>
   );

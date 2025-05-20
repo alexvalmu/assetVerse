@@ -4,6 +4,7 @@ const User = require("../model/userModel");
 const path = require("path");
 const Tag = require("../model/tagModel");
 const Category = require('../model/categoryModel');
+const cloudinary = require('../config/cloudinary');
 
 
 const getAsset = asyncHandler(async (req, res) => {
@@ -20,59 +21,55 @@ const getAssetById = asyncHandler(async (req, res) => {
 });
 
 
-const postAsset = asyncHandler(async (req, res, next) => {
-    if (!req.body.title) {
-        return res.status(400).json({ message: "El campo de título del asset es requerido" });
-    }
-    if (req.files.mainImage && req.files.mainImage.length > 0) {
-        mainImagen = req.files.mainImage.map(file => ({
-            filename: file.filename,
-            path: path.relative(process.cwd(), file.path),
-            size: file.size,
-            mimetype: file.mimetype
-        }));
-    } else {
-        return res.status(400).json({ message: "El campo de imagen principal es requerido" });
-    }
-    let files = [];
-    if (req.files.files && req.files.files.length > 0) {
-        files = req.files.files.map(file => ({
-            filename: file.filename,
-            path: path.relative(process.cwd(), file.path),
-            size: file.size,
-            mimetype: file.mimetype
-        }));
-    }
-    //manejo de los tags 
-    // const tagNames = req.body.tagNames || []; // ["3D", "Blender"]
-    const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
+const postAsset = asyncHandler(async (req, res) => {
+  if (!req.body.title) {
+    return res.status(400).json({ message: "El campo de título del asset es requerido" });
+  }
 
-    const existingTags = await Tag.find({ name: { $in: tagNames } });
+  if (!req.files.mainImage || req.files.mainImage.length === 0) {
+    return res.status(400).json({ message: "El campo de imagen principal es requerido" });
+  }
 
-    const existingTagNames = existingTags.map(tag => tag.name);
-    const newTagNames = tagNames.filter(name => !existingTagNames.includes(name));
+  const mainImagen = req.files.mainImage.map(file => ({
+  filename: file.originalname,
+  path: file.path, // URL en Cloudinary
+  public_id: file.filename.split('.')[0], // o file.filename si ya es un ID único
+  size: file.size,
+  mimetype: file.mimetype,
+}));
 
-    const newTags = await Tag.insertMany(
-        newTagNames.map(name => ({ name })),
-        { ordered: false }
-    );
+  let files = [];
+  if (req.files.files && req.files.files.length > 0) {
+   files = req.files.files.map(file => ({
+  filename: file.originalname,
+  path: file.path,
+  public_id: file.filename,
+  size: file.size,
+  mimetype: file.mimetype,
+}));
+  }
 
-    const allTags = [...existingTags, ...newTags];
-    const tagIds = allTags.map(tag => tag._id);
+  const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
+  const existingTags = await Tag.find({ name: { $in: tagNames } });
+  const existingTagNames = existingTags.map(tag => tag.name);
+  const newTagNames = tagNames.filter(name => !existingTagNames.includes(name));
+  const newTags = await Tag.insertMany(newTagNames.map(name => ({ name })), { ordered: false });
+  const allTags = [...existingTags, ...newTags];
+  const tagIds = allTags.map(tag => tag._id);
 
-    const asset = await Asset.create({
-        title: req.body.title,
-        user: req.user.id,
-        mainImage: mainImagen,
-        files: files,
-        desc: req.body.desc,
-        category: req.body.category.trim().toLowerCase(),
-        tags: tagIds
-    });
+  const asset = await Asset.create({
+    title: req.body.title,
+    user: req.user.id,
+    mainImage: mainImagen,
+    files: files,
+    desc: req.body.desc,
+    category: req.body.category.trim().toLowerCase(),
+    tags: tagIds,
+  });
 
-   res.status(200).json(asset);
-    //res.redirect(`/assets/${asset._id}`);
+  res.status(200).json(asset);
 });
+
 
 const putAsset = asyncHandler(async (req, res) => {
     const asset = await Asset.findById(req.params.id);
@@ -112,29 +109,48 @@ const putAsset = asyncHandler(async (req, res) => {
     res.status(200).json(updatedAsset);
 });
 
+
 const deleteAsset = asyncHandler(async (req, res) => {
-    const asset = await Asset.findById(req.params.id);
-    if (!asset) {
-        throw new Error('Asset no encontrado');
-    }
-    if (!req.user) {
-        res.status(404);
-        throw new Error('Usuario no encontrado');
-    }
+  const asset = await Asset.findById(req.params.id);
+  if (!asset) {
+    return res.status(404).json({ message: 'Asset no encontrado' });
+  }
 
-    if (asset.user.toString() !== req.user.id) {
-        res.status(401);
-        throw new Error('No autorizado');
+  // Verifica si el usuario es el propietario
+  if (asset.user.toString() !== req.user.id) {
+    return res.status(403).json({ message: 'No autorizado para eliminar este asset' });
+  }
+
+  // Eliminar archivos de Cloudinary
+  const publicIds = [];
+
+  if (asset.mainImage) {
+    asset.mainImage.forEach(file => {
+      if (file.public_id) publicIds.push(file.public_id);
+    });
+  }
+
+  if (asset.files) {
+    asset.files.forEach(file => {
+      if (file.public_id) publicIds.push(file.public_id);
+    });
+  }
+
+  // Eliminar recursos de Cloudinary
+  for (const id of publicIds) {
+    try {
+      await cloudinary.uploader.destroy(id, { resource_type: 'auto' });
+    } catch (err) {
+      console.error(`Error eliminando ${id} de Cloudinary`, err);
     }
+  }
 
-    await User.updateMany(
-        { favorites: asset._id },
-        { $pull: { favorites: asset._id } }
-    );
+  // Eliminar asset de la base de datos
+  await asset.deleteOne();
 
-    await asset.deleteOne();
-    res.status(200).json({ id: req.params.id });
+  res.status(200).json({ message: 'Asset eliminado correctamente' });
 });
+
 
 // Nuevo controlador para manejar archivos individualmente
 const deleteFileFromAsset = asyncHandler(async (req, res) => {

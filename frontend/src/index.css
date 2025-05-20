@@ -634,6 +634,7 @@ footer {
 .content {
   padding: 1.5em;
   padding-top: 0;
+  width: 100%;
 }
 
 .stars-rating {
@@ -701,11 +702,18 @@ footer {
 }
 
 .category-list button {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid var(--primario);
-  background-color: white;
   cursor: pointer;
-  border-radius: 18px;
+  color: var(--primario);
+  background:none;
+  border:none;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2em;
+  font-weight: 500;
+  margin-left:2em;
+  margin-right: 2em;
+  padding: .3em .5em;
+  width: 200px;
 }
 
 .category-list button.active {
@@ -718,7 +726,6 @@ footer {
   display:flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-evenly;
 }
 
 
