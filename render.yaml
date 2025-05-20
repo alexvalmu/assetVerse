@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: assetverse-backend
+    env: node
+    plan: free
+    rootDir: .
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+      - key: PORT
+        value: 5000  # Render sobrescribe esto, pero puede ser útil para desarrollo
+      - key: MONGO_URI
+        value: mongodb+srv://avm157:avm157@assetversecluster.9409b.mongodb.net/?retryWrites=true&w=majority&appName=AssetVerseCluster
+      - key: JWT_SECRET
+        value: valmu
+
+  - type: web
+    name: assetverse-frontend
+    env: static
+    plan: free
+    rootDir: frontEnd
+    buildCommand: npm install && npm run build
+    staticPublishPath: build
