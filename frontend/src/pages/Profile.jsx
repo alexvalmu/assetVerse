@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { getUserProfile, reset as resetAuth } from '../features/auth/authSlice';
 import { getAssets, reset as resetAssets, getUserAssets, deleteAsset } from '../features/assets/assetSlice';
 import Spinner from '../components/Spinner';
-
+import '../profile.css';
 function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,7 +51,7 @@ function Profile() {
 
   return (
     <div className="container-perfil">
-      <section className="profile">
+      <section className="perfil">
         {user && (
           <div className="user-card">
             <button onClick={() => navigate('/edit-profile')}>Edit ✎</button>
@@ -78,12 +78,12 @@ function Profile() {
               ))}
             </div>
           ) : (
-            <p className="no-assets">Aún no has creado ningún asset.</p>
+            <p className="no-assets">You haven't uploaded assets yet</p>
           )}
         </section>
 
         <section className="favorites-section">
-          <h2>Favoritos</h2>
+          <h2>Favorites</h2>
           {user && user.favorites?.length > 0 ? (
             <div className="assets-grid">
               {assets
