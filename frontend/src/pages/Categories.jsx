@@ -165,7 +165,6 @@ function Categories() {
         </div>
         <div className="buttons">
           <section className="filters">
-
             {/* Dropdown para seleccionar tag */}
             <select
               value={selectedTag}
@@ -194,9 +193,19 @@ function Categories() {
             </select>
           </section>
           <div className="controls">
-            <button onClick={() => setSortBy("nameAsc")}>A-Z</button>
-            <button onClick={() => setSortBy("nameDesc")}>Z-A</button>
-            <button onClick={() => setSortBy("recent")}>Recent</button>
+            <button
+              className={sortBy === 'nameAsc' ? 'active' : ''}
+              onClick={() => setSortBy('nameAsc')}
+            >A-Z</button>
+            <button
+              className={sortBy === 'nameDesc' ? 'active' : ''}
+              onClick={() => setSortBy('nameDesc')}
+            >Z-A</button>
+            <button
+              className={sortBy === 'recent' ? 'active' : ''}
+              onClick={() => setSortBy('recent')}
+            >Recent</button>
+           
           </div>
         </div>
       </section>
@@ -228,7 +237,7 @@ function Categories() {
               ))}
             </div>
           ) : (
-            <h3>No assets found</h3>
+            <h3 className='no-assets'>No assets found</h3>
           )}
         </section>
       </div>
