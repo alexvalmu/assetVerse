@@ -103,6 +103,7 @@ header {
       text-decoration: underline;
       color: var(--primario);
     }
+    
   }
 
   >div {
@@ -491,6 +492,7 @@ footer {
   color: white;
   padding: 15px 20px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-size: 14px;
@@ -561,10 +563,10 @@ footer {
       }
   }
   .filters{
-  display:flex;
-  flex-direction: row;
+    display:flex;
+    flex-direction: row;
   
-}
+  }
 
   .controls>button {
     background-color: white;
@@ -617,6 +619,8 @@ footer {
 .search-bar.large {
   position: relative;
   display: flex;
+  flex-shrink: 1;
+  flex: 1;
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
@@ -714,6 +718,7 @@ footer {
   margin-bottom: .7rem;
   flex-direction: column;
   margin-top: 2rem;
+  
 }
 
 .category-list button {
@@ -728,7 +733,7 @@ footer {
   margin-left:2em;
   margin-right: 2em;
   padding: .3em .5em;
-  width: 200px;
+
 }
 
 .category-list button.active {
@@ -788,10 +793,13 @@ footer {
   .heading p {
     font-size: 1.5rem;
   }
+  footer{
+     flex-direction: column;
+  }
 }
 
 
-@media (max-width: 770px) {
+@media (max-width: 800px) {
   form {
     width: 90%;
   }
@@ -810,17 +818,17 @@ footer {
       display: none;
       flex-direction: column;
 
-      background-color: #dadada;
+      
       position: absolute;
       top: 80px;
       right: 0;
       padding: 10px;
       z-index: 1;
-      opacity: 0.9;
+       background-color: rgba(218, 218, 218, 0.9);
       text-align: right;
       align-items: end;
       border-radius: .3em;
-
+      
     }
 
     .menu-open .menu-list {
@@ -851,6 +859,7 @@ footer {
     >div {
       display: flex;
       align-items: right;
+     
     }
   }
 
@@ -858,5 +867,60 @@ footer {
     font-size: 1.5em;
     order: -1;
     margin-right: .5em;
+     opacity: 1 !important;
+  }
+  .btn{
+      font-weight: 600;
+    }
+
+  .category-list>button{
+    
+    margin-right:0;
+    margin-left: .9em;
+    padding-right: 0;
+  }
+  .assets{
+    margin:0;
+    padding:0;
+  }
+  .content{
+    padding: 0;
+    margin: 0;
+  }
+  .search-bar.large{
+    margin:0 auto;
+    width:90%;
+  }
+  .filters{
+    width:auto;
+     
+  }
+}
+
+@media (max-width:450px){
+  
+  .filters{
+    display: flex;
+   
+    width:60%;
+    margin-left:0 !important;
+    >select{
+      margin:.5em !important;
+      margin-left:0 !important;
+    }
+    
+  }
+   .category-list>button{
+    font-size: .8em !important;
+  }
+}
+
+@media (max-width:550px){
+  .filters{
+  flex-direction: column !important;
+
+  }
+  .category-list>button{
+    font-size:1em;
   }
 }
