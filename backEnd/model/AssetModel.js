@@ -23,10 +23,6 @@ const AssetSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        url: {
-            type: String,
-            required: true
-        },
         size: {
             type: Number,
             required: true
@@ -50,10 +46,6 @@ const AssetSchema = new mongoose.Schema({
             required: true
         },
         path: {
-            type: String,
-            required: true
-        },
-        url: {
             type: String,
             required: true
         },

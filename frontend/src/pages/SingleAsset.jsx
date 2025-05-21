@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaHeart, FaDownload } from "react-icons/fa";
+import { FaHeart, FaDownload, FaRegHeart } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from '../components/Spinner';
@@ -12,7 +12,8 @@ import CommentItem from "../components/CommentItem";
 import { addFavorite, removeFavorite } from "../features/auth/authSlice";
 import TagList from "../components/TagList";
 import CommentForm from "../components/CommentForm";
-
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function SingleAsset() {
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
     const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments);
     const { user } = useSelector((state) => state.auth);
-    const [mainPreview, setMainPreview] = useState('');
+    const [mainPreview, setMainPreview] = useState(null);
     const isFavorite = user?.favorites?.includes(assetId);
     const [showAllComments, setShowAllComments] = useState(false);
 
@@ -40,6 +41,43 @@ function SingleAsset() {
         }
     };
 
+
+
+    const handleDownload = async () => {
+        if ((!asset?.files || asset.files.length === 0) && (!asset?.mainImage || asset.mainImage.length === 0)) {
+            alert("No hay archivos para descargar.");
+            return;
+        }
+
+        const zip = new JSZip();
+        const filesFolder = zip.folder("files");
+
+        const fetchAndAddToZip = async (url, name, folder) => {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                folder.file(name, blob);
+            } catch (err) {
+                console.error(`Error al descargar: ${name}`, err);
+            }
+        };
+
+        const filePromises = asset.files?.map(file =>
+            fetchAndAddToZip(file.url || file.path, file.filename || "file", filesFolder)
+        );
+
+        const imagePromises = asset.mainImage?.map(img =>
+            fetchAndAddToZip(img.url || img.path, img.filename || "mainImage", filesFolder)
+        );
+
+        await Promise.all([...filePromises, ...imagePromises]);
+
+        zip.generateAsync({ type: "blob" }).then((zipBlob) => {
+            saveAs(zipBlob, `${asset.title || 'asset'}.zip`);
+        });
+    };
+
+
     useEffect(() => {
         if (isError) {
             console.error(message);
@@ -56,10 +94,10 @@ function SingleAsset() {
     }, [dispatch, assetId, isError, message]);
 
     useEffect(() => {
-        if (asset && asset.mainImage?.[0]?.url) {
-            setMainPreview(asset.mainImage[0].url);
+        if (asset && asset.mainImage?.[0]) {
+            setMainPreview(asset.mainImage[0]);
         } else {
-            setMainPreview('NO_PREVIEW');
+            setMainPreview(null);
         }
 
         const fetchUser = async () => {
@@ -88,34 +126,32 @@ function SingleAsset() {
         <div className="single-asset">
             {/* Imagen principal */}
             <div className="mostrando">
-                {mainPreview === 'NO_PREVIEW' ? (
+                {!mainPreview ? (
                     <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
                         No hay vista previa disponible para este archivo.
                     </div>
                 ) : (
-                    mainPreview && (
-                        <img
-                            src={mainPreview}
-                            className="mainImage"
-                            alt="Imagen principal"
-                        />
-                    )
+                    <img
+                        src={mainPreview.url || mainPreview.path}
+                        className="mainImage"
+                        alt={mainPreview.filename}
+                    />
                 )}
             </div>
 
             {/* Miniaturas */}
             <div className="miniaturas">
-                 {asset.mainImage && asset.mainImage.map((img, index) => (
+                {asset.mainImage && asset.mainImage.map((img, index) => (
                     <img
                         key={`main-${index}`}
                         src={img.url || img.path}
-                        alt={`Miniatura ${index}`}
+                        alt={img.filename}
                         className="miniatura"
                         style={{
-                            opacity: mainPreview === (img.url || img.path) ? '0.5' : '1',
+                            opacity: (mainPreview?.url || mainPreview?.path) === (img.url || img.path) ? '0.5' : '1',
                             cursor: 'pointer'
                         }}
-                        onClick={() => setMainPreview(img.url || img.path)}
+                        onClick={() => setMainPreview(img)}
                     />
                 ))}
 
@@ -125,14 +161,14 @@ function SingleAsset() {
                         <div
                             key={`file-${index}`}
                             style={{
-                                opacity: mainPreview === (file.url || file.path) ? '0.5' : '1',
+                                opacity: (mainPreview?.url || mainPreview?.path) === (file.url || file.path) ? '0.5' : '1',
                                 cursor: 'pointer'
                             }}
                             onClick={() => {
                                 if (isImage) {
-                                    setMainPreview(file.url || file.path);
+                                    setMainPreview(file);
                                 } else {
-                                    setMainPreview('NO_PREVIEW');
+                                    setMainPreview(null);
                                 }
                             }}
                         >
@@ -196,12 +232,12 @@ function SingleAsset() {
 
             <div className="botones-guardado">
                 <button
-                    className={`btn ${isFavorite ? 'btn-danger' : 'btn-primary'}`}
+                    className={`btn ${isFavorite ? 'favorito' : 'no-favorito'}`}
                     onClick={handleFavorite}
                 >
-                    <FaHeart />
+                    {isFavorite ? <FaHeart /> : <FaRegHeart />}
                 </button>
-                <button className="btn btn-secondary">
+                <button className="btn btn-secondary" onClick={handleDownload}>
                     <FaDownload />
                 </button>
             </div>

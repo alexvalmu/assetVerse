@@ -50,7 +50,7 @@ function EditProfile() {
 
   return (
     <section className="edit-profile">
-      <h1>Edit Profile</h1>
+      <h1 className="no-assets">Edit Profile</h1>
       <form className="edit-profile-form" onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Name</label>
@@ -59,6 +59,10 @@ function EditProfile() {
         <div className="form-group">
           <label>Email</label>
           <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+        </div>
+        <div className="form-group">
+          <label>Password</label>
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
         </div>
         <button type="submit">Save Changes</button>
       </form>
