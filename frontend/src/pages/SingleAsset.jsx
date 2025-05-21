@@ -125,76 +125,79 @@ function SingleAsset() {
     return (
         <div className="single-asset">
             {/* Imagen principal */}
-            <div className="mostrando">
-                {!mainPreview ? (
-                    <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
-                        No hay vista previa disponible para este archivo.
-                    </div>
-                ) : (
-                    <img
-                        src={mainPreview.url || mainPreview.path}
-                        className="mainImage"
-                        alt={mainPreview.filename}
-                    />
-                )}
-            </div>
+            <div className="imagenes">
+                <div className="mostrando">
+                    {!mainPreview ? (
+                        <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
+                            No hay vista previa disponible para este archivo.
+                        </div>
+                    ) : (
+                        <img
+                            src={mainPreview.url || mainPreview.path}
+                            className="mainImage"
+                            alt={mainPreview.filename}
+                        />
+                    )}
+                </div>
 
-            {/* Miniaturas */}
-            <div className="miniaturas">
-                {asset.mainImage && asset.mainImage.map((img, index) => (
-                    <img
-                        key={`main-${index}`}
-                        src={img.url || img.path}
-                        alt={img.filename}
-                        className="miniatura"
-                        style={{
-                            opacity: (mainPreview?.url || mainPreview?.path) === (img.url || img.path) ? '0.5' : '1',
-                            cursor: 'pointer'
-                        }}
-                        onClick={() => setMainPreview(img)}
-                    />
-                ))}
-
-                {asset.files && asset.files.map((file, index) => {
-                    const isImage = file.mimetype.startsWith('image/');
-                    return (
-                        <div
-                            key={`file-${index}`}
+                {/* Miniaturas */}
+                <div className="miniaturas">
+                    {asset.mainImage && asset.mainImage.map((img, index) => (
+                        <img
+                            key={`main-${index}`}
+                            src={img.url || img.path}
+                            alt={img.filename}
+                            className="miniatura"
                             style={{
-                                opacity: (mainPreview?.url || mainPreview?.path) === (file.url || file.path) ? '0.5' : '1',
+                                opacity: (mainPreview?.url || mainPreview?.path) === (img.url || img.path) ? '0.5' : '1',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => {
-                                if (isImage) {
-                                    setMainPreview(file);
-                                } else {
-                                    setMainPreview(null);
-                                }
-                            }}
-                        >
-                            {isImage ? (
-                                <img
-                                    src={file.url || file.path}
-                                    alt={file.filename}
-                                    className="miniatura"
-                                />
-                            ) : (
-                                <div className="miniatura no-image">
-                                    <p style={{ fontSize: '30px', marginBottom: '5px' }}>📄</p>
-                                    <p style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</p>
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
+                            onClick={() => setMainPreview(img)}
+                        />
+                    ))}
+
+                    {asset.files && asset.files.map((file, index) => {
+                        const isImage = file.mimetype.startsWith('image/');
+                        return (
+                            <div
+                                key={`file-${index}`}
+                                style={{
+                                    opacity: (mainPreview?.url || mainPreview?.path) === (file.url || file.path) ? '0.5' : '1',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={() => {
+                                    if (isImage) {
+                                        setMainPreview(file);
+                                    } else {
+                                        setMainPreview(null);
+                                    }
+                                }}
+                            >
+                                {isImage ? (
+                                    <img
+                                        src={file.url || file.path}
+                                        alt={file.filename}
+                                        className="miniatura"
+                                    />
+                                ) : (
+                                    <div className="miniatura no-image">
+                                        <p style={{ fontSize: '30px', marginBottom: '5px' }}>📄</p>
+                                        <p style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</p>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
+
 
             {/* Detalles del asset */}
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
                 <TagList className="tags" tags={asset?.tags} />
-                <p>
+                <p className="byuser">
                     {loadingUser ? 'Loading user...' : (
                         <Link to={`/categories?user=${asset.user}`}>
                             by {assetOwner?.name}
@@ -203,8 +206,10 @@ function SingleAsset() {
                 </p>
                 {asset?.ratingAverage !== undefined && (
                     <div className="asset-rating">
-                        <p>{comments.length}</p>
-                        <StarsRating rating={asset.ratingAverage} />
+                        <div>
+                            <p>{comments.length}</p>
+                            <StarsRating rating={asset.ratingAverage} />
+                        </div>
                         {comments.length > 0 && (
                             <button onClick={toggleComments} className="btn btn-link">
                                 {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
