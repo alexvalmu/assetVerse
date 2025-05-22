@@ -40,7 +40,7 @@ const handleLinkClick = () => {
   };
 
   return (
-    <header title="header" className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
+    <header  className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className='logo'>
         <Link to='/'>AssetVerse</Link>
       </div>
