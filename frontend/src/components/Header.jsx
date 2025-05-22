@@ -1,4 +1,4 @@
-import { FaSignInAlt, FaSignOutAlt, FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
+import { FaUser, FaBars, FaTimes, FaSearch } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
@@ -40,7 +40,7 @@ const handleLinkClick = () => {
   };
 
   return (
-    <header className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
+    <header title="header" className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className='logo'>
         <Link to='/'>AssetVerse</Link>
       </div>
@@ -53,47 +53,54 @@ const handleLinkClick = () => {
           <li><Link to='/' onClick={handleLinkClick} className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
           <li><Link to='/categories' onClick={handleLinkClick} className={location.pathname === '/categories' ? 'active' : ''}>Categories</Link></li>
 
-          {user ? (
-            <>
-              <li><button className='btn'onClick={() => { onLogout(); handleLinkClick(); }}>Logout</button></li>
-              <li><Link to='/upload' onClick={handleLinkClick} className={location.pathname === '/upload' ? 'active' : ''}>Upload</Link></li>
-              {location.pathname !== '/categories' && (
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearchKeyPress}
-                    placeholder="Search"
-                    aria-label="Search"
-                  />
-                  <FaSearch className="search-icon" />
-                </div>
-              )}
+{user ? (
+  <>
+    <li><button className='btn' onClick={() => { onLogout(); handleLinkClick(); }}>Logout</button></li>
+    <li><Link to='/upload' onClick={handleLinkClick} className={location.pathname === '/upload' ? 'active' : ''}>Upload</Link></li>
+    
+    {location.pathname !== '/categories' && (
+      <li className="search-bar">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearchKeyPress}
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <FaSearch className="search-icon" />
+      </li>
+    )}
 
-              <span className='profile-icon'><Link onClick={handleLinkClick} to='/profile'><FaUser /></Link></span>
-            </>
-          ) : (
-            <>
-              <li><Link to='/login' onClick={handleLinkClick} className={location.pathname === '/login' ? 'active' : ''}>Login</Link></li>
-              <li><Link to='/register' onClick={handleLinkClick} className={location.pathname === '/register' ? 'active' : ''}>Register</Link></li>
-              {location.pathname !== '/categories' && (
-                <div className="search-bar">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    onKeyDown={handleSearchKeyPress}
-                    placeholder="Search assets"
-                    aria-label="Search"
-                  />
-                  <FaSearch className="search-icon" />
-                </div>
-              )}
+    <li className='profile-icon'>
+      <Link aria-label="Profile icon" onClick={handleLinkClick} to='/profile'><FaUser /></Link>
+    </li>
+  </>
+) : (
+  <>
+    <li><Link to='/login' onClick={handleLinkClick} className={location.pathname === '/login' ? 'active' : ''}>Login</Link></li>
+    <li><Link to='/register' onClick={handleLinkClick} className={location.pathname === '/register' ? 'active' : ''}>Register</Link></li>
+    
+    {location.pathname !== '/categories' && (
+      <li className="search-bar">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleSearchKeyPress}
+          placeholder="Search assets"
+          aria-label="Search"
+        />
+        <FaSearch className="search-icon" />
+      </li>
+    )}
 
-              <span className='profile-icon'><Link onClick={handleLinkClick} to='/login'><FaUser /></Link></span>
-            </>
-          )}
+    <li className='profile-icon'>
+      <Link aria-label="Profile icon" onClick={handleLinkClick} to='/login'><FaUser /></Link>
+    </li>
+  </>
+)}
+
         </ul>
       </div>
     </header>

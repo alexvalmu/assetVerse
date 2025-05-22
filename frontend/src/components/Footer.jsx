@@ -12,9 +12,9 @@ function Footer() {
       
       <div className="footer-icons">
         <p>&copy; {new Date().getFullYear()} All rights reserved</p>
-        <a href="https://www.reddit.com" target="_blank" rel="noopener noreferrer"><FaReddit /></a>
-        <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer"><FaYoutube /></a>
-        <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+        <a href="https://www.reddit.com" aria-label="reddit" linktarget="_blank" rel="noopener noreferrer"><FaReddit /></a>
+        <a href="https://www.youtube.com" aria-label="youtube" linktarget="_blank" rel="noopener noreferrer"><FaYoutube /></a>
+        <a href="https://www.twitter.com" aria-label="twitter" linktarget="_blank" rel="noopener noreferrer"><FaTwitter /></a>
       </div>
     </footer>
   );

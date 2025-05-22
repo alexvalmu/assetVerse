@@ -217,14 +217,15 @@ function SingleAsset() {
                         )}
                     </div>
                 )}
-
+         {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
+                                <CommentItem key={comment._id} comment={comment} />
+                            ))}
                 {/* Comentarios */}
                 {user ? (
                     user._id !== asset?.user ? (
+
                         <div className="comments-section">
-                            {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
-                                <CommentItem key={comment._id} comment={comment} />
-                            ))}
+                       
                             <CommentForm />
                         </div>
                     ) : (
@@ -236,13 +237,13 @@ function SingleAsset() {
             </div>
 
             <div className="botones-guardado">
-                <button
+                <button title="favourite"
                     className={`btn ${isFavorite ? 'favorito' : 'no-favorito'}`}
                     onClick={handleFavorite}
                 >
                     {isFavorite ? <FaHeart /> : <FaRegHeart />}
                 </button>
-                <button className="btn btn-secondary" onClick={handleDownload}>
+                <button title="download" className="btn btn-secondary" onClick={handleDownload}>
                     <FaDownload />
                 </button>
             </div>

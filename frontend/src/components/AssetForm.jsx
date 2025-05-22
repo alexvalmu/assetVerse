@@ -108,7 +108,7 @@ function AssetForm() {
                 <section className="form-section">
                     {/* Main Image Upload */}
                     <div className="form-group main-image-group">
-                        <label htmlFor="mainImage">Main Image</label>
+                        <label htmlFor="mainImageInput">Main Image</label>
                         <div className="main-image-upload" onClick={() => document.getElementById('mainImageInput').click()}>
                             {mainImagePreview ? (
                                 <img src={mainImagePreview} alt="Preview" className="main-image-preview" />
@@ -189,7 +189,7 @@ function AssetForm() {
 
                 {/* Files Upload */}
                 <div className="form-group">
-                    <label htmlFor="files">Files</label>
+                    <label htmlFor="fileInput">Files</label>
 
                     <div className="file-preview-container">
                         {filePreviews.map((file, index) => (

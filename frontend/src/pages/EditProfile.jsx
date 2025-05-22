@@ -53,16 +53,16 @@ function EditProfile() {
       <h1 className="no-assets">Edit Profile</h1>
       <form className="edit-profile-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Name</label>
-          <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value={formData.name} onChange={handleChange} required />
         </div>
         <div className="form-group">
-          <label>Email</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+          <label for="email">Email</label>
+          <input type="email" name="email" id="email" value={formData.email} onChange={handleChange} required />
         </div>
         <div className="form-group">
-          <label>Password</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" value={formData.password} onChange={handleChange} required />
         </div>
         <button type="submit">Save Changes</button>
       </form>
