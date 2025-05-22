@@ -46,7 +46,7 @@ function Dashboard() {
       <section className="heading">
         <div className="buttons">
           <div className="categories">
-            <button onClick={() => navigate('/categories')}>Todos</button>
+            <button onClick={() => navigate('/categories')}>All</button>
             <button onClick={() => navigate('/categories?cat=3D')}>3Ds</button>
             <button onClick={() => navigate('/categories?cat=2D')}>2Ds</button>
             <button onClick={() => navigate('/categories?cat=Audio')}>Audio</button>
