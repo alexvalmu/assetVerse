@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       <Router>
-        <div title="container" className="container">
+        <div     className="container">
           <Header />
           <div className="main-content">
             <Routes>
