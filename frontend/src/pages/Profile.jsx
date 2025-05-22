@@ -93,7 +93,7 @@ function Profile() {
                 ))}
             </div>
           ) : (
-            <p>No tienes assets favoritos aún.</p>
+            <p className="no-assets">You don't have favorites yet.</p>
           )}
         </section>
       </section>

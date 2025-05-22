@@ -202,10 +202,11 @@ header {
     }
 
   }
+}
 
   .profile-icon {
     background-color: var(--primario);
-
+    
     border-radius: 50%;
     margin-left: .5em;
     height: 2.2em;
@@ -217,11 +218,10 @@ header {
     size: large;
     font-size: 1.2em;
 
-    >a {
-      color: var(--fondo);
+    a {
+      color: var(--fondo) !important;
     }
   }
-}
 
 section.heading {
   text-align: center;
@@ -407,6 +407,7 @@ footer {
 .no-assets {
   text-align: center;
   margin-top: 3em;
+  color: black !important;
 }
 
 .asset-item {
