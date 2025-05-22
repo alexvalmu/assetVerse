@@ -30,6 +30,7 @@
     .miniatura{
         width: 100px;
         height: 100px;
+        padding:.1em;
         object-fit: cover;
         cursor: pointer;
         border-radius: 6px;

@@ -96,22 +96,7 @@ function SingleAsset() {
             dispatch(reset());
         };
     }, [dispatch, assetId, isError, message]);
-const handleViewPDF = async () => {
-    try {
-        const response = await fetch(mainPreview.url || mainPreview.path, {
-            headers: {
-                Authorization: `Bearer ${user.token}`
-            }
-        });
-        if (!response.ok) throw new Error('No autorizado');
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        window.open(url, "_blank");
-    } catch (error) {
-        console.error("Error al cargar el PDF:", error);
-        alert("No se pudo cargar el archivo. Es posible que no tengas acceso.");
-    }
-};
+
     useEffect(() => {
         if (asset && asset.mainImage?.[0]) {
             setMainPreview(asset.mainImage[0]);
@@ -169,7 +154,7 @@ const handleViewPDF = async () => {
                             className="mainImage"
                             title="PDF Preview"
                             type="application/pdf"
-                            style={{ width: '500px', height: '500px', border: 'none' }}
+                            style={{ width: '700px', height: '500px', border: 'none' }}
                         />
                     ) : mainPreview.filename?.endsWith('.glb') || mainPreview.filename?.endsWith('.gltf') ? (
                         <model-viewer className="tresd"
@@ -222,21 +207,22 @@ const handleViewPDF = async () => {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
-                                    textAlign: 'center'
+                                    textAlign: 'center',
+
                                 }}
                             >
                                 {isImage ? (
                                     <img src={file.url || file.path} alt={file.filename} className="miniatura" />
                                 ) : isVideo ? (
-                                    <div style={{ fontSize: '24px' }}>🎥</div>
+                                    <div style={{ fontSize: '20px' }}>🎥</div>
                                 ) : isPDF ? (
-                                    <div style={{ fontSize: '24px' }}>📄</div>
+                                    <div style={{ fontSize: '20px' }}>📄</div>
                                 ) : is3DModel ? (
-                                    <div style={{ fontSize: '24px' }}>🧊</div>
+                                    <div style={{ fontSize: '20px' }}>🧊</div>
                                 ) : (
-                                    <div style={{ fontSize: '24px' }}>📁</div>
+                                    <div style={{ fontSize: '20px' }}>📁</div>
                                 )}
-                                <p style={{ fontSize: '12px', marginTop: '4px', overflowWrap: 'break-word' }}>
+                                <p style={{ fontSize: '11px', marginTop: '4px', overflowWrap: 'break-word' }}>
                                     {file.filename}
                                 </p>
                             </div>
