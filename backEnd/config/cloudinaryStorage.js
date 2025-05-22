@@ -1,13 +1,20 @@
-// config/cloudinaryStorage.js
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const { cloudinary } = require('./cloudinary');
+const path = require('path');
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
+    let resourceType = 'auto';
+    const ext = path.extname(file.originalname).toLowerCase();
+
+    if (ext === '.pdf' || ext === '.zip' || ext === '.docx' || ext === '.blend') {
+      resourceType = 'raw';
+    }
+
     return {
-      folder: 'assets', // carpeta en Cloudinary
-      resource_type: 'auto', // permite subir imágenes, videos, etc.
+      folder: 'assets',
+      resource_type: resourceType,
       public_id: `${Date.now()}-${file.originalname}`,
     };
   },

@@ -92,7 +92,22 @@ function SingleAsset() {
             dispatch(reset());
         };
     }, [dispatch, assetId, isError, message]);
-
+const handleViewPDF = async () => {
+    try {
+        const response = await fetch(mainPreview.url || mainPreview.path, {
+            headers: {
+                Authorization: `Bearer ${user.token}`
+            }
+        });
+        if (!response.ok) throw new Error('No autorizado');
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        window.open(url, "_blank");
+    } catch (error) {
+        console.error("Error al cargar el PDF:", error);
+        alert("No se pudo cargar el archivo. Es posible que no tengas acceso.");
+    }
+};
     useEffect(() => {
         if (asset && asset.mainImage?.[0]) {
             setMainPreview(asset.mainImage[0]);
@@ -131,14 +146,42 @@ function SingleAsset() {
                         <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
                             No hay vista previa disponible para este archivo.
                         </div>
-                    ) : (
+                    ) : mainPreview.mimetype?.startsWith('image/') ? (
                         <img
                             src={mainPreview.url || mainPreview.path}
                             className="mainImage"
                             alt={mainPreview.filename}
                         />
+                    ) : mainPreview.mimetype?.startsWith('video/') ? (
+                        <video
+                            src={mainPreview.url || mainPreview.path}
+                            className="mainImage"
+                            controls
+                            style={{width:'350px', maxHeight: '500px' }}
+                        />
+                    ) : mainPreview.mimetype === 'application/pdf' ? (
+                        <iframe
+                            src={mainPreview.url || mainPreview.path}
+                            className="mainImage"
+                            title="PDF Preview"
+                            type="application/pdf"
+                            style={{ width: '500px', height: '500px', border: 'none' }}
+                        />
+                    ) : mainPreview.filename?.endsWith('.glb') || mainPreview.filename?.endsWith('.gltf') ? (
+                        <model-viewer className="tresd"
+                            src={mainPreview.url || mainPreview.path}
+                            alt="3D model"
+                            auto-rotate
+                            camera-controls
+                            style={{ width: '350px', height: '350px' }}
+                        />
+                    ) : (
+                        <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
+                            Vista previa no disponible para este tipo de archivo.
+                        </div>
                     )}
                 </div>
+
 
                 {/* Miniaturas */}
                 <div className="miniaturas">
@@ -157,34 +200,41 @@ function SingleAsset() {
                     ))}
 
                     {asset.files && asset.files.map((file, index) => {
-                        const isImage = file.mimetype.startsWith('image/');
+                        const isImage = file.mimetype?.startsWith('image/');
+                        const isVideo = file.mimetype?.startsWith('video/');
+                        const isPDF = file.mimetype === 'application/pdf';
+                        const is3DModel = file.filename?.endsWith('.glb') || file.filename?.endsWith('.gltf');
+
+                        const handleClick = () => setMainPreview(file);
+
                         return (
                             <div
                                 key={`file-${index}`}
+                                className="miniatura"
+                                onClick={handleClick}
                                 style={{
                                     opacity: (mainPreview?.url || mainPreview?.path) === (file.url || file.path) ? '0.5' : '1',
-                                    cursor: 'pointer'
-                                }}
-                                onClick={() => {
-                                    if (isImage) {
-                                        setMainPreview(file);
-                                    } else {
-                                        setMainPreview(null);
-                                    }
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    textAlign: 'center'
                                 }}
                             >
                                 {isImage ? (
-                                    <img
-                                        src={file.url || file.path}
-                                        alt={file.filename}
-                                        className="miniatura"
-                                    />
+                                    <img src={file.url || file.path} alt={file.filename} className="miniatura" />
+                                ) : isVideo ? (
+                                    <div style={{ fontSize: '24px' }}>🎥</div>
+                                ) : isPDF ? (
+                                    <div style={{ fontSize: '24px' }}>📄</div>
+                                ) : is3DModel ? (
+                                    <div style={{ fontSize: '24px' }}>🧊</div>
                                 ) : (
-                                    <div className="miniatura no-image">
-                                        <p style={{ fontSize: '30px', marginBottom: '5px' }}>📄</p>
-                                        <p style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</p>
-                                    </div>
+                                    <div style={{ fontSize: '24px' }}>📁</div>
                                 )}
+                                <p style={{ fontSize: '12px', marginTop: '4px', overflowWrap: 'break-word' }}>
+                                    {file.filename}
+                                </p>
                             </div>
                         );
                     })}
@@ -217,15 +267,15 @@ function SingleAsset() {
                         )}
                     </div>
                 )}
-         {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
-                                <CommentItem key={comment._id} comment={comment} />
-                            ))}
+                {(showAllComments ? comments : comments.slice(0, 0)).map(comment => (
+                    <CommentItem key={comment._id} comment={comment} />
+                ))}
                 {/* Comentarios */}
                 {user ? (
                     user._id !== asset?.user ? (
 
                         <div className="comments-section">
-                       
+
                             <CommentForm />
                         </div>
                     ) : (

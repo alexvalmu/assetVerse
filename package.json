@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/model-viewer": "^4.1.0",
     "@reduxjs/toolkit": "^2.6.1",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
