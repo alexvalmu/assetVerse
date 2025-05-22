@@ -45,7 +45,7 @@ function Dashboard() {
     <>
       <section className="heading">
         <div className="buttons">
-          <div className="filters">
+          <div className="categories">
             <button onClick={() => navigate('/categories')}>Todos</button>
             <button onClick={() => navigate('/categories?cat=3D')}>3Ds</button>
             <button onClick={() => navigate('/categories?cat=2D')}>2Ds</button>
@@ -53,9 +53,18 @@ function Dashboard() {
             <button onClick={() => navigate('/categories?cat=Code')}>Code</button>
           </div>
           <div className="controls">
-            <button onClick={() => setSortBy("nameAsc")}>A-Z</button>
-            <button onClick={() => setSortBy("nameDesc")}>Z-A</button>
-            <button onClick={() => setSortBy("recent")}>Recent</button>
+           <button
+              className={sortBy === 'nameAsc' ? 'active' : ''}
+              onClick={() => setSortBy('nameAsc')}
+            >A-Z</button>
+            <button
+              className={sortBy === 'nameDesc' ? 'active' : ''}
+              onClick={() => setSortBy('nameDesc')}
+            >Z-A</button>
+            <button
+              className={sortBy === 'recent' ? 'active' : ''}
+              onClick={() => setSortBy('recent')}
+            >Recent</button>
           </div>
         </div>
         <h2>All Assets</h2>

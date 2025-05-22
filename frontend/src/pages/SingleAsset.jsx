@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaHeart, FaDownload } from "react-icons/fa";
+import { FaHeart, FaDownload, FaRegHeart } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from '../components/Spinner';
@@ -12,7 +12,8 @@ import CommentItem from "../components/CommentItem";
 import { addFavorite, removeFavorite } from "../features/auth/authSlice";
 import TagList from "../components/TagList";
 import CommentForm from "../components/CommentForm";
-
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function SingleAsset() {
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
     const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments);
     const { user } = useSelector((state) => state.auth);
-    const [mainPreview, setMainPreview] = useState('');
+    const [mainPreview, setMainPreview] = useState(null);
     const isFavorite = user?.favorites?.includes(assetId);
     const [showAllComments, setShowAllComments] = useState(false);
 
@@ -40,6 +41,43 @@ function SingleAsset() {
         }
     };
 
+
+
+    const handleDownload = async () => {
+        if ((!asset?.files || asset.files.length === 0) && (!asset?.mainImage || asset.mainImage.length === 0)) {
+            alert("No hay archivos para descargar.");
+            return;
+        }
+
+        const zip = new JSZip();
+        const filesFolder = zip.folder("files");
+
+        const fetchAndAddToZip = async (url, name, folder) => {
+            try {
+                const response = await fetch(url);
+                const blob = await response.blob();
+                folder.file(name, blob);
+            } catch (err) {
+                console.error(`Error al descargar: ${name}`, err);
+            }
+        };
+
+        const filePromises = asset.files?.map(file =>
+            fetchAndAddToZip(file.url || file.path, file.filename || "file", filesFolder)
+        );
+
+        const imagePromises = asset.mainImage?.map(img =>
+            fetchAndAddToZip(img.url || img.path, img.filename || "mainImage", filesFolder)
+        );
+
+        await Promise.all([...filePromises, ...imagePromises]);
+
+        zip.generateAsync({ type: "blob" }).then((zipBlob) => {
+            saveAs(zipBlob, `${asset.title || 'asset'}.zip`);
+        });
+    };
+
+
     useEffect(() => {
         if (isError) {
             console.error(message);
@@ -56,10 +94,10 @@ function SingleAsset() {
     }, [dispatch, assetId, isError, message]);
 
     useEffect(() => {
-        if (asset && asset.mainImage?.[0]?.url) {
-            setMainPreview(asset.mainImage[0].url);
+        if (asset && asset.mainImage?.[0]) {
+            setMainPreview(asset.mainImage[0]);
         } else {
-            setMainPreview('NO_PREVIEW');
+            setMainPreview(null);
         }
 
         const fetchUser = async () => {
@@ -87,78 +125,79 @@ function SingleAsset() {
     return (
         <div className="single-asset">
             {/* Imagen principal */}
-            <div className="mostrando">
-                {mainPreview === 'NO_PREVIEW' ? (
-                    <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
-                        No hay vista previa disponible para este archivo.
-                    </div>
-                ) : (
-                    mainPreview && (
+            <div className="imagenes">
+                <div className="mostrando">
+                    {!mainPreview ? (
+                        <div style={{ padding: '50px', textAlign: 'center', color: '#888' }}>
+                            No hay vista previa disponible para este archivo.
+                        </div>
+                    ) : (
                         <img
-                            src={mainPreview}
+                            src={mainPreview.url || mainPreview.path}
                             className="mainImage"
-                            alt="Imagen principal"
+                            alt={mainPreview.filename}
                         />
-                    )
-                )}
-            </div>
+                    )}
+                </div>
 
-            {/* Miniaturas */}
-            <div className="miniaturas">
-                 {asset.mainImage && asset.mainImage.map((img, index) => (
-                    <img
-                        key={`main-${index}`}
-                        src={img.url || img.path}
-                        alt={`Miniatura ${index}`}
-                        className="miniatura"
-                        style={{
-                            opacity: mainPreview === (img.url || img.path) ? '0.5' : '1',
-                            cursor: 'pointer'
-                        }}
-                        onClick={() => setMainPreview(img.url || img.path)}
-                    />
-                ))}
-
-                {asset.files && asset.files.map((file, index) => {
-                    const isImage = file.mimetype.startsWith('image/');
-                    return (
-                        <div
-                            key={`file-${index}`}
+                {/* Miniaturas */}
+                <div className="miniaturas">
+                    {asset.mainImage && asset.mainImage.map((img, index) => (
+                        <img
+                            key={`main-${index}`}
+                            src={img.url || img.path}
+                            alt={img.filename}
+                            className="miniatura"
                             style={{
-                                opacity: mainPreview === (file.url || file.path) ? '0.5' : '1',
+                                opacity: (mainPreview?.url || mainPreview?.path) === (img.url || img.path) ? '0.5' : '1',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => {
-                                if (isImage) {
-                                    setMainPreview(file.url || file.path);
-                                } else {
-                                    setMainPreview('NO_PREVIEW');
-                                }
-                            }}
-                        >
-                            {isImage ? (
-                                <img
-                                    src={file.url || file.path}
-                                    alt={file.filename}
-                                    className="miniatura"
-                                />
-                            ) : (
-                                <div className="miniatura no-image">
-                                    <p style={{ fontSize: '30px', marginBottom: '5px' }}>📄</p>
-                                    <p style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</p>
-                                </div>
-                            )}
-                        </div>
-                    );
-                })}
+                            onClick={() => setMainPreview(img)}
+                        />
+                    ))}
+
+                    {asset.files && asset.files.map((file, index) => {
+                        const isImage = file.mimetype.startsWith('image/');
+                        return (
+                            <div
+                                key={`file-${index}`}
+                                style={{
+                                    opacity: (mainPreview?.url || mainPreview?.path) === (file.url || file.path) ? '0.5' : '1',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={() => {
+                                    if (isImage) {
+                                        setMainPreview(file);
+                                    } else {
+                                        setMainPreview(null);
+                                    }
+                                }}
+                            >
+                                {isImage ? (
+                                    <img
+                                        src={file.url || file.path}
+                                        alt={file.filename}
+                                        className="miniatura"
+                                    />
+                                ) : (
+                                    <div className="miniatura no-image">
+                                        <p style={{ fontSize: '30px', marginBottom: '5px' }}>📄</p>
+                                        <p style={{ fontSize: '12px', overflowWrap: 'break-word' }}>{file.mimetype}</p>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
+
 
             {/* Detalles del asset */}
             <div className="asset-details">
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
                 <TagList className="tags" tags={asset?.tags} />
-                <p>
+                <p className="byuser">
                     {loadingUser ? 'Loading user...' : (
                         <Link to={`/categories?user=${asset.user}`}>
                             by {assetOwner?.name}
@@ -167,8 +206,10 @@ function SingleAsset() {
                 </p>
                 {asset?.ratingAverage !== undefined && (
                     <div className="asset-rating">
-                        <p>{comments.length}</p>
-                        <StarsRating rating={asset.ratingAverage} />
+                        <div>
+                            <p>{comments.length}</p>
+                            <StarsRating rating={asset.ratingAverage} />
+                        </div>
                         {comments.length > 0 && (
                             <button onClick={toggleComments} className="btn btn-link">
                                 {showAllComments ? 'Ocultar comentarios' : 'Ver comentarios'}
@@ -196,12 +237,12 @@ function SingleAsset() {
 
             <div className="botones-guardado">
                 <button
-                    className={`btn ${isFavorite ? 'btn-danger' : 'btn-primary'}`}
+                    className={`btn ${isFavorite ? 'favorito' : 'no-favorito'}`}
                     onClick={handleFavorite}
                 >
-                    <FaHeart />
+                    {isFavorite ? <FaHeart /> : <FaRegHeart />}
                 </button>
-                <button className="btn btn-secondary">
+                <button className="btn btn-secondary" onClick={handleDownload}>
                     <FaDownload />
                 </button>
             </div>

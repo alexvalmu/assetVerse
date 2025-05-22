@@ -23,7 +23,9 @@ function Header() {
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
-
+const handleLinkClick = () => {
+  setIsMenuOpen(false);
+};
   const handleSearchKeyPress = (e) => {
     if (e.key === 'Enter') {
       const params = new URLSearchParams();
@@ -32,7 +34,9 @@ function Header() {
       }
       navigate(`/categories?${params.toString()}`);
       setSearchQuery(''); // Limpiar el campo de búsqueda después de enviar
+      setIsMenuOpen(false);
     }
+     
   };
 
   return (
@@ -46,13 +50,13 @@ function Header() {
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
         <ul className="menu-list">
-          <li><Link to='/' className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
-          <li><Link to='/categories' className={location.pathname === '/categories' ? 'active' : ''}>Categories</Link></li>
+          <li><Link to='/' onClick={handleLinkClick} className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
+          <li><Link to='/categories' onClick={handleLinkClick} className={location.pathname === '/categories' ? 'active' : ''}>Categories</Link></li>
 
           {user ? (
             <>
-              <li><button className='btn' onClick={onLogout}>Logout</button></li>
-              <li><Link to='/upload' className={location.pathname === '/upload' ? 'active' : ''}>Upload</Link></li>
+              <li><button className='btn'onClick={() => { onLogout(); handleLinkClick(); }}>Logout</button></li>
+              <li><Link to='/upload' onClick={handleLinkClick} className={location.pathname === '/upload' ? 'active' : ''}>Upload</Link></li>
               {location.pathname !== '/categories' && (
                 <div className="search-bar">
                   <input
@@ -67,12 +71,12 @@ function Header() {
                 </div>
               )}
 
-              <span className='profile-icon'><Link to='/profile'><FaUser /></Link></span>
+              <span className='profile-icon'><Link onClick={handleLinkClick} to='/profile'><FaUser /></Link></span>
             </>
           ) : (
             <>
-              <li><Link to='/login' className={location.pathname === '/login' ? 'active' : ''}>Login</Link></li>
-              <li><Link to='/register' className={location.pathname === '/register' ? 'active' : ''}>Register</Link></li>
+              <li><Link to='/login' onClick={handleLinkClick} className={location.pathname === '/login' ? 'active' : ''}>Login</Link></li>
+              <li><Link to='/register' onClick={handleLinkClick} className={location.pathname === '/register' ? 'active' : ''}>Register</Link></li>
               {location.pathname !== '/categories' && (
                 <div className="search-bar">
                   <input
@@ -87,7 +91,7 @@ function Header() {
                 </div>
               )}
 
-              <span className='profile-icon'><Link to='/login'><FaUser /></Link></span>
+              <span className='profile-icon'><Link onClick={handleLinkClick} to='/login'><FaUser /></Link></span>
             </>
           )}
         </ul>
