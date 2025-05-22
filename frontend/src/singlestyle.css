@@ -243,7 +243,7 @@
     width: 100%;
 
     .miniatura {
-      width: 80px;
+      width: 90px;
       height: 80px;
     }
   }
@@ -281,7 +281,7 @@
     }
   
   .miniaturas .miniatura {
-    width: 80px;
+    width: 90px;
     height: 80px;
   }
 }
@@ -328,7 +328,7 @@
   }
 
   .miniaturas .miniatura {
-    width: 60px;
+    width: 70px;
     height: 60px;
   }
 

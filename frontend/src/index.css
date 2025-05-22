@@ -416,7 +416,13 @@ footer {
   border-radius: 10px;
   padding: 20px;
   margin: 10px;
-
+  
+  >a{
+    height: 100%;
+    display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  }
   img {
     border-radius: 10px;
     width: 100%;

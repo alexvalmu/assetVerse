@@ -8,6 +8,8 @@ import { getUserProfile, reset as resetAuth } from '../features/auth/authSlice';
 import { getAssets, reset as resetAssets, getUserAssets, deleteAsset } from '../features/assets/assetSlice';
 import Spinner from '../components/Spinner';
 import '../profile.css';
+import { FaRegTrashAlt  } from 'react-icons/fa';
+
 function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,7 +18,7 @@ function Profile() {
   const [profileFetched, setProfileFetched] = useState(false);
 
   useEffect(() => {
-    document.title = "AssetVerse | Profile"; 
+    document.title = "AssetVerse | Profile";
   }, []);
 
   useEffect(() => {
@@ -44,6 +46,7 @@ function Profile() {
       await dispatch(deleteAsset(assetId)).unwrap();
       dispatch(getUserAssets(user._id));
       dispatch(getUserProfile());
+      dispatch(getAssets());
     } catch (error) {
       toast.error('Error al eliminar el asset');
     }
@@ -76,7 +79,17 @@ function Profile() {
             <div className="assets-grid">
               {userAssets.map((asset) => (
                 <div key={asset._id} className="asset-item">
-                  <button className="close-btn" onClick={() => handleDelete(asset._id)}>X</button>
+                  <button
+                    className="close-btn"
+                    onClick={() => {
+                      if (window.confirm('Do you really want to delete this asset?')) {
+                        handleDelete(asset._id);
+                      }
+                    }}
+                    aria-label="Delete asset"
+                  >
+                     <FaRegTrashAlt  />
+                  </button>
                   <AssetItem asset={asset} />
                 </div>
               ))}
