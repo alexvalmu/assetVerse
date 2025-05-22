@@ -34,6 +34,10 @@ function Categories() {
   const { users } = useSelector((state) => state.users);
 
   useEffect(() => {
+    document.title = "AssetVerse | Categories"; 
+  }, []);
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     setSelectedUser(searchParams.get("user") || "");
     setSelectedTag(searchParams.get("tag") || "");

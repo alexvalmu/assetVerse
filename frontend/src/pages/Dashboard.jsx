@@ -12,6 +12,10 @@ function Dashboard() {
   const { assets, isLoading, isError, message } = useSelector((state) => state.assets)
 
   useEffect(() => {
+    document.title = "AssetVerse | Home"; 
+  }, []);
+
+  useEffect(() => {
     if (isError) {
       console.log(message);
     }

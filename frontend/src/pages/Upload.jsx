@@ -11,6 +11,11 @@ function Upload() {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
   const {isLoading,isError, message} = useSelector((state) => state.assets)
+
+  useEffect(() => {
+    document.title = "AssetVerse | Upload"; 
+  }, []);
+
   useEffect(() => {
     if (isError) {
       console.log(message);
@@ -20,8 +25,6 @@ function Upload() {
       navigate("/login");
       return; // Detener la ejecución aquí
     }
-
- 
 
     return () => {
       dispatch(reset());
