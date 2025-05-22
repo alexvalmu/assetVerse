@@ -9,7 +9,7 @@
 
         padding: 2em;
         width:100%;
-        max-width: 300px;
+        max-width: 400px;
         >div {
             background-color: var(--primario);
             color: white;
