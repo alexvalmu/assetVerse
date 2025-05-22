@@ -44,9 +44,11 @@ function Profile() {
   const handleDelete = async (assetId) => {
     try {
       await dispatch(deleteAsset(assetId)).unwrap();
+      
       dispatch(getUserAssets(user._id));
       dispatch(getUserProfile());
-      dispatch(getAssets());
+        dispatch(getAssets());
+        window.location.reload();
     } catch (error) {
       toast.error('Error al eliminar el asset');
     }

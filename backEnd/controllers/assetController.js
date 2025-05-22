@@ -118,27 +118,24 @@ const deleteAsset = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: 'Asset no encontrado' });
   }
 
-  // Verifica si el usuario es el propietario
   if (asset.user.toString() !== req.user.id) {
     return res.status(403).json({ message: 'No autorizado para eliminar este asset' });
   }
 
-  // Eliminar archivos de Cloudinary
   const publicIds = [];
 
-  if (asset.mainImage) {
+  if (Array.isArray(asset.mainImage)) {
     asset.mainImage.forEach(file => {
       if (file.public_id) publicIds.push(file.public_id);
     });
   }
 
-  if (asset.files) {
+  if (Array.isArray(asset.files)) {
     asset.files.forEach(file => {
       if (file.public_id) publicIds.push(file.public_id);
     });
   }
 
-  // Eliminar recursos de Cloudinary
   for (const id of publicIds) {
     try {
       await cloudinary.uploader.destroy(id, { resource_type: 'auto' });
@@ -147,12 +144,26 @@ const deleteAsset = asyncHandler(async (req, res) => {
     }
   }
 
-  // Eliminar asset de la base de datos
-  await asset.deleteOne();
+  // 🔥 Remover asset de favoritos de todos los usuarios
+  try {
+    const result = await User.updateMany(
+      { favorites: asset._id },
+      { $pull: { favorites: asset._id } }
+    );
+    console.log('Usuarios modificados:', result.modifiedCount);
+  } catch (err) {
+    console.error('Error actualizando favoritos:', err);
+  }
 
-  res.status(200).json({ message: 'Asset eliminado correctamente' });
+  // 🔥 Borrar asset
+  try {
+    await asset.deleteOne();
+    res.status(200).json({ message: 'Asset eliminado correctamente' });
+  } catch (err) {
+    console.error('Error borrando asset:', err);
+    res.status(500).json({ message: 'Error eliminando asset' });
+  }
 });
-
 
 // Nuevo controlador para manejar archivos individualmente
 const deleteFileFromAsset = asyncHandler(async (req, res) => {
