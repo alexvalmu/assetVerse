@@ -5,8 +5,6 @@
     width: 100%;
 
     .perfil {
-
-
         padding: 2em;
         width:100%;
         max-width: 400px;
@@ -135,7 +133,7 @@
                     padding-bottom: 100%;
                     position: relative;
                     border-radius: 15px;
-                    color: var(--primario);
+                    color: var(--fondo);
                     background:none;
                     margin:0;
                     img {
