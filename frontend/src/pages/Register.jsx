@@ -19,6 +19,10 @@ function Register() {
     const dispatch = useDispatch();
 
     const {user, isError, isSuccess, isLoading, message} = useSelector((state)=>state.auth);
+
+    useEffect(() => {
+        document.title = "AssetVerse | Register"; 
+    }, []);
     
     useEffect(()=>{
         if(isError){

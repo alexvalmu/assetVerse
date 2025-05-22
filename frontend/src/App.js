@@ -15,9 +15,6 @@ import Categories from './pages/Categories';
 import { useEffect } from "react";
 
 function App() {
-  useEffect(() => {
-    document.title = "AssetVerse";
-  }, []);
   return (
     <>
       <Router>

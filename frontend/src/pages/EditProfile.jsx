@@ -16,6 +16,10 @@ function EditProfile() {
   });
 
   useEffect(() => {
+    document.title = "AssetVerse | Edit Profile"; 
+  }, []);
+
+  useEffect(() => {
     if (!user) {
       navigate('/login');
     } else {

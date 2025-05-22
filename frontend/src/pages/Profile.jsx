@@ -16,6 +16,10 @@ function Profile() {
   const [profileFetched, setProfileFetched] = useState(false);
 
   useEffect(() => {
+    document.title = "AssetVerse | Profile"; 
+  }, []);
+
+  useEffect(() => {
     if (!user) {
       navigate('/login');
       return;

@@ -29,6 +29,10 @@ function SingleAsset() {
     const [assetOwner, setAssetOwner] = useState(null);
     const [loadingUser, setLoadingUser] = useState(true);
 
+    useEffect(() => {
+        document.title = "AssetVerse | Single Asset"; 
+    }, []);
+
     const toggleComments = () => {
         setShowAllComments(prev => !prev);
     };

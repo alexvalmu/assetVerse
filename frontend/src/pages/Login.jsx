@@ -17,7 +17,10 @@ function Login() {
 
     const {user, isError, isSuccess, isLoading, message} = useSelector((state)=>state.auth);
 
-      
+    useEffect(() => {
+        document.title = "AssetVerse | Login"; 
+    }, []);
+
     useEffect(()=>{
         if(isError){
             toast.error(message);
