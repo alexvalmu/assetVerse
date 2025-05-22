@@ -82,20 +82,20 @@ const updateUserProfile= asyncHandler( async (req,res)=>{
  });
 
 
-const loginUser =asyncHandler( async (req,res)=>{
-	const {email, password} = req.body;
-	
-	if(!email || !password){
+const loginUser = asyncHandler(async (req, res) => {
+	const { email, password } = req.body;
+
+	if (!email || !password) {
 		res.status(400);
 		throw new Error('Please fill all the fields');
 	}
 
-	const user = await User.findOne({email});
+	const user = await User.findOne({ email });
 
-	if(!user && !await bcrypt.compare(password, user.password) ){
+	if (!user || !(await bcrypt.compare(password, user.password))) {
 		res.status(400);
 		throw new Error('Invalid credentials');
-	};
+	}
 
 	res.json({
 		_id: user._id,
@@ -103,8 +103,8 @@ const loginUser =asyncHandler( async (req,res)=>{
 		email: user.email,
 		token: generateToken(user._id)
 	});
-
 });
+
 
 const getUser = asyncHandler( async(req,res)=>{
 	const user = await User.findById(req.params.id);
