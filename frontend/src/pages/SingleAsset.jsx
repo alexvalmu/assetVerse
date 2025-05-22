@@ -30,7 +30,7 @@ function SingleAsset() {
     const [loadingUser, setLoadingUser] = useState(true);
 
     useEffect(() => {
-        document.title = "AssetVerse | Single Asset"; 
+        document.title = "AssetVerse | Single Asset";
     }, []);
 
     const toggleComments = () => {
@@ -146,7 +146,7 @@ function SingleAsset() {
                             src={mainPreview.url || mainPreview.path}
                             className="mainImage"
                             controls
-                            style={{width:'350px', maxHeight: '500px' }}
+                            style={{ width: '350px', maxHeight: '500px' }}
                         />
                     ) : mainPreview.mimetype === 'application/pdf' ? (
                         <iframe
@@ -222,9 +222,15 @@ function SingleAsset() {
                                 ) : (
                                     <div style={{ fontSize: '20px' }}>📁</div>
                                 )}
-                                <p style={{ fontSize: '11px', marginTop: '4px', overflowWrap: 'break-word' }}>
-                                    {file.filename}
-                                </p>
+                                {!isImage ? (
+                                    <p style={{ fontSize: '11px', marginTop: '4px', overflowWrap: 'break-word' }}>
+                                        {file.filename}
+                                    </p>
+                                ):
+                                (
+                                    <p></p>
+                                )}
+
                             </div>
                         );
                     })}
