@@ -5,9 +5,9 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer-links">
-        <Link to="/about">ABOUT</Link>
-        <Link to="/faq">FAQ</Link>
-        <Link to="/contact">CONTACT US</Link>
+        <Link >ABOUT</Link>
+        <Link >FAQ</Link>
+        <Link >CONTACT US</Link>
       </div>
       
       <div className="footer-icons">
