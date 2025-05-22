@@ -227,7 +227,7 @@ const [searchQuery, setSearchQuery] = useState(search || "");
             ))}
           </div>
         ) : (
-          <h3>No assets found</h3>
+          <h3>No asset found</h3>
         )}
       </section>
     </>
