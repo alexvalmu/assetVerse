@@ -240,6 +240,9 @@ function SingleAsset() {
 
             {/* Detalles del asset */}
             <div className="asset-details">
+                <button onClick={() => navigate(`/asset/${assetId}`)}>Edit ✎</button>
+
+
                 <h2>{asset?.title}</h2>
                 <p>{asset?.desc}</p>
                 <TagList className="tags" tags={asset?.tags} />

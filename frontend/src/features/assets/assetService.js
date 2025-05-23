@@ -81,6 +81,17 @@ const getFilteredAssets = async (userId, tag, category,searchQuery) => {
     return response;
   };
 
+  const updateAsset = async (id, assetData, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'multipart/form-data'
+    }
+  };
+
+  const response = await axios.put(API_URL + id, assetData, config);
+  return response.data;
+};
 const assetService={
     createAsset,
     getAssets,
@@ -89,7 +100,8 @@ const assetService={
     getUserAssets,
     getAssetByTag,
     getAssetByCategory,
-    getFilteredAssets
+    getFilteredAssets,
+    updateAsset
 }
 
 

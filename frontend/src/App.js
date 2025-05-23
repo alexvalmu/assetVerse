@@ -11,8 +11,8 @@ import Upload from './pages/Upload';
 import SingleAsset from './pages/SingleAsset';
 import EditProfile from './pages/EditProfile';
 import Categories from './pages/Categories';
+import EditAsset from './pages/EditAsset';
 
-import { useEffect } from "react";
 
 function App() {
   return (
@@ -32,6 +32,9 @@ function App() {
               <Route path="/categories" element={<Categories />} />
               <Route path="/categories?user=userId" element={<Categories />} />
               <Route path="/favorites/:assetId" element={<Profile />} />
+              <Route path="/asset/:id" element={<EditAsset />} />
+
+
             </Routes>
           </div>
           <Footer />
