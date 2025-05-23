@@ -1,5 +1,12 @@
 @import url('./index.css');
-
+.modo-oscuro {
+  --primario: #ae7171;      /* Rojo claro para contraste con fondo oscuro */
+  --fondo: #2c2c2c;         /* Fondo principal oscuro */
+  --secundario: #b5b5b5;    /* Rosa claro para detalles */
+  --white: #ffffff;         /* Blanco suavizado para no ser muy brillante */
+  --black: #ffffff;         /* Mantén el negro */
+  --gris: #666666;          /* Gris más oscuro para texto secundario o bordes */
+}
 .single-asset {
   display: flex;
   gap: 2rem;
@@ -90,6 +97,7 @@
   p {
     font-size: 1.2rem;
     margin-bottom: 1rem;
+    color: var(--black);
   }
 
   .asset-rating {
@@ -103,6 +111,7 @@
       margin-top: .7em;
       font-size: 1.5rem;
       align-self: center;
+      color: var(--black);
     }
 
     button {
@@ -344,6 +353,7 @@
 
   .asset-rating>p {
     font-size: 1.2rem;
+    color:var(--black);
   }
 
   .asset-rating button {

@@ -10,7 +10,17 @@
   --black: #000000;
   --gris: #cccccc;
 }
-
+.modo-oscuro {
+  --primario: #ae7171;      /* Rojo claro para contraste con fondo oscuro */
+  --fondo: #2c2c2c;         /* Fondo principal oscuro */
+  --secundario: #b5b5b5;    /* Rosa claro para detalles */
+  --white: #ffffff;         /* Blanco suavizado para no ser muy brillante */
+  --black: #ffffff;         /* Mantén el negro */
+  --gris: #666666;          /* Gris más oscuro para texto secundario o bordes */
+}
+.modo-oscuro, .modo-oscuro html {
+  background-color: var(--fondo) !important;
+}
 * {
   margin: 0;
   padding: 0;
@@ -232,6 +242,7 @@ section.heading {
     text-align: left;
     margin-left: 1.8em;
     margin-top: 1em;
+    color: var(--black);
   }
 }
 
@@ -377,7 +388,7 @@ footer {
   .controls>button {
     background-color: var(--white);
     border: 1px solid var(--primario);
-    color: var(--black);
+    color: black;
 
     &:hover {
       background-color: var(--primario);
@@ -564,7 +575,7 @@ footer {
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: var(--black);
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 5000;
   display: flex;
   justify-content: center;
@@ -575,7 +586,7 @@ footer {
   width: 64px;
   height: 64px;
   border: 8px solid;
-  border-color: var(--black) transparent #555 transparent;
+  border-color: black transparent #555 transparent;
   border-radius: 50%;
   animation: spin 1.2s linear infinite;
 }
@@ -755,3 +766,4 @@ footer {
     justify-items: center;
   }
 }
+

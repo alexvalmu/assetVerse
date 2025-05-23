@@ -11,6 +11,7 @@ import Upload from './pages/Upload';
 import SingleAsset from './pages/SingleAsset';
 import EditProfile from './pages/EditProfile';
 import Categories from './pages/Categories';
+import BotonModo from './components/BotonModo';
 
 import { useEffect } from "react";
 
@@ -34,6 +35,7 @@ function App() {
               <Route path="/favorites/:assetId" element={<Profile />} />
             </Routes>
           </div>
+          <BotonModo />
           <Footer />
         </div>
       </Router>

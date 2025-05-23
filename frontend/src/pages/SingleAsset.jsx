@@ -13,6 +13,7 @@ import { addFavorite, removeFavorite } from "../features/auth/authSlice";
 import TagList from "../components/TagList";
 import CommentForm from "../components/CommentForm";
 import JSZip from "jszip";
+import "../singlestyle.css";
 import { saveAs } from "file-saver";
 function SingleAsset() {
     const { id: assetId } = useParams();
