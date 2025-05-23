@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../features/auth/authSlice';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-
+import BotonModo from './BotonModo';
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,6 +43,7 @@ const handleLinkClick = () => {
     <header  className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
       <div className='logo'>
         <Link to='/'>AssetVerse</Link>
+        
       </div>
 
       <div>
@@ -50,6 +51,7 @@ const handleLinkClick = () => {
           {isMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
         <ul className="menu-list">
+            <BotonModo />
           <li><Link to='/' onClick={handleLinkClick} className={location.pathname === '/' ? 'active' : ''}>Home</Link></li>
           <li><Link to='/categories' onClick={handleLinkClick} className={location.pathname === '/categories' ? 'active' : ''}>Categories</Link></li>
 
@@ -100,7 +102,7 @@ const handleLinkClick = () => {
     </li>
   </>
 )}
-
+       
         </ul>
       </div>
     </header>

@@ -38,7 +38,7 @@ function App() {
 
             </Routes>
           </div>
-          <BotonModo />
+         
           <Footer />
         </div>
       </Router>
