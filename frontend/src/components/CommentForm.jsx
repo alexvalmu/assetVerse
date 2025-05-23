@@ -16,13 +16,13 @@ function CommentForm() {
         const commentData = {
             asset: asset._id,
             user: user._id,
-            username: user.name, 
+            username: user.name,
             stars,
             text: comment
         };
 
         dispatch(createComment(commentData));
-       dispatch(getAsset(asset._id));  
+        dispatch(getAsset(asset._id));
         setComment('');
         setStars(0);
     }
@@ -33,20 +33,20 @@ function CommentForm() {
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <div className="stars">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                            key={star}
-                            onClick={() => setStars(star)}
-                            style={{
-                                cursor: 'pointer',
-                                fontSize: '24px',
-                                color: star <= stars ? 'black' : 'gray'
-                            }}
-                        >
-                            &#9733;
-                        </span>
-                    ))}
-                </div>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                onClick={() => setStars(stars === star ? 0 : star)}
+                                style={{
+                                    cursor: 'pointer',
+                                    fontSize: '24px',
+                                    color: star <= stars ? 'black' : 'gray'
+                                }}
+                            >
+                                &#9733;
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="form-group">
