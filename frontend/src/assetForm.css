@@ -3,7 +3,7 @@
 .main-image-upload {
     width: 300px;
     height: 300px;
-    border: 2px solid var(--primario);
+    border: 2px solid var(--gris);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +18,7 @@
     width: 150px;
     height:150px;
     font-size: 48px;
-    color: #999;
+    color: var(--gris);
 }
 
 .main-image-preview {
@@ -33,12 +33,14 @@
     flex-direction: column;
     width: 100%;
     padding:3em;
+
     >section{
         display: flex;
         flex-direction: row;
         gap: 1rem;
         width:100%;
         justify-content: space-evenly;
+
         >section{
             width:100%;
             margin-left:2em;            
@@ -71,6 +73,7 @@
     border-radius: 8px;
     border: 1px solid #ccc;
 }
+
 .file-fallback {
     display: flex;
     flex-direction: column;
@@ -91,12 +94,13 @@
     text-align: center;
     margin-top: 4px;
 }
+
 .remove-btn {
     position: absolute;
     top: -5px;
     right: -5px;
     background-color: var(--primario);
-    color: white;
+    color: var(--white);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -112,12 +116,12 @@
     width: 100px;
     height: 100px;
     background-color: var(--primario);
-    border: 2px solid #aaa;
+    border: 2px solid var(--gris);
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #aaa;
+    color: var(--gris);
     cursor: pointer;
     >img{
         width: 70px;
@@ -130,14 +134,14 @@ textarea,select{
     width: 100%;
     border-radius: 8px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--gris);
     resize: none;
     font-size: 14px;
 }
+
 label{
     font-size: 1.3rem;
 }
-
 
 @media (max-width: 768px) {
     .upload-form{

@@ -13,7 +13,7 @@ const getComment = asyncHandler(async (req, res) => {
 
 
 const getAssetComments = asyncHandler(async (req, res) => {
-    const comment = await Comment.find({asset:req.params.id});
+    const comment = await Comment.find({ asset: req.params.id });
     if (!comment) {
         res.status(404);
         throw new Error('Comentario no encontrado');
@@ -22,10 +22,10 @@ const getAssetComments = asyncHandler(async (req, res) => {
 });
 
 const postComment = asyncHandler(async (req, res) => {
-    const { stars, text } = req.body;
+    let { stars, text } = req.body;
 
-    if (!stars) {
-        return res.status(400).json({ message: "El campo de estrellas del comentario es requerido" });
+    if (stars === undefined || stars === null) {
+        stars = 0;
     }
 
     const asset = await Asset.findById(req.body.asset);
