@@ -108,6 +108,22 @@ export const getAssetsFiltered = createAsyncThunk(
       }
     }
   );
+
+  export const updateAsset = createAsyncThunk(
+  'assets/update',
+  async ({ id, data }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await assetService.putAsset(id, data, token);
+    } catch (error) {
+      const message =
+        (error.response && error.response.data && error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 export const assetSlice = createSlice({
     name: 'asset',
     initialState,
@@ -221,9 +237,22 @@ export const assetSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
                 state.message = action.payload;
-            });
-            
-    }
+            })
+            .addCase(updateAsset.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateAsset.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.asset = action.payload;
+            })
+                .addCase(updateAsset.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload;
+            })
+
+        }
 });
 
 export const { reset } = assetSlice.actions;

@@ -76,38 +76,71 @@ const postAsset = asyncHandler(async (req, res) => {
 const putAsset = asyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.id);
   if (!asset) {
+    res.status(404);
     throw new Error('Asset no encontrado');
   }
 
-  if (!req.user) {
-    res.status(404);
-    throw new Error('Usuario no encontrado');
-  }
-
-  if (asset.user.toString() !== req.user.id) {
+  if (!req.user || asset.user.toString() !== req.user.id) {
     res.status(401);
     throw new Error('No autorizado');
   }
 
-  // Procesar nuevos archivos si existen
-  let newFiles = [];
-  if (req.files && req.files.length > 0) {
-    newFiles = req.files.map(file => ({
-      filename: file.filename,
-      path: path.relative(process.cwd(), file.path),
+  // Validar título
+  if (!req.body.title) {
+    return res.status(400).json({ message: "El campo de título es requerido" });
+  }
+
+  // Procesar imagen principal si se envía
+  let mainImage = asset.mainImage; // mantener la existente si no se actualiza
+  if (req.files?.mainImage && req.files.mainImage.length > 0) {
+    mainImage = req.files.mainImage.map(file => ({
+      filename: file.originalname,
+      path: file.path,
+      url: file.path,
+      public_id: file.filename.split('.')[0],
       size: file.size,
-      mimetype: file.mimetype
+      mimetype: file.mimetype,
     }));
   }
 
-  const updateData = {
-    ...req.body,
-    // Mantener archivos existentes y agregar nuevos
-    files: [...asset.files, ...newFiles]
-  };
+  // Procesar archivos adicionales
+  let newFiles = [];
+  if (req.files?.files && req.files.files.length > 0) {
+    newFiles = req.files.files.map(file => ({
+      filename: file.originalname,
+      path: file.path,
+      url: file.path,
+      public_id: file.filename,
+      size: file.size,
+      mimetype: file.mimetype,
+    }));
+  }
 
-  const updatedAsset = await Asset.findByIdAndUpdate(req.params.id, updateData, { new: true });
-  console.log("asset updated", updatedAsset);
+  // Manejar tags: buscar existentes y crear nuevos
+  let tagIds = asset.tags;
+  if (req.body.tagNames) {
+    const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
+    const existingTags = await Tag.find({ name: { $in: tagNames } });
+    const existingTagNames = existingTags.map(tag => tag.name);
+    const newTagNames = tagNames.filter(name => !existingTagNames.includes(name));
+    const newTags = await Tag.insertMany(newTagNames.map(name => ({ name })), { ordered: false }).catch(() => []);
+    const allTags = [...existingTags, ...newTags];
+    tagIds = allTags.map(tag => tag._id);
+  }
+
+  // Normalizar la categoría si se proporciona
+  const category = req.body.category?.trim().toLowerCase() || asset.category;
+
+  // Actualizar el asset
+  asset.title = req.body.title;
+  asset.desc = req.body.desc || asset.desc;
+  asset.mainImage = mainImage;
+  asset.files = [...asset.files, ...newFiles];
+  asset.category = category;
+  asset.tags = tagIds;
+
+  const updatedAsset = await asset.save();
+
   res.status(200).json(updatedAsset);
 });
 
