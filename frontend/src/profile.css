@@ -8,21 +8,23 @@
         padding: 2em;
         width:100%;
         max-width: 400px;
+
         >div {
             background-color: var(--primario);
-            color: white;
+            color: var(--white);
             border-radius: 12px;
             padding: 1.5em;
             position: relative;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px var(--black);
             font-family: 'Poppins', sans-serif;
+
             >button {
                 position: absolute;
                 top: 1em;
                 right: 1em;
                 background: none;
                 border: none;
-                color: white;
+                color: var(--white);
                 cursor: pointer;
                 font-size: 0.9em;
                 font-weight: 500;
@@ -55,7 +57,6 @@
                     margin-top: 1.5em;
                     opacity: 0.9;
                 }
-
             }
         }
     }
@@ -87,21 +88,21 @@
                     width: 100%;
                     padding: 0.8em;
                     border-radius: 8px;
-                    border: 1px solid #ccc;
+                    border: 1px solid var(--gris);
                 }
 
                 button {
                     width: 100%;
                     padding: 0.8em;
                     background-color: var(--primario);
-                    color: white;
+                    color: var(--white);
                     border: none;
                     border-radius: 8px;
                     font-weight: 600;
                     cursor: pointer;
 
                     &:hover {
-                        background-color: #5c0000;
+                        background-color: var(--primario);
                     }
                 }
             }
@@ -136,6 +137,7 @@
                     color: var(--fondo);
                     background:none;
                     margin:0;
+
                     img {
                         position: absolute;
                         margin:0;
@@ -148,7 +150,6 @@
                         object-fit: cover;
                         border-radius: 10px;
                         z-index: 1;
-                        
                     }
 
                     .close-btn {

@@ -1,0 +1,10 @@
+@import url('./index.css');
+
+:root.dark-mode {
+  --primario: #FF9999;      /* Rojo claro para contraste con fondo oscuro */
+  --fondo: #1A1A1A;         /* Fondo principal oscuro */
+  --secundario: #FFCCCC;    /* Rosa claro para detalles */
+  --white: #F5F5F5;         /* Blanco suavizado para no ser muy brillante */
+  --black: #000000;         /* Mantén el negro */
+  --gris: #666666;          /* Gris más oscuro para texto secundario o bordes */
+}
