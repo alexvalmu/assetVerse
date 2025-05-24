@@ -109,21 +109,17 @@ export const getAssetsFiltered = createAsyncThunk(
     }
   );
 
-export const updateAsset = createAsyncThunk(
-  'assets/update',
-  async ({ id, data }, thunkAPI) => {
+export const updateAsset = createAsyncThunk('assets/update', async (assetData, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await assetService.updateAsset(id, data, token);
+        const token = thunkAPI.getState().auth.user.token;
+        return await assetService.createAsset(assetData, token);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+        const message = (error.response && error.response.data && error.response.data.message) || 
+                       error.message || 
+                       error.toString();
+        return thunkAPI.rejectWithValue(message);
     }
-  }
-);
+});
 
 export const assetSlice = createSlice({
     name: 'asset',

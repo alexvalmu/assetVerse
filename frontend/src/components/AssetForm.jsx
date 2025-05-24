@@ -28,11 +28,15 @@ function AssetForm({ mode = 'create', asset = null }) {
 
     useEffect(() => {
         if (mode === 'edit' && asset) {
+
             setTitle(asset.title || '');
             setDesc(asset.desc || '');
-            setCategory(asset.category?._id || '');
             setTags(asset.tags?.map(t => t.name).join(', ') || '');
-            setMainImagePreview(asset.mainImage?.url || '');
+
+            if (Array.isArray(asset.mainImage) && asset.mainImage[0]?.url) {
+                setMainImage(asset.mainImage[0]);
+                setMainImagePreview(asset.mainImage[0].url); 
+            }
 
             if (asset.files && Array.isArray(asset.files)) {
                 setExistingFiles(asset.files);
@@ -40,6 +44,16 @@ function AssetForm({ mode = 'create', asset = null }) {
         }
     }, [mode, asset]);
 
+    useEffect(() => {
+        if (mode === 'edit' && asset && categories.length > 0) {
+            const categoryId =
+                typeof asset.category === 'string'
+                    ? asset.category
+                    : asset.category?._id;
+
+            setCategory(categoryId || '');
+        }
+    }, [asset, categories, mode]);
     const handleRemoveExistingFile = (index) => {
         setExistingFiles(prev => prev.filter((_, i) => i !== index));
     };
@@ -109,7 +123,11 @@ function AssetForm({ mode = 'create', asset = null }) {
             formData.append('remainingFileUrls', file.url);
         });
 
-
+        if (mainImage && mainImage instanceof File) {
+            formData.append('mainImage', mainImage);
+        } else if (typeof mainImage === 'object' && mainImage.url) {
+            formData.append('existingMainImageUrl', mainImage.url); // si tu backend lo necesita
+        }
 
         files.forEach(file => {
             formData.append('files', file);
@@ -142,6 +160,7 @@ function AssetForm({ mode = 'create', asset = null }) {
         document.getElementById('mainImageInput').value = '';
     }
 
+
     return (
         <section>
             <form className="upload-form" onSubmit={onSubmit} encType="multipart/form-data">
@@ -153,7 +172,7 @@ function AssetForm({ mode = 'create', asset = null }) {
                             {mainImagePreview ? (
                                 <img src={mainImagePreview} alt="Preview" className="main-image-preview" />
                             ) : (
-                                <img src="/upload.png" alt="upload-icon" className='upload-icon'></img>
+                                <img src="/upload.png" alt="upload-icon" className='upload-icon' />
                             )}
                         </div>
                         <input
@@ -168,7 +187,6 @@ function AssetForm({ mode = 'create', asset = null }) {
                         <small>Choose a main image for your asset</small>
                     </div>
 
-                    {/* Other fields */}
                     <section>
                         <div className="form-group">
                             <label htmlFor="title">Name</label>
@@ -247,7 +265,6 @@ function AssetForm({ mode = 'create', asset = null }) {
                             </div>
                         ))}
 
-                        {/* Nuevos archivos */}
                         {filePreviews.map((file, index) => (
                             <div key={index} className="file-preview">
                                 {file.preview.startsWith("data:image") ? (
