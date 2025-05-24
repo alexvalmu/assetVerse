@@ -13,7 +13,9 @@
     border-radius: 8px;
     background-color: var(--primario);
 }
-
+small{
+    color:var(--black)
+}
 .upload-icon {
     width: 150px;
     height:150px;
