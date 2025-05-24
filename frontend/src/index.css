@@ -11,12 +11,12 @@
   --gris: #cccccc;
 }
 .modo-oscuro {
-  --primario: #ae7171;      /* Rojo claro para contraste con fondo oscuro */
-  --fondo: #2c2c2c;         /* Fondo principal oscuro */
-  --secundario: #b5b5b5;    /* Rosa claro para detalles */
-  --white: #ffffff;         /* Blanco suavizado para no ser muy brillante */
-  --black: #ffffff;         /* Mantén el negro */
-  --gris: #666666;          /* Gris más oscuro para texto secundario o bordes */
+  --primario: #ae7171;   
+  --fondo: #2c2c2c;        
+  --secundario: #b5b5b5;   
+  --white: #ffffff;       
+  --black: #ffffff;        
+  --gris: #666666;        
 }
 .modo-oscuro, .modo-oscuro html {
   background-color: var(--fondo) !important;
@@ -305,7 +305,7 @@ form {
 
 footer {
   background-color: var(--primario);
-  color: var(--white);
+  color: white;
   padding: 15px 20px;
   display: flex;
   flex-direction: row;
@@ -320,7 +320,8 @@ footer {
     gap: 15px;
 
     a {
-      color: var(--white);
+     color: white;
+
       text-decoration: underline;
       font-size: 12px;
 
@@ -337,11 +338,10 @@ footer {
 
     a,
     p {
-      color: var(--white);
+       color: white;
 
-      &:hover {
-        color: var(--white);
-      }
+
+      
     }
   }
 }
@@ -362,7 +362,7 @@ footer {
       cursor: pointer;
       background-color: var(--primario);
       border: 1px solid var(--primario);
-      color: var(--white);
+      color: white;
     }
   }
 
@@ -386,20 +386,20 @@ footer {
   }
 
   .controls>button {
-    background-color: var(--white);
+    background-color: white;
     border: 1px solid var(--primario);
     color: black;
 
     &:hover {
       background-color: var(--primario);
-      color: var(--white);
+      color: white;
       transition: 0.3s ease-in-out background-color, color;
     }
   }
 
   .controls>button.active {
     background-color: var(--primario);
-    color: var(--white);
+    color: white;
     border: 1px solid var(--primario);
   }
 }
@@ -407,12 +407,12 @@ footer {
 .no-assets {
   text-align: center;
   margin-top: 3em;
-  color: black !important;
+  color: var(--black) !important;
 }
 
 .asset-item {
   background-color: var(--primario);
-  color: var(--white);
+  color: white  ;
   border-radius: 10px;
   padding: 20px;
   margin: 10px;
@@ -558,7 +558,7 @@ footer {
 
 .category-list button.active {
   background-color: var(--primario);
-  color: var(--white);
+  color: white;
   border-color: var(--primario);
 }
 

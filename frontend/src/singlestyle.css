@@ -3,7 +3,7 @@
   --primario: #ae7171;      /* Rojo claro para contraste con fondo oscuro */
   --fondo: #2c2c2c;         /* Fondo principal oscuro */
   --secundario: #b5b5b5;    /* Rosa claro para detalles */
-  --white: #ffffff;         /* Blanco suavizado para no ser muy brillante */
+  --white: #c2c2c2;         /* Blanco suavizado para no ser muy brillante */
   --black: #ffffff;         /* Mantén el negro */
   --gris: #666666;          /* Gris más oscuro para texto secundario o bordes */
 }
@@ -209,13 +209,16 @@
   margin-bottom: 1em;
   background-color: var(--white);
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--gris);
   padding: 1em;
   width: 80%;
-
+  .star{
+    color:black;
+  }
   p {
     font-size: 1rem;
     margin-bottom: 0em;
+    color: black;
   }
 }
 
@@ -226,7 +229,7 @@
 
   button {
     background-color: var(--primario);
-    color: var(--white);
+    color: white;
     padding: .8em;
     border: none;
     font-size: x-large;

@@ -141,24 +141,23 @@ const handleSearchKeyPress = (e) => {
     return <Spinner />;
   }
 
-  let sortedAssets = [...assets];
+ let sortedAssets = [...assets];
 
   if (sortBy === "nameAsc") {
     sortedAssets.sort((a, b) => {
-      const nameA = a.text || "";
-      const nameB = b.text || "";
+      const nameA = a.title || "";
+      const nameB = b.title || "";
       return nameA.localeCompare(nameB);
     });
   } else if (sortBy === "nameDesc") {
     sortedAssets.sort((a, b) => {
-      const nameA = a.text || "";
-      const nameB = b.text || "";
+      const nameA = a.title || "";
+      const nameB = b.title || "";
       return nameB.localeCompare(nameA);
     });
   } else if (sortBy === "recent") {
     sortedAssets.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   }
-
   return (
     <>
       <section className="heading">

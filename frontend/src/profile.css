@@ -15,7 +15,6 @@
             border-radius: 12px;
             padding: 1.5em;
             position: relative;
-            box-shadow: 0 4px 8px var(--black);
             font-family: 'Poppins', sans-serif;
 
             >button {
@@ -120,6 +119,7 @@
                 font-size: 1.2rem;
                 font-weight: 600;
                 margin-bottom: 1rem;
+                color: var(--black);
             }
 
             >div {
@@ -157,7 +157,7 @@
                         left: 10px;
                         top: 10px;
                         background: none;
-                        color: black;
+                        color: var(--black);
                         border: none;
                         font-size: 15px;
                         font-weight: bold;
@@ -190,6 +190,7 @@
                 font-size: 1.2rem;
                 font-weight: 600;
                 margin-bottom: 1rem;
+                color: var(--black);
             }
 
             .assets-grid {
