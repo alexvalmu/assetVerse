@@ -270,11 +270,14 @@ form {
     >a {
       color: var(--black);
     }
+    >p{
+      color:var(--primario);
+    }
   }
 
   button {
     background-color: var(--primario);
-    color: var(--white);
+    color: white;
     border: none;
     padding: 12px;
     width: 100%;
