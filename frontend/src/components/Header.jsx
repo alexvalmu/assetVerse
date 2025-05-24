@@ -26,18 +26,21 @@ function Header() {
 const handleLinkClick = () => {
   setIsMenuOpen(false);
 };
+  
   const handleSearchKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      const params = new URLSearchParams();
-      if (searchQuery.trim()) {
-        params.set('search', searchQuery.trim());
-      }
-      navigate(`/categories?${params.toString()}`);
-      setSearchQuery(''); // Limpiar el campo de búsqueda después de enviar
-      setIsMenuOpen(false);
-    }
-     
-  };
+  if (e.key === 'Enter') {
+    buscar();
+  }
+};
+const buscar = () => {
+  const params = new URLSearchParams();
+  if (searchQuery.trim()) {
+    params.set('search', searchQuery.trim());
+  }
+  navigate(`/categories?${params.toString()}`);
+  setSearchQuery(''); // Limpiar el campo de búsqueda después de enviar
+  setIsMenuOpen(false);
+};
 
   return (
     <header  className={`header ${isMenuOpen ? 'menu-open' : ''}`}>
@@ -70,7 +73,7 @@ const handleLinkClick = () => {
           placeholder="Search"
           aria-label="Search"
         />
-        <FaSearch className="search-icon" />
+        <FaSearch className="search-icon" onClick={buscar} />
       </li>
     )}
 

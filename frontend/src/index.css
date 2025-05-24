@@ -145,7 +145,7 @@ header {
       right: 14px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--black);
+      color:black;
       font-size: 12px;
       cursor: pointer;
     }
@@ -458,7 +458,7 @@ footer {
   }
 
   .search-icon {
-    color: var(--black);
+    color: black;
     cursor: pointer;
     right: 14px;
     position: absolute;

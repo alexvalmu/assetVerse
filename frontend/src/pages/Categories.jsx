@@ -50,16 +50,19 @@ function Categories() {
     setSearchQuery(e.target.value); // Actualiza el valor mientras el usuario escribe
   };
 
-  const handleSearchKeyPress = (e) => {
-    if (e.key === 'Enter') { // Verifica si la tecla presionada es Enter
-      dispatch(getAssetsFiltered({
-        searchQuery: searchQuery,
-        userId: selectedUser || null,
-        tag: selectedTag || null,
-        category: selectedCategory || null
-      }));
-    }
-  };
+ const buscar = () => {
+  dispatch(getAssetsFiltered({
+    searchQuery: searchQuery,
+    userId: selectedUser || null,
+    tag: selectedTag || null,
+    category: selectedCategory || null
+  }));
+};
+const handleSearchKeyPress = (e) => {
+  if (e.key === 'Enter') {
+    buscar();
+  }
+};
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
@@ -165,7 +168,7 @@ function Categories() {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleSearchKeyPress} // Ejecuta la búsqueda al presionar Enter
           placeholder="Search assets"
-          /><FaSearch className="search-icon" />
+          /><FaSearch className="search-icon"  onClick={buscar}/>
         </div>
         <div className="buttons">
           <section className="filters">
