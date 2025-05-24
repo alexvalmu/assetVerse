@@ -199,6 +199,7 @@ header {
 
         &:hover {
           color: var(--primario);
+          text-decoration: underline;
         }
 
         &:focus,
@@ -623,7 +624,7 @@ footer {
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   form {
     width: 90%;
   }
