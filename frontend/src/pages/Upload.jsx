@@ -40,8 +40,8 @@ return (
       <section className="heading">
      
       </section>
-      <AssetForm></AssetForm>
-      
+      <AssetForm mode="create">
+      </AssetForm>
     </>
   )
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import AssetForm from "../components/AssetForm";
 import AssetItem from "../components/AssetItem";
 import { toast } from 'react-toastify';
@@ -8,11 +8,12 @@ import { getUserProfile, reset as resetAuth } from '../features/auth/authSlice';
 import { getAssets, reset as resetAssets, getUserAssets, deleteAsset } from '../features/assets/assetSlice';
 import Spinner from '../components/Spinner';
 import '../profile.css';
-import { FaRegTrashAlt  } from 'react-icons/fa';
+import { FaRegTrashAlt , FaRegEdit  } from 'react-icons/fa';
 
 function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { id: assetId } = useParams();
   const { user } = useSelector((state) => state.auth);
   const { assets, userAssets, isLoading } = useSelector((state) => state.assets);
   const [profileFetched, setProfileFetched] = useState(false);
@@ -54,6 +55,10 @@ function Profile() {
     }
   };
 
+  const handleEdit = (assetId) => {
+    navigate(`/edit/${assetId}`);
+  };
+
   if (isLoading) {
     return <Spinner />;
   }
@@ -92,6 +97,7 @@ function Profile() {
                   >
                      <FaRegTrashAlt  />
                   </button>
+                  <button className="edit-btn" onClick={() =>handleEdit(asset._id)}><FaRegEdit /></button>
                   <AssetItem asset={asset} />
                 </div>
               ))}

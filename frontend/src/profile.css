@@ -170,6 +170,24 @@
                         }
                     }
 
+                    .edit-btn{
+                        position: absolute;
+                        right: 10px;
+                        top: 10px;
+                        background: none;
+                        color: var(--black);
+                        border: none;
+                        font-size: 15px;
+                        font-weight: bold;
+                        cursor: pointer;
+                        z-index: 2;
+                        margin:0;
+                        &:hover {
+                            transform: scale(1.2);
+                            transition: transform 0.2s;
+                        }
+                    }
+
                     &:hover {
                         box-shadow: unset;
                     }

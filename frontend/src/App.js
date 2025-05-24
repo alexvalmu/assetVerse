@@ -33,9 +33,7 @@ function App() {
               <Route path="/categories" element={<Categories />} />
               <Route path="/categories?user=userId" element={<Categories />} />
               <Route path="/favorites/:assetId" element={<Profile />} />
-              <Route path="/asset/:id" element={<EditAsset />} />
-
-
+              <Route path="/edit/:id" element={<EditAsset />} />
             </Routes>
           </div>
          

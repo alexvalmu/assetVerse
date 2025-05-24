@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createAsset } from '../features/assets/assetSlice';
+import { createAsset, updateAsset } from '../features/assets/assetSlice';
 import { fetchCategories } from '../features/categories/categorySlice';
 import { useNavigate } from 'react-router-dom';
 import '../assetForm.css';
 import { FaFile, FaFileArchive } from 'react-icons/fa';
 
-function AssetForm() {
+function AssetForm({ mode = 'create', asset = null }) {
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [files, setFiles] = useState([]);
+    const [existingFiles, setExistingFiles] = useState([]);
     const [filePreviews, setFilePreviews] = useState([]); // NUEVO
     const [selectedCategory, setCategory] = useState('');
     const [mainImage, setMainImage] = useState('');
@@ -19,11 +20,37 @@ function AssetForm() {
 
     const { categories } = useSelector((state) => state.categories);
     const navigate = useNavigate();
-  
+
 
     useEffect(() => {
         dispatch(fetchCategories());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (mode === 'edit' && asset) {
+            setTitle(asset.title || '');
+            setDesc(asset.desc || '');
+            setCategory(asset.category?._id || '');
+            setTags(asset.tags?.map(t => t.name).join(', ') || '');
+            setMainImagePreview(asset.mainImage?.url || '');
+
+            if (asset.files && Array.isArray(asset.files)) {
+                setExistingFiles(asset.files);
+            }
+        }
+    }, [mode, asset]);
+
+    const handleRemoveExistingFile = (index) => {
+        setExistingFiles(prev => prev.filter((_, i) => i !== index));
+    };
+
+    const getFileNameFromUrl = (url) => {
+        try {
+            return decodeURIComponent(url.split('/').pop().split('.')[0]);
+        } catch (e) {
+            return 'unnamed';
+        }
+    };
 
     const handleMainImageChange = (e) => {
         const file = e.target.files[0];
@@ -62,34 +89,47 @@ function AssetForm() {
         setFilePreviews(prev => prev.filter((_, i) => i !== index));
     };
 
-    const onSubmit =async (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-
         const formData = new FormData();
         formData.append('title', title);
         formData.append('desc', desc);
         formData.append('category', selectedCategory);
-        formData.append('mainImage', mainImage);
+        if (mainImage) formData.append('mainImage', mainImage);
+
         tags.split(',').map(tag => tag.trim()).forEach(tag => {
             formData.append('tagNames', tag);
         });
+
+        existingFiles.forEach(file => {
+            formData.append('existingFileIds', file._id);
+        });
+
+        existingFiles.forEach(file => {
+            formData.append('remainingFileUrls', file.url);
+        });
+
+
+
         files.forEach(file => {
             formData.append('files', file);
         });
 
-        //dispatch(createAsset(formData));
-
         try {
-            const resultAction = await dispatch(createAsset(formData)); // Esperar a que se complete la acción
-            const createdAsset = resultAction.payload; // Obtener el payload del resultado
-
-            // Si el asset se ha creado correctamente, redirigir al detalle del asset
-            if (createdAsset && createdAsset._id) {
-            navigate(`/assets/${createdAsset._id}`); // Redirigir a la página del nuevo asset
+            let resultAction;
+            if (mode === 'edit' && asset?._id) {
+                formData.append('id', asset._id);
+                resultAction = await dispatch(updateAsset({ id: asset._id, data: formData }));
+            } else {
+                resultAction = await dispatch(createAsset(formData));
             }
 
+            const resultAsset = resultAction.payload;
+            if (resultAsset && resultAsset._id) {
+                navigate(`/assets/${resultAsset._id}`);
+            }
         } catch (error) {
-            console.log('Error al crear el asset:', error);
+            console.error('Error submitting asset:', error);
         }
         setTitle('');
         setDesc('');
@@ -118,12 +158,12 @@ function AssetForm() {
                         </div>
                         <input
                             type="file"
-                            name="mainImage"
                             id="mainImageInput"
+                            name="mainImage"
                             accept="image/*"
                             onChange={handleMainImageChange}
                             style={{ display: 'none' }}
-                            required
+                            {...(mode === 'create' ? { required: true } : {})}
                         />
                         <small>Choose a main image for your asset</small>
                     </div>
@@ -192,6 +232,22 @@ function AssetForm() {
                     <label htmlFor="fileInput">Files</label>
 
                     <div className="file-preview-container">
+                        {/* Archivos ya existentes */}
+                        {existingFiles.map((file, index) => (
+                            <div key={`existing-${index}`} className="file-preview">
+                                {file.url?.match(/\.(jpeg|jpg|gif|png|webp)$/) ? (
+                                    <img src={file.url} alt={file.name || 'Asset File'} className="file-thumbnail" />
+                                ) : (
+                                    <div className="file-fallback">
+                                        <FaFile size={20} />
+                                        <span className="file-name">{getFileNameFromUrl(file.url)}</span>
+                                    </div>
+                                )}
+                                <button type="button" className="remove-btn" onClick={() => handleRemoveExistingFile(index)}>×</button>
+                            </div>
+                        ))}
+
+                        {/* Nuevos archivos */}
                         {filePreviews.map((file, index) => (
                             <div key={index} className="file-preview">
                                 {file.preview.startsWith("data:image") ? (
@@ -205,10 +261,12 @@ function AssetForm() {
                                 <button type="button" className="remove-btn" onClick={() => handleRemoveFile(index)}>×</button>
                             </div>
                         ))}
+
                         <div className="upload-more" onClick={() => document.getElementById('fileInput').click()}>
                             <img src="/upload.png" alt="upload-icon" className='upload-icon'></img>
                         </div>
                     </div>
+
 
                     <input
                         type="file"
@@ -224,7 +282,7 @@ function AssetForm() {
 
                 <div className="form-group">
                     <button className="btn btn-block" type="submit">
-                        Upload Asset
+                        {mode === 'edit' ? 'Update Asset' : 'Upload Asset'}
                     </button>
                 </div>
             </form>

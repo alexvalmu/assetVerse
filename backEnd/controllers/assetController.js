@@ -85,28 +85,56 @@ const putAsset = asyncHandler(async (req, res) => {
     throw new Error('No autorizado');
   }
 
-  // Validar título
   if (!req.body.title) {
     return res.status(400).json({ message: "El campo de título es requerido" });
   }
 
-  // Procesar imagen principal si se envía
-  let mainImage = asset.mainImage; // mantener la existente si no se actualiza
+  // MAIN IMAGE -------------------------------------------
+  let mainImage = asset.mainImage;
+
+  // Si se eliminó la imagen principal
+  if (req.body.removeMainImage === 'true') {
+    mainImage = null;
+    // Opcional: eliminar de Cloudinary si lo deseas
+    // await cloudinary.uploader.destroy(asset.mainImage?.public_id);
+  }
+
+  // Si se subió una nueva imagen principal
   if (req.files?.mainImage && req.files.mainImage.length > 0) {
-    mainImage = req.files.mainImage.map(file => ({
+    const file = req.files.mainImage[0];
+    mainImage = {
       filename: file.originalname,
       path: file.path,
       url: file.path,
       public_id: file.filename.split('.')[0],
       size: file.size,
       mimetype: file.mimetype,
-    }));
+    };
+    // Opcional: eliminar la anterior en Cloudinary
+    // if (asset.mainImage?.public_id) await cloudinary.uploader.destroy(asset.mainImage.public_id);
   }
 
-  // Procesar archivos adicionales
-  let newFiles = [];
+  // FILES -------------------------------------------
+  let updatedFiles = asset.files;
+
+  // Filtrar los archivos que el usuario quiere conservar
+  const remainingFileUrls = Array.isArray(req.body.remainingFileUrls)
+    ? req.body.remainingFileUrls
+    : req.body.remainingFileUrls
+    ? [req.body.remainingFileUrls]
+    : [];
+
+  updatedFiles = asset.files.filter(file => remainingFileUrls.includes(file.url));
+
+  // Opcional: eliminar los archivos quitados en Cloudinary
+  const removedFiles = asset.files.filter(file => !remainingFileUrls.includes(file.url));
+  // for (const file of removedFiles) {
+  //   if (file.public_id) await cloudinary.uploader.destroy(file.public_id);
+  // }
+
+  // Agregar nuevos archivos
   if (req.files?.files && req.files.files.length > 0) {
-    newFiles = req.files.files.map(file => ({
+    const newFiles = req.files.files.map(file => ({
       filename: file.originalname,
       path: file.path,
       url: file.path,
@@ -114,9 +142,10 @@ const putAsset = asyncHandler(async (req, res) => {
       size: file.size,
       mimetype: file.mimetype,
     }));
+    updatedFiles = [...updatedFiles, ...newFiles];
   }
 
-  // Manejar tags: buscar existentes y crear nuevos
+  // TAGS -------------------------------------------
   let tagIds = asset.tags;
   if (req.body.tagNames) {
     const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
@@ -128,21 +157,20 @@ const putAsset = asyncHandler(async (req, res) => {
     tagIds = allTags.map(tag => tag._id);
   }
 
-  // Normalizar la categoría si se proporciona
   const category = req.body.category?.trim().toLowerCase() || asset.category;
 
-  // Actualizar el asset
+  // FINAL UPDATE -------------------------------------------
   asset.title = req.body.title;
   asset.desc = req.body.desc || asset.desc;
   asset.mainImage = mainImage;
-  asset.files = [...asset.files, ...newFiles];
+  asset.files = updatedFiles;
   asset.category = category;
   asset.tags = tagIds;
 
   const updatedAsset = await asset.save();
-
   res.status(200).json(updatedAsset);
 });
+
 
 
 const deleteAsset = asyncHandler(async (req, res) => {

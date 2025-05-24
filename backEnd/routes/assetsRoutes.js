@@ -15,7 +15,9 @@ router.route('/')
   router.get('/search', assetController.searchAssets);
 
 router.route('/:id')
-  .put(protect, upload.array('files'), assetController.putAsset)
+  .put(protect,
+    upload.fields([{ name: 'mainImage' }, { name: 'files' }]),
+    assetController.putAsset)
   .delete(protect, assetController.deleteAsset)
   .get(assetController.getAssetById)
 
