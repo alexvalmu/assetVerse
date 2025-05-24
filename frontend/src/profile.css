@@ -11,7 +11,7 @@
 
         >div {
             background-color: var(--primario);
-            color: var(--white);
+            color: white;
             border-radius: 12px;
             padding: 1.5em;
             position: relative;
@@ -23,7 +23,7 @@
                 right: 1em;
                 background: none;
                 border: none;
-                color: var(--white);
+                color: white;
                 cursor: pointer;
                 font-size: 0.9em;
                 font-weight: 500;

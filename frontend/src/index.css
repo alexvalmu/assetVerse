@@ -199,6 +199,7 @@ header {
 
         &:hover {
           color: var(--primario);
+          text-decoration: underline;
         }
 
         &:focus,
@@ -270,11 +271,14 @@ form {
     >a {
       color: var(--black);
     }
+    >p{
+      color:var(--primario);
+    }
   }
 
   button {
     background-color: var(--primario);
-    color: var(--white);
+    color: white;
     border: none;
     padding: 12px;
     width: 100%;
@@ -620,7 +624,7 @@ footer {
 }
 
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   form {
     width: 90%;
   }

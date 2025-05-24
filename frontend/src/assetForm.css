@@ -12,8 +12,14 @@
     position: relative;
     border-radius: 8px;
     background-color: var(--primario);
+    &:hover{
+        scale:calc(1.05);
+        transition: all 0.3s ease;
+    }
 }
-
+small{
+    color:var(--black)
+}
 .upload-icon {
     width: 150px;
     height:150px;
@@ -128,6 +134,10 @@
         height: 70px;
         object-fit: cover;
     }
+    &:hover{
+        scale:calc(1.05);
+        transition: all 0.3s ease;
+    }
 }
 
 textarea,select{
@@ -142,7 +152,13 @@ textarea,select{
 label{
     font-size: 1.3rem;
 }
-
+.btn-block{
+    &:hover{
+        background-color: var(--secundario);
+        color:black;
+        transition: all 0.4s ease;
+    }
+}
 @media (max-width: 768px) {
     .upload-form{
         padding:1em;
