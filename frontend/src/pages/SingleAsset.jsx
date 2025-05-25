@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FaHeart, FaDownload, FaRegHeart } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Spinner from '../components/Spinner';
 import { getAsset, reset } from "../features/assets/assetSlice";
@@ -18,10 +18,9 @@ import { saveAs } from "file-saver";
 function SingleAsset() {
     const { id: assetId } = useParams();
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const { asset, isLoading, isError, message } = useSelector((state) => state.assets);
-    const { comments, isLoading: commentsLoading } = useSelector((state) => state.comments);
+    const { comments } = useSelector((state) => state.comments);
     const { user } = useSelector((state) => state.auth);
     const [mainPreview, setMainPreview] = useState(null);
     const isFavorite = user?.favorites?.includes(assetId);

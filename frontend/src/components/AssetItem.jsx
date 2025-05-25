@@ -1,12 +1,5 @@
-import { useDispatch } from "react-redux";
-import { deleteAsset } from "../features/assets/assetSlice";
 import { Link } from "react-router-dom";
-import StarsRating from "./StarsRating";
-import TagList from "./TagList";
-import { use } from "react";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { getUserById } from "../features/users/userSlice";
 import userService from "../features/users/userService";
 
 function AssetItem({ asset }) {
