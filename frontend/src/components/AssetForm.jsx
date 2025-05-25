@@ -4,7 +4,7 @@ import { createAsset, updateAsset } from '../features/assets/assetSlice';
 import { fetchCategories } from '../features/categories/categorySlice';
 import { useNavigate } from 'react-router-dom';
 import '../assetForm.css';
-import { FaFile, FaFileArchive } from 'react-icons/fa';
+import { FaFile } from 'react-icons/fa';
 
 function AssetForm({ mode = 'create', asset = null }) {
     const [title, setTitle] = useState('');
@@ -17,6 +17,7 @@ function AssetForm({ mode = 'create', asset = null }) {
     const [mainImagePreview, setMainImagePreview] = useState(null);
     const [tags, setTags] = useState('');
     const dispatch = useDispatch();
+
 
     const { categories } = useSelector((state) => state.categories);
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ function AssetForm({ mode = 'create', asset = null }) {
 
             if (Array.isArray(asset.mainImage) && asset.mainImage[0]?.url) {
                 setMainImage(asset.mainImage[0]);
-                setMainImagePreview(asset.mainImage[0].url); 
+                setMainImagePreview(asset.mainImage[0].url);
             }
 
             if (asset.files && Array.isArray(asset.files)) {
@@ -109,6 +110,7 @@ function AssetForm({ mode = 'create', asset = null }) {
         formData.append('title', title);
         formData.append('desc', desc);
         formData.append('category', selectedCategory);
+
         if (mainImage) formData.append('mainImage', mainImage);
 
         tags.split(',').map(tag => tag.trim()).forEach(tag => {
@@ -126,7 +128,7 @@ function AssetForm({ mode = 'create', asset = null }) {
         if (mainImage && mainImage instanceof File) {
             formData.append('mainImage', mainImage);
         } else if (typeof mainImage === 'object' && mainImage.url) {
-            formData.append('existingMainImageUrl', mainImage.url); // si tu backend lo necesita
+            formData.append('existingMainImageUrl', mainImage.url);
         }
 
         files.forEach(file => {
@@ -137,7 +139,7 @@ function AssetForm({ mode = 'create', asset = null }) {
             let resultAction;
             if (mode === 'edit' && asset?._id) {
                 formData.append('id', asset._id);
-                resultAction = await dispatch(updateAsset({ id: asset._id, data: formData }));
+                resultAction = await dispatch(updateAsset({ id: asset._id, formData }));
             } else {
                 resultAction = await dispatch(createAsset(formData));
             }
@@ -156,8 +158,10 @@ function AssetForm({ mode = 'create', asset = null }) {
         setMainImage('');
         setMainImagePreview(null);
         setTags('');
-        document.getElementById('fileInput').value = '';
-        document.getElementById('mainImageInput').value = '';
+        const input = document.getElementById('mainImageInput');
+        if (input) input.value = "";
+        const fileInput = document.getElementById('fileInput');
+        if (fileInput) fileInput.value = '';
     }
 
 
