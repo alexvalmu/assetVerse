@@ -34,8 +34,8 @@ function AssetItem({ asset }) {
     <div className="asset-item">
       <Link to={`/assets/${asset._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
         <div className="main-image">
-          {asset.mainImage && asset.mainImage.length > 0 && (
-            <img src={asset.mainImage[0].url || asset.mainImage[0].path} alt="Asset" className="asset-image" />
+          {asset.mainImage && (
+            <img src={asset.mainImage.url || asset.mainImage.path} alt="Asset" className="asset-image" />
           )}
         </div>
         <div >

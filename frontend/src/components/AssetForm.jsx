@@ -34,9 +34,9 @@ function AssetForm({ mode = 'create', asset = null }) {
             setDesc(asset.desc || '');
             setTags(asset.tags?.map(t => t.name).join(', ') || '');
 
-            if (Array.isArray(asset.mainImage) && asset.mainImage[0]?.url) {
-                setMainImage(asset.mainImage[0]);
-                setMainImagePreview(asset.mainImage[0].url);
+            if ( asset.mainImage?.url) {
+                setMainImage(asset.mainImage);
+                setMainImagePreview(asset.mainImage.url);
             }
 
             if (asset.files && Array.isArray(asset.files)) {
@@ -111,8 +111,6 @@ function AssetForm({ mode = 'create', asset = null }) {
         formData.append('desc', desc);
         formData.append('category', selectedCategory);
 
-        if (mainImage) formData.append('mainImage', mainImage);
-
         tags.split(',').map(tag => tag.trim()).forEach(tag => {
             formData.append('tagNames', tag);
         });
@@ -126,8 +124,10 @@ function AssetForm({ mode = 'create', asset = null }) {
         });
 
         if (mainImage && mainImage instanceof File) {
+            console.log('Appending mainImage as File:', mainImage);
             formData.append('mainImage', mainImage);
         } else if (typeof mainImage === 'object' && mainImage.url) {
+            console.log('Appending existing mainImage URL:', mainImage.url);
             formData.append('existingMainImageUrl', mainImage.url);
         }
 
@@ -149,7 +149,7 @@ function AssetForm({ mode = 'create', asset = null }) {
                 navigate(`/assets/${resultAsset._id}`);
             }
         } catch (error) {
-            console.error('Error submitting asset:', error);
+            console.log('Error submitting asset:', error);
         }
         setTitle('');
         setDesc('');
@@ -169,7 +169,6 @@ function AssetForm({ mode = 'create', asset = null }) {
         <section>
             <form className="upload-form" onSubmit={onSubmit} encType="multipart/form-data">
                 <section className="form-section">
-                    {/* Main Image Upload */}
                     <div className="form-group main-image-group">
                         <label htmlFor="mainImageInput">Main Image</label>
                         <div className="main-image-upload" onClick={() => document.getElementById('mainImageInput').click()}>

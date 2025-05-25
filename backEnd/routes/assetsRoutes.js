@@ -9,14 +9,17 @@ router.route('/')
   .get(assetController.getAsset)
   .post(
     protect,
-    upload.fields([{ name: 'mainImage' }, { name: 'files' }]),
+    upload.fields([
+  { name: 'mainImage', maxCount: 1 },
+  { name: 'files', maxCount: 5 }
+]),
     assetController.postAsset
   );
   router.get('/search', assetController.searchAssets);
 
 router.route('/:id')
   .put(protect,
-    upload.fields([{ name: 'mainImage', maxCount: 1 }, { name: 'files', maxCount: 5 }]),
+    upload.fields([{ name: 'mainImage', maxCount: 1 },{ name: 'files', maxCount: 5 }]),
     assetController.putAsset)
   .delete(protect, assetController.deleteAsset)
   .get(assetController.getAssetById)

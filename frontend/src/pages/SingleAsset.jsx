@@ -71,9 +71,13 @@ function SingleAsset() {
             fetchAndAddToZip(file.url || file.path, file.filename || "file", filesFolder)
         );
 
-        const imagePromises = asset.mainImage?.map(img =>
-            fetchAndAddToZip(img.url || img.path, img.filename || "mainImage", filesFolder)
-        );
+        const imagePromises = asset.mainImage
+            ? [fetchAndAddToZip(
+                asset.mainImage.url || asset.mainImage.path,
+                asset.mainImage.filename || "mainImage",
+                filesFolder
+            )]
+            : [];
 
         await Promise.all([...filePromises, ...imagePromises]);
 
@@ -99,8 +103,8 @@ function SingleAsset() {
     }, [dispatch, assetId, isError, message]);
 
     useEffect(() => {
-        if (asset && asset.mainImage?.[0]) {
-            setMainPreview(asset.mainImage[0]);
+        if (asset && asset.mainImage ) {
+            setMainPreview(asset.mainImage);
         } else {
             setMainPreview(null);
         }
@@ -175,19 +179,20 @@ function SingleAsset() {
 
                 {/* Miniaturas */}
                 <div className="miniaturas">
-                    {asset.mainImage && asset.mainImage.map((img, index) => (
+                    {asset.mainImage && (
                         <img
-                            key={`main-${index}`}
-                            src={img.url || img.path}
-                            alt={img.filename}
+                            key="main-0"
+                            src={asset.mainImage.url || asset.mainImage.path}
+                            alt={asset.mainImage.filename || "mainImage"}
                             className="miniatura"
                             style={{
-                                opacity: (mainPreview?.url || mainPreview?.path) === (img.url || img.path) ? '0.5' : '1',
+                                opacity: (mainPreview?.url || mainPreview?.path) === (asset.mainImage.url || asset.mainImage.path) ? '0.5' : '1',
                                 cursor: 'pointer'
                             }}
-                            onClick={() => setMainPreview(img)}
+                            onClick={() => setMainPreview(asset.mainImage)}
                         />
-                    ))}
+                    )}
+
 
                     {asset.files && asset.files.map((file, index) => {
                         const isImage = file.mimetype?.startsWith('image/');
@@ -227,10 +232,10 @@ function SingleAsset() {
                                     <p style={{ fontSize: '11px', marginTop: '4px', overflowWrap: 'break-word' }}>
                                         {file.filename}
                                     </p>
-                                ):
-                                (
-                                    <p></p>
-                                )}
+                                ) :
+                                    (
+                                        <p></p>
+                                    )}
 
                             </div>
                         );

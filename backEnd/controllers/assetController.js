@@ -20,24 +20,27 @@ const getAssetById = asyncHandler(async (req, res) => {
   res.status(200).json(asset);
 });
 
-
 const postAsset = asyncHandler(async (req, res) => {
+  console.log("req.body", req.body);
+
   if (!req.body.title) {
     return res.status(400).json({ message: "El campo de título del asset es requerido" });
   }
 
-  if (!req.files.mainImage || req.files.mainImage.length === 0) {
+  if (!req.files || !req.files.mainImage || req.files.mainImage.length === 0) {
     return res.status(400).json({ message: "El campo de imagen principal es requerido" });
   }
 
-  const mainImagen = req.files.mainImage.map(file => ({
-    filename: file.originalname,
-    path: file.path, // URL en Cloudinary
-    url: file.path,
-    public_id: file.filename.split('.')[0], // o file.filename si ya es un ID único
-    size: file.size,
-    mimetype: file.mimetype,
-  }));
+  const mainImageFile = req.files.mainImage[0];
+
+  const mainImagen = {
+    filename: mainImageFile.originalname,
+    path: mainImageFile.path,
+    url: mainImageFile.path,
+    size: mainImageFile.size,
+    mimetype: mainImageFile.mimetype,
+    uploadedAt: new Date()
+  };
 
   let files = [];
   if (req.files.files && req.files.files.length > 0) {
@@ -45,13 +48,13 @@ const postAsset = asyncHandler(async (req, res) => {
       filename: file.originalname,
       path: file.path,
       url: file.path,
-      public_id: file.filename,
       size: file.size,
       mimetype: file.mimetype,
+      uploadedAt: new Date()
     }));
   }
 
-  const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
+  const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames].filter(Boolean);
   const existingTags = await Tag.find({ name: { $in: tagNames } });
   const existingTagNames = existingTags.map(tag => tag.name);
   const newTagNames = tagNames.filter(name => !existingTagNames.includes(name));
@@ -73,6 +76,7 @@ const postAsset = asyncHandler(async (req, res) => {
 });
 
 
+
 const putAsset = asyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.id);
   if (!asset) {
@@ -89,17 +93,13 @@ const putAsset = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "El campo de título es requerido" });
   }
 
-  // MAIN IMAGE -------------------------------------------
   let mainImage = asset.mainImage;
 
-  // Si se eliminó la imagen principal
   if (req.body.removeMainImage === 'true') {
     mainImage = null;
-    // Opcional: eliminar de Cloudinary si lo deseas
-    // await cloudinary.uploader.destroy(asset.mainImage?.public_id);
+    await cloudinary.uploader.destroy(asset.mainImage?.public_id);
   }
 
-  // Si se subió una nueva imagen principal
   if (req.files?.mainImage && req.files.mainImage.length > 0) {
     const file = req.files.mainImage[0];
     mainImage = {
@@ -110,14 +110,11 @@ const putAsset = asyncHandler(async (req, res) => {
       size: file.size,
       mimetype: file.mimetype,
     };
-    // Opcional: eliminar la anterior en Cloudinary
-    // if (asset.mainImage?.public_id) await cloudinary.uploader.destroy(asset.mainImage.public_id);
+     if (asset.mainImage?.public_id) await cloudinary.uploader.destroy(asset.mainImage.public_id);
   }
 
-  // FILES -------------------------------------------
   let updatedFiles = asset.files;
 
-  // Filtrar los archivos que el usuario quiere conservar
   const remainingFileUrls = Array.isArray(req.body.remainingFileUrls)
     ? req.body.remainingFileUrls
     : req.body.remainingFileUrls
@@ -126,13 +123,11 @@ const putAsset = asyncHandler(async (req, res) => {
 
   updatedFiles = asset.files.filter(file => remainingFileUrls.includes(file.url));
 
-  // Opcional: eliminar los archivos quitados en Cloudinary
   const removedFiles = asset.files.filter(file => !remainingFileUrls.includes(file.url));
-  // for (const file of removedFiles) {
-  //   if (file.public_id) await cloudinary.uploader.destroy(file.public_id);
-  // }
+   for (const file of removedFiles) {
+     if (file.public_id) await cloudinary.uploader.destroy(file.public_id);
+   }
 
-  // Agregar nuevos archivos
   if (req.files?.files && req.files.files.length > 0) {
     const newFiles = req.files.files.map(file => ({
       filename: file.originalname,
@@ -145,7 +140,6 @@ const putAsset = asyncHandler(async (req, res) => {
     updatedFiles = [...updatedFiles, ...newFiles];
   }
 
-  // TAGS -------------------------------------------
   let tagIds = asset.tags;
   if (req.body.tagNames) {
     const tagNames = Array.isArray(req.body.tagNames) ? req.body.tagNames : [req.body.tagNames];
@@ -159,7 +153,6 @@ const putAsset = asyncHandler(async (req, res) => {
 
   const category = req.body.category?.trim().toLowerCase() || asset.category;
 
-  // FINAL UPDATE -------------------------------------------
   asset.title = req.body.title;
   asset.desc = req.body.desc || asset.desc;
   asset.mainImage = mainImage;
@@ -205,7 +198,6 @@ const deleteAsset = asyncHandler(async (req, res) => {
     }
   }
 
-  // 🔥 Remover asset de favoritos de todos los usuarios
   try {
     const result = await User.updateMany(
       { favorites: asset._id },
@@ -216,7 +208,6 @@ const deleteAsset = asyncHandler(async (req, res) => {
     console.error('Error actualizando favoritos:', err);
   }
 
-  // 🔥 Borrar asset
   try {
     await asset.deleteOne();
     res.status(200).json({ message: 'Asset eliminado correctamente' });
@@ -226,7 +217,6 @@ const deleteAsset = asyncHandler(async (req, res) => {
   }
 });
 
-// Nuevo controlador para manejar archivos individualmente
 const deleteFileFromAsset = asyncHandler(async (req, res) => {
   const asset = await Asset.findById(req.params.assetId);
   if (!asset) {
@@ -239,7 +229,6 @@ const deleteFileFromAsset = asyncHandler(async (req, res) => {
     throw new Error('No autorizado');
   }
 
-  // Filtrar el archivo a eliminar
   asset.files = asset.files.filter(file => file._id.toString() !== req.params.fileId);
   await asset.save();
 
@@ -269,13 +258,11 @@ const getAssetByTag = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "El nombre del tag es requerido" });
   }
 
-  // Buscar el Tag por nombre
   const tag = await Tag.findOne({ name: tagId });
   if (!tag) {
     return res.status(404).json({ message: "Tag no encontrado" });
   }
 
-  // Buscar assets que tienen ese tag
   const assets = await Asset.find({ tags: tag._id });
   if (!assets.length) {
     return res.status(404).json({ message: "No se encontraron assets para este tag" });
@@ -293,7 +280,6 @@ const getAssetByCategory = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "El nombre de la categoría es requerido" });
   }
 
-  // Buscar la categoría por nombre
   const rawValue = decodeURIComponent(value).trim().toLowerCase();
   const category = await Category.findOne({ name: new RegExp(`^${rawValue}$`, 'i') });
 
@@ -301,7 +287,6 @@ const getAssetByCategory = asyncHandler(async (req, res) => {
     return res.status(404).json({ message: "Categoría no encontrada" });
   }
 
-  // Buscar assets que tienen esa categoría
   const assets = await Asset.find({ category: category._id }).populate('tags');
   if (!assets.length) {
     return res.status(404).json({ message: "No se encontraron assets para esta categoría" });
@@ -314,13 +299,11 @@ const searchAssets = asyncHandler(async (req, res) => {
   const { user, tag, cat, searchQuery } = req.query;
   const filter = {};
 
-  // Filtrar por user si está presente
   if (user) {
     console.log("user", user);
     filter.user = user;
   }
 
-  // Filtrar por tag si está presente
   if (tag) {
     console.log("tag", tag);
     const foundTag = await Tag.findOne({ name: tag });
@@ -330,7 +313,6 @@ const searchAssets = asyncHandler(async (req, res) => {
     filter.tags = foundTag._id;
   }
 
-  // Filtrar por categoría si está presente
   if (cat) {
     console.log("category", cat);
     const rawCategory = decodeURIComponent(cat).trim().toLowerCase();
@@ -341,13 +323,11 @@ const searchAssets = asyncHandler(async (req, res) => {
     filter.category = foundCategory._id;
   }
 
-  // Filtrar por título si searchQuery está presente
   if (searchQuery) {
     console.log("searchQuery", searchQuery);
-    filter.title = new RegExp(searchQuery, 'i');  // 'i' para no diferenciar entre mayúsculas y minúsculas
+    filter.title = new RegExp(searchQuery, 'i');  
   }
 
-  // Buscar los assets con los filtros aplicados
   const assets = await Asset.find(filter)
     .populate('tags')
     .populate('category');

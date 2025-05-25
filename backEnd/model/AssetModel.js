@@ -10,7 +10,7 @@ const AssetSchema = new mongoose.Schema({
         type: String,
         required: [true, 'El campo de título del asset es requerido']
     },
-    mainImage: [{
+    mainImage: {
         filename: {
             type: String,
             required: true
@@ -35,7 +35,7 @@ const AssetSchema = new mongoose.Schema({
             type: Date,
             default: Date.now
         }
-    }],
+    },
     files: [{
         filename: {
             type: String,
